@@ -1,0 +1,28 @@
+{
+  "name": "patient-server",
+  "version": "1.0.0",
+  "description": "Server for use with patient records app",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "sqlite3": "^3.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valine/patient-records.git"
+  },
+  "keywords": [
+    "Medical"
+  ],
+  "author": "Lukas Valine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/valine/patient-records/issues"
+  },
+  "homepage": "https://github.com/valine/patient-records#readme"
+}
