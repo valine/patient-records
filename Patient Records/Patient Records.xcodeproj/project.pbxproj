@@ -1,0 +1,547 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326401DA1CC600082EC2E /* AppDelegate.swift */; };
+		807326481DA1CC600082EC2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 807326461DA1CC600082EC2E /* Main.storyboard */; };
+		8073264A1DA1CC600082EC2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807326491DA1CC600082EC2E /* Assets.xcassets */; };
+		8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */; };
+		807326581DA1CC600082EC2E /* Patient_RecordsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326571DA1CC600082EC2E /* Patient_RecordsTests.swift */; };
+		807326631DA1CC600082EC2E /* Patient_RecordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326621DA1CC600082EC2E /* Patient_RecordsUITests.swift */; };
+		807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326701DA1CD970082EC2E /* SearchViewController.swift */; };
+		807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326721DA1CDC00082EC2E /* HomeViewController.swift */; };
+		807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		807326541DA1CC600082EC2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 807326351DA1CC600082EC2E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8073263C1DA1CC600082EC2E;
+			remoteInfo = "Patient Records";
+		};
+		8073265F1DA1CC600082EC2E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 807326351DA1CC600082EC2E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8073263C1DA1CC600082EC2E;
+			remoteInfo = "Patient Records";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8073263D1DA1CC600082EC2E /* Patient Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Patient Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		807326401DA1CC600082EC2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		807326471DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		807326491DA1CC600082EC2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8073264C1DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8073264E1DA1CC600082EC2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		807326531DA1CC600082EC2E /* Patient RecordsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Patient RecordsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		807326571DA1CC600082EC2E /* Patient_RecordsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patient_RecordsTests.swift; sourceTree = "<group>"; };
+		807326591DA1CC600082EC2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8073265E1DA1CC600082EC2E /* Patient RecordsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Patient RecordsUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		807326621DA1CC600082EC2E /* Patient_RecordsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Patient_RecordsUITests.swift; sourceTree = "<group>"; };
+		807326641DA1CC600082EC2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		807326701DA1CD970082EC2E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		807326721DA1CDC00082EC2E /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatientViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8073263A1DA1CC600082EC2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		807326501DA1CC600082EC2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8073265B1DA1CC600082EC2E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		807326341DA1CC600082EC2E = {
+			isa = PBXGroup;
+			children = (
+				8073263F1DA1CC600082EC2E /* Patient Records */,
+				807326561DA1CC600082EC2E /* Patient RecordsTests */,
+				807326611DA1CC600082EC2E /* Patient RecordsUITests */,
+				8073263E1DA1CC600082EC2E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8073263E1DA1CC600082EC2E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8073263D1DA1CC600082EC2E /* Patient Records.app */,
+				807326531DA1CC600082EC2E /* Patient RecordsTests.xctest */,
+				8073265E1DA1CC600082EC2E /* Patient RecordsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8073263F1DA1CC600082EC2E /* Patient Records */ = {
+			isa = PBXGroup;
+			children = (
+				807326401DA1CC600082EC2E /* AppDelegate.swift */,
+				807326461DA1CC600082EC2E /* Main.storyboard */,
+				807326491DA1CC600082EC2E /* Assets.xcassets */,
+				8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */,
+				8073264E1DA1CC600082EC2E /* Info.plist */,
+				807326701DA1CD970082EC2E /* SearchViewController.swift */,
+				807326721DA1CDC00082EC2E /* HomeViewController.swift */,
+				807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */,
+			);
+			path = "Patient Records";
+			sourceTree = "<group>";
+		};
+		807326561DA1CC600082EC2E /* Patient RecordsTests */ = {
+			isa = PBXGroup;
+			children = (
+				807326571DA1CC600082EC2E /* Patient_RecordsTests.swift */,
+				807326591DA1CC600082EC2E /* Info.plist */,
+			);
+			path = "Patient RecordsTests";
+			sourceTree = "<group>";
+		};
+		807326611DA1CC600082EC2E /* Patient RecordsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				807326621DA1CC600082EC2E /* Patient_RecordsUITests.swift */,
+				807326641DA1CC600082EC2E /* Info.plist */,
+			);
+			path = "Patient RecordsUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8073263C1DA1CC600082EC2E /* Patient Records */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 807326671DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient Records" */;
+			buildPhases = (
+				807326391DA1CC600082EC2E /* Sources */,
+				8073263A1DA1CC600082EC2E /* Frameworks */,
+				8073263B1DA1CC600082EC2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Patient Records";
+			productName = "Patient Records";
+			productReference = 8073263D1DA1CC600082EC2E /* Patient Records.app */;
+			productType = "com.apple.product-type.application";
+		};
+		807326521DA1CC600082EC2E /* Patient RecordsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8073266A1DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient RecordsTests" */;
+			buildPhases = (
+				8073264F1DA1CC600082EC2E /* Sources */,
+				807326501DA1CC600082EC2E /* Frameworks */,
+				807326511DA1CC600082EC2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				807326551DA1CC600082EC2E /* PBXTargetDependency */,
+			);
+			name = "Patient RecordsTests";
+			productName = "Patient RecordsTests";
+			productReference = 807326531DA1CC600082EC2E /* Patient RecordsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8073265D1DA1CC600082EC2E /* Patient RecordsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8073266D1DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient RecordsUITests" */;
+			buildPhases = (
+				8073265A1DA1CC600082EC2E /* Sources */,
+				8073265B1DA1CC600082EC2E /* Frameworks */,
+				8073265C1DA1CC600082EC2E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				807326601DA1CC600082EC2E /* PBXTargetDependency */,
+			);
+			name = "Patient RecordsUITests";
+			productName = "Patient RecordsUITests";
+			productReference = 8073265E1DA1CC600082EC2E /* Patient RecordsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		807326351DA1CC600082EC2E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0800;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = "Lukas Valinevaline";
+				TargetAttributes = {
+					8073263C1DA1CC600082EC2E = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 6KLWRX98B4;
+						ProvisioningStyle = Automatic;
+					};
+					807326521DA1CC600082EC2E = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 6KLWRX98B4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8073263C1DA1CC600082EC2E;
+					};
+					8073265D1DA1CC600082EC2E = {
+						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 6KLWRX98B4;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 8073263C1DA1CC600082EC2E;
+					};
+				};
+			};
+			buildConfigurationList = 807326381DA1CC600082EC2E /* Build configuration list for PBXProject "Patient Records" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 807326341DA1CC600082EC2E;
+			productRefGroup = 8073263E1DA1CC600082EC2E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8073263C1DA1CC600082EC2E /* Patient Records */,
+				807326521DA1CC600082EC2E /* Patient RecordsTests */,
+				8073265D1DA1CC600082EC2E /* Patient RecordsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8073263B1DA1CC600082EC2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */,
+				8073264A1DA1CC600082EC2E /* Assets.xcassets in Resources */,
+				807326481DA1CC600082EC2E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		807326511DA1CC600082EC2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8073265C1DA1CC600082EC2E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		807326391DA1CC600082EC2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */,
+				807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */,
+				807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */,
+				807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8073264F1DA1CC600082EC2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807326581DA1CC600082EC2E /* Patient_RecordsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8073265A1DA1CC600082EC2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				807326631DA1CC600082EC2E /* Patient_RecordsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		807326551DA1CC600082EC2E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8073263C1DA1CC600082EC2E /* Patient Records */;
+			targetProxy = 807326541DA1CC600082EC2E /* PBXContainerItemProxy */;
+		};
+		807326601DA1CC600082EC2E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8073263C1DA1CC600082EC2E /* Patient Records */;
+			targetProxy = 8073265F1DA1CC600082EC2E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		807326461DA1CC600082EC2E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				807326471DA1CC600082EC2E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8073264C1DA1CC600082EC2E /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		807326651DA1CC600082EC2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		807326661DA1CC600082EC2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		807326681DA1CC600082EC2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient Records/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-Records";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		807326691DA1CC600082EC2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient Records/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-Records";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		8073266B1DA1CC600082EC2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient RecordsTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-RecordsTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Patient Records.app/Patient Records";
+			};
+			name = Debug;
+		};
+		8073266C1DA1CC600082EC2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient RecordsTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-RecordsTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Patient Records.app/Patient Records";
+			};
+			name = Release;
+		};
+		8073266E1DA1CC600082EC2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient RecordsUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-RecordsUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "Patient Records";
+			};
+			name = Debug;
+		};
+		8073266F1DA1CC600082EC2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = 6KLWRX98B4;
+				INFOPLIST_FILE = "Patient RecordsUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "valine.Patient-RecordsUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "Patient Records";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		807326381DA1CC600082EC2E /* Build configuration list for PBXProject "Patient Records" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				807326651DA1CC600082EC2E /* Debug */,
+				807326661DA1CC600082EC2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		807326671DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient Records" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				807326681DA1CC600082EC2E /* Debug */,
+				807326691DA1CC600082EC2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8073266A1DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient RecordsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8073266B1DA1CC600082EC2E /* Debug */,
+				8073266C1DA1CC600082EC2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		8073266D1DA1CC600082EC2E /* Build configuration list for PBXNativeTarget "Patient RecordsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8073266E1DA1CC600082EC2E /* Debug */,
+				8073266F1DA1CC600082EC2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 807326351DA1CC600082EC2E /* Project object */;
+}
