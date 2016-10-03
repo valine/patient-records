@@ -14,6 +14,14 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let userDefaults = UserDefaults()
+        
+        if !userDefaults.bool(forKey: "isNotFirstLaunch") {
+            userDefaults.set(true, forKey: "isNotFirstLaunch")
+            userDefaults.set(true, forKey: "standalone")
+        }
+
 
         // Do any additional setup after loading the view.
     }
@@ -22,6 +30,4 @@ class HomeViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }

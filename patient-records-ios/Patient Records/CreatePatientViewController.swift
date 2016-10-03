@@ -10,6 +10,7 @@ import UIKit
 
 class CreatePatientViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var SymptomSummary: UITextField!
 
     override func viewDidLoad() {
         super.viewDidLoad()

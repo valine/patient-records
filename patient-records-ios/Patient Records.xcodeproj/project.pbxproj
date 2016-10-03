@@ -17,6 +17,7 @@
 		807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326721DA1CDC00082EC2E /* HomeViewController.swift */; };
 		807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */; };
 		80E743541DA20DEF004898B8 /* NestableUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E743531DA20DEF004898B8 /* NestableUIView.swift */; };
+		80E743561DA29F76004898B8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E743551DA29F76004898B8 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		807326721DA1CDC00082EC2E /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatientViewController.swift; sourceTree = "<group>"; };
 		80E743531DA20DEF004898B8 /* NestableUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestableUIView.swift; sourceTree = "<group>"; };
+		80E743551DA29F76004898B8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,15 +105,16 @@
 		8073263F1DA1CC600082EC2E /* Patient Records */ = {
 			isa = PBXGroup;
 			children = (
+				8073264E1DA1CC600082EC2E /* Info.plist */,
 				807326401DA1CC600082EC2E /* AppDelegate.swift */,
 				807326461DA1CC600082EC2E /* Main.storyboard */,
+				8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */,
 				80E743531DA20DEF004898B8 /* NestableUIView.swift */,
 				807326491DA1CC600082EC2E /* Assets.xcassets */,
-				8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */,
-				8073264E1DA1CC600082EC2E /* Info.plist */,
 				807326701DA1CD970082EC2E /* SearchViewController.swift */,
 				807326721DA1CDC00082EC2E /* HomeViewController.swift */,
 				807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */,
+				80E743551DA29F76004898B8 /* SettingsViewController.swift */,
 			);
 			path = "Patient Records";
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */,
 				807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */,
 				80E743541DA20DEF004898B8 /* NestableUIView.swift in Sources */,
+				80E743561DA29F76004898B8 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

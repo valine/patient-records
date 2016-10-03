@@ -20,8 +20,8 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
     var qrCodeFrameView:UIView?
     
     let videoRadius: CGFloat = 7
+
     @IBOutlet weak var searchField: UITextField!
-    
        // Added to support different barcodes
     let supportedBarCodes = [AVMetadataObjectTypeQRCode, AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeUPCECode, AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeAztecCode]
 
