@@ -74,9 +74,10 @@ app.get('/list_patient_names', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var sql = "SELECT name FROM Patients";
+        var sql = "SELECT id, name FROM Patients";
         db.all(sql, function(err, rows) {
-            res.send(JSON.stringify(rows));
+            var patients = {"patients" : rows}
+            res.send(JSON.stringify(patients));
             console.log(JSON.stringify(rows));
         });
     });

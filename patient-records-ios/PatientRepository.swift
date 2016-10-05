@@ -13,21 +13,26 @@ class PatientRespository {
     static func getPatientById(id: Int, completion: @escaping (_: String)->Void) {
         
             let listPatientsRequest = "list_patient_names"
-            if let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest) {
-            
-            
-                let task = URLSession.shared.dataTask(with: url as URL) {(data, response, error) in
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+                
+            let urlWithPort = NSURLComponents(string: url.absoluteString)
+            urlWithPort?.port = ServerSettings.port;
+        
+            if let theUrl = urlWithPort?.url {
+                let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
                     
                     if let unwrappedData = data {
                         DispatchQueue.main.async {
-                        
+                            
+                            print(JSONToPatients(data: unwrappedData))
                             completion(String(data: unwrappedData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!)
                         }
                         
                     } else {
                     
                         DispatchQueue.main.async {
-                            completion("No server found at that address 🙁")
+                        print(url.absoluteString)
+                            completion("No server found 🙁")
                         }
                     }
                 }
@@ -42,10 +47,36 @@ class PatientRespository {
         }
     }
     
-    static func JsonToPatient(json: String) -> Patient {
-        return Patient.defaultPatient()
+    static func JSONToPatients(data: Data) -> [Patient] {
+
+        
+        var patientObjects = [Patient]()
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+            
+            if let jsonPatients = json["patients"] as? [[String: AnyObject]] {
+                for jsonPatient in jsonPatients {
+                    
+                    var patient = Patient.defaultPatient()
+                    
+                    if let name = jsonPatient["name"] as? String {
+                        patient.name = name
+                        print(name)
+                    }
+                    
+                    patientObjects.append(patient)
+                }
+            }
+        } catch {
+            print("error serializing JSON: \(error)")
+        }
+        
+        return patientObjects
+                
     }
 }
+
 
 struct Patient {
     var id: Int

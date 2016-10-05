@@ -12,6 +12,8 @@ class ServerSettings {
 
     var serverAddress: NSURL?
     
+    static let port: NSNumber = 8081
+    
     //MARK: Shared Instance
 
     static let sharedInstance : ServerSettings = {
@@ -31,6 +33,7 @@ class ServerSettings {
             serverAddress = NSURL(string: "http://localhost:8081")
         }
     }
+    
     
     func getServerAddress() -> NSURL {
         return serverAddress!
