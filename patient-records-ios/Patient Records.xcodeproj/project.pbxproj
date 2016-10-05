@@ -17,6 +17,9 @@
 		807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326721DA1CDC00082EC2E /* HomeViewController.swift */; };
 		807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */; };
 		8091A14A1DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */; };
+		8091A14D1DA32E9E00D0A541 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8091A14C1DA32E9E00D0A541 /* MessageUI.framework */; };
+		8091A14F1DA44A9800D0A541 /* PatientRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091A14E1DA44A9800D0A541 /* PatientRepository.swift */; };
+		8091A1511DA4536B00D0A541 /* ServerSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091A1501DA4536B00D0A541 /* ServerSettings.swift */; };
 		80E743541DA20DEF004898B8 /* NestableUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E743531DA20DEF004898B8 /* NestableUIView.swift */; };
 		80E743561DA29F76004898B8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80E743551DA29F76004898B8 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -55,6 +58,9 @@
 		807326721DA1CDC00082EC2E /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatientViewController.swift; sourceTree = "<group>"; };
 		8091A1491DA2ED9A00D0A541 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		8091A14C1DA32E9E00D0A541 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		8091A14E1DA44A9800D0A541 /* PatientRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PatientRepository.swift; path = ../PatientRepository.swift; sourceTree = "<group>"; };
+		8091A1501DA4536B00D0A541 /* ServerSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ServerSettings.swift; path = ../ServerSettings.swift; sourceTree = "<group>"; };
 		80E743531DA20DEF004898B8 /* NestableUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestableUIView.swift; sourceTree = "<group>"; };
 		80E743551DA29F76004898B8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8091A14D1DA32E9E00D0A541 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +98,7 @@
 				807326561DA1CC600082EC2E /* Patient RecordsTests */,
 				807326611DA1CC600082EC2E /* Patient RecordsUITests */,
 				8073263E1DA1CC600082EC2E /* Products */,
+				8091A14B1DA32E9E00D0A541 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,9 +122,11 @@
 				8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */,
 				80E743531DA20DEF004898B8 /* NestableUIView.swift */,
 				807326491DA1CC600082EC2E /* Assets.xcassets */,
+				8091A14E1DA44A9800D0A541 /* PatientRepository.swift */,
 				807326701DA1CD970082EC2E /* SearchViewController.swift */,
 				807326721DA1CDC00082EC2E /* HomeViewController.swift */,
 				807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */,
+				8091A1501DA4536B00D0A541 /* ServerSettings.swift */,
 				80E743551DA29F76004898B8 /* SettingsViewController.swift */,
 			);
 			path = "Patient Records";
@@ -138,6 +148,14 @@
 				807326641DA1CC600082EC2E /* Info.plist */,
 			);
 			path = "Patient RecordsUITests";
+			sourceTree = "<group>";
+		};
+		8091A14B1DA32E9E00D0A541 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8091A14C1DA32E9E00D0A541 /* MessageUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,10 +298,12 @@
 				8091A14A1DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld in Sources */,
 				807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */,
 				807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */,
+				8091A1511DA4536B00D0A541 /* ServerSettings.swift in Sources */,
 				807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */,
 				807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */,
 				80E743541DA20DEF004898B8 /* NestableUIView.swift in Sources */,
 				80E743561DA29F76004898B8 /* SettingsViewController.swift in Sources */,
+				8091A14F1DA44A9800D0A541 /* PatientRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

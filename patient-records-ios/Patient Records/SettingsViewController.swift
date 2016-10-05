@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MessageUI
 
-class SettingsViewController: UIViewController, UITextFieldDelegate {
+class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailComposeViewControllerDelegate {
 
+    @IBOutlet weak var serverAddressField: UITextField!
     @IBOutlet weak var standAloneSwitch: UISwitch!
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     override func viewDidLoad() {
@@ -18,6 +20,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         
         let isStandlone = userDefaults.bool(forKey: "standalone")
         standAloneSwitch.isOn = isStandlone
+        
+        serverAddressField.delegate = self
+        serverAddressField.text = ServerSettings.sharedInstance.getServerAddress().absoluteString
     }
 
     override func didReceiveMemoryWarning() {
@@ -27,19 +32,64 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
 
     @IBAction func dismissTapped(_ sender: AnyObject) {
-    
+        serverAddressField.resignFirstResponder()
+        
         self.dismiss(animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return true;
+        
+        let userDefaults = UserDefaults()
+        userDefaults.set(serverAddressField.text, forKey: "serveraddress")
+        ServerSettings.sharedInstance.serverAddress = NSURL(string: serverAddressField.text!)
+        
+        return true
     }
-
+    
     @IBAction func standaloneSwitchChanged(_ sender: AnyObject) {
     
         let userDefaults = UserDefaults()
         userDefaults.set(standAloneSwitch.isOn, forKey: "standalone")
     }
+    
+    @IBAction func textEntered(_ sender: AnyObject) {
+    
+        let userDefaults = UserDefaults()
+        userDefaults.set(serverAddressField.text, forKey: "serveraddress")
+        ServerSettings.sharedInstance.serverAddress = NSURL(string: serverAddressField.text!)
+    }
+    
+    @IBAction func helpButtonPressed(_ sender: AnyObject) {
+    
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.present(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            self.showSendMailErrorAlert()
+        }
+    }
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        mailComposerVC.setToRecipients(["lukas@lukasvaline.com"])
+        mailComposerVC.setSubject("Patient Records support request")
+        mailComposerVC.setMessageBody("", isHTML: false)
+        
+        return mailComposerVC
+    }
+    
+    func showSendMailErrorAlert() {
+        let sendMailErrorAlert = UIAlertView(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", delegate: self, cancelButtonTitle: "OK")
+        sendMailErrorAlert.show()
+    }
+
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+
+
 
 }

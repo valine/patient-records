@@ -15,8 +15,7 @@ class CreatePatientViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let viewSize = view.layer.bounds
-        scrollView.contentSize = CGSize(width: viewSize.width, height: 1000)
+        scrollView.contentSize = CGSize(width: 0, height: 1000)
         // Do any additional setup after loading the view.
     }
 

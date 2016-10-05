@@ -12,6 +12,7 @@ class HomeViewController: UIViewController {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
+    @IBOutlet weak var devLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +27,12 @@ class HomeViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func devRefreshPressed(_ sender: AnyObject) {
+    
+          PatientRespository.getPatientById(id: 10, completion: {(value) in
+                self.devLabel.text = value
+          })
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
