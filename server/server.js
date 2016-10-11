@@ -27,11 +27,11 @@ db.serialize(function() {
     db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, name char(50))");
 
     var stmt = db.prepare("INSERT INTO Patients (id, name) VALUES (NULL, ?)");
-
+    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Megan", "Sherlock"];
     var randomVal
     for (var i = 0; i < 10; i++) {
         randomVal = Math.random() * 1000
-        stmt.run("hello" + randomVal);
+        stmt.run(staticNames[i % staticNames.length]);
     }
     stmt.finalize();
     
@@ -68,6 +68,23 @@ app.get('/patient', function (req, res) {
 
 
 })
+
+app.get('/search', function(req, res) {
+	var searchInput = req.query.input;
+
+	var db = new sqlite3.Database(file);
+
+	db.serialize(function() {
+		var query = "SELECT name FROM patients WHERE name LIKE \"" + searchInput + "%\"";
+		db.all(query, function(err, rows){
+
+			res.send(JSON.stringify(rows));
+		});
+
+
+	});
+	db.close();
+});
 
 // This responds a GET request for the /list_user page.
 app.get('/list_patient_names', function (req, res) {
