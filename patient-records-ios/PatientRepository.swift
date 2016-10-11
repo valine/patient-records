@@ -23,33 +23,25 @@ class PatientRespository {
                     
                     if let unwrappedData = data {
                         DispatchQueue.main.async {
-                            
-                            print(JSONToPatients(data: unwrappedData))
                             completion(String(data: unwrappedData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!)
                         }
-                        
                     } else {
-                    
                         DispatchQueue.main.async {
-                        print(url.absoluteString)
                             completion("No server found 🙁")
                         }
                     }
                 }
-
                 task.resume()
             
             } else {
                 DispatchQueue.main.async {
                 completion("Looks like you didn't enter a server address.")
             }
-        
         }
     }
     
     static func JSONToPatients(data: Data) -> [Patient] {
 
-        
         var patientObjects = [Patient]()
         
         do {
@@ -65,6 +57,10 @@ class PatientRespository {
                         print(name)
                     }
                     
+                    if let id = jsonPatient["id"] as? Int {
+                        patient.id = id
+                    }
+                    
                     patientObjects.append(patient)
                 }
             }
@@ -73,7 +69,6 @@ class PatientRespository {
         }
         
         return patientObjects
-                
     }
 }
 
@@ -83,6 +78,8 @@ struct Patient {
     var name: String
     var sex: UInt8 // 0 unknown, 1 male, 2 female, 9 not applicable
     var birthDate: Date
+    var phoneNumber: String
+    var emailAddress: String
     var weight: [PatientWeight] // in kilograms
     var familyStatus: UInt8 // 0 unknown, 1 known, 2 mother only, 3 father only, 4 other
     var medicalIssues: String
@@ -93,8 +90,6 @@ struct Patient {
     var updates: [Updates]
     var height: Double // in inches
     var dateAdded: Date
-    
-
     var allergies: String
     
     static func defaultPatient() -> Patient{
@@ -102,6 +97,8 @@ struct Patient {
         id: 0, name: "unknown",
         sex: 0,
         birthDate: Date(),
+        phoneNumber: "unknown",
+        emailAddress: "unknown",
         weight: [PatientWeight](),
         familyStatus: 0,
         medicalIssues: "unknown",

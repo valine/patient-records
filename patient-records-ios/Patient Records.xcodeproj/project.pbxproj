@@ -124,8 +124,8 @@
 				807326491DA1CC600082EC2E /* Assets.xcassets */,
 				8091A14E1DA44A9800D0A541 /* PatientRepository.swift */,
 				807326701DA1CD970082EC2E /* SearchViewController.swift */,
-				807326721DA1CDC00082EC2E /* HomeViewController.swift */,
 				807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */,
+				807326721DA1CDC00082EC2E /* HomeViewController.swift */,
 				8091A1501DA4536B00D0A541 /* ServerSettings.swift */,
 				80E743551DA29F76004898B8 /* SettingsViewController.swift */,
 			);

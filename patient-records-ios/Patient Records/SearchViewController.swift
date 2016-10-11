@@ -13,12 +13,11 @@ import AVFoundation
 class SearchViewController: UIViewController,
 AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
 
-    @IBOutlet weak var scanParentView: UIView!
-    
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
     var qrCodeFrameView:UIView?
     
+    @IBOutlet weak var scanParentView: UIView!
     let videoRadius: CGFloat = 7
 
     @IBOutlet weak var searchField: UITextField!
@@ -28,7 +27,6 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
 
         // Get an instance of the AVCaptureDevice class to initialize a device object and provide the video
         // as the media type parameter.
@@ -89,7 +87,6 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
         
         ///// Start search field 
         
-        
         searchField.delegate = self
     }
 
@@ -97,9 +94,30 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+   
+    @IBOutlet weak var scanAnimationContainer: NestableUIView!
     
+    @IBAction func searchEditingBegan(_ sender: AnyObject) {
+
+        let animationDuration: TimeInterval = 0.5
+        
+        /*
+            Animate the scan view sliding downward.  
+            This makes room for search results to appear.
+        */
+        UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
+            self.scanAnimationContainer.center.y += self.view.bounds.height
+        }, completion: nil)
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        
+        let animationDuration: TimeInterval = 0.5
+        
+        UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
+            self.scanAnimationContainer.center.y -= self.view.bounds.height
+        }, completion: nil)
+
         return true;
     }
     

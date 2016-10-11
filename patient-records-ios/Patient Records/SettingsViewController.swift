@@ -14,6 +14,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     @IBOutlet weak var serverAddressField: UITextField!
     @IBOutlet weak var standAloneSwitch: UISwitch!
     @IBOutlet weak var dismissButton: UIBarButtonItem!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let userDefaults = UserDefaults()
@@ -30,7 +31,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         // Dispose of any resources that can be recreated.
     }
     
-
+    /// MARK: UI interaction
+    
     @IBAction func dismissTapped(_ sender: AnyObject) {
         serverAddressField.resignFirstResponder()
         
@@ -70,6 +72,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         }
     }
     
+    // MARK Mail support stuff
+    
     func configuredMailComposeViewController() -> MFMailComposeViewController {
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self
@@ -85,11 +89,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         sendMailErrorAlert.show()
     }
 
-
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
-
-
-
 }
