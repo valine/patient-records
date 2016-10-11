@@ -75,7 +75,7 @@ app.get('/search', function(req, res) {
 	var db = new sqlite3.Database(file);
 
 	db.serialize(function() {
-		var query = "SELECT name FROM patients WHERE name LIKE \"" + searchInput + "%\"";
+		var query = "SELECT name FROM patients WHERE name LIKE \"%" + searchInput + "%\"";
 		db.all(query, function(err, rows){
 
 			res.send(JSON.stringify(rows));
