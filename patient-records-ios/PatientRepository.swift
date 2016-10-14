@@ -12,7 +12,7 @@ class PatientRespository {
 
     static func getPatientById(id: Int, completion: @escaping (_: String)->Void) {
         
-            let listPatientsRequest = "list_patient_names"
+            let listPatientsRequest = "patient"
             let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
                 
             let urlWithPort = NSURLComponents(string: url.absoluteString)

@@ -55,11 +55,11 @@ db.close();
 
 
 // This responds a GET request
-app.get('/patient', function (req, res) {
+app.get('/patient/:id', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var id = req.query.id
+        var id = req.params.id
         var sql = "SELECT name, id FROM Patients WHERE id=" + id;
         db.all(sql, function(err, rows) {
             res.send(JSON.stringify(rows));
@@ -71,8 +71,12 @@ app.get('/patient', function (req, res) {
 
 })
 
-app.get('/search', function(req, res) {
-	var searchInput = req.query.input;
+//
+// SEARCH 
+//
+
+app.get('/search/:input', function(req, res) {
+	var searchInput = req.params.input;
 	var db = new sqlite3.Database(file);
 	db.serialize(function() {
 		var query = "SELECT name FROM patients WHERE name LIKE \"%" + searchInput + "%\"";
@@ -84,7 +88,7 @@ app.get('/search', function(req, res) {
 });
 
 // This responds a GET request for the /list_user page.
-app.get('/list_patient_names', function (req, res) {
+app.get('/patient', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {

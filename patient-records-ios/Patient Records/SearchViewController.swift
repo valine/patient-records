@@ -85,8 +85,7 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
             return
         }
         
-        ///// Start search field 
-        
+        //Start search field
         searchField.delegate = self
     }
 
@@ -98,21 +97,23 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
     @IBOutlet weak var scanAnimationContainer: NestableUIView!
     
     @IBAction func searchEditingBegan(_ sender: AnyObject) {
-
-        let animationDuration: TimeInterval = 0.5
-        
+    
         /*
             Animate the scan view sliding downward.  
             This makes room for search results to appear.
         */
+        
+        let animationDuration: TimeInterval = 0.3
+        
         UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
             self.scanAnimationContainer.center.y += self.view.bounds.height
         }, completion: nil)
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+      
         textField.resignFirstResponder()
         
-        let animationDuration: TimeInterval = 0.5
+        let animationDuration: TimeInterval = 0.3
         
         UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
             self.scanAnimationContainer.center.y -= self.view.bounds.height

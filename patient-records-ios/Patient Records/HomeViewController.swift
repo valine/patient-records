@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import SpriteKit
 
-class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
-    @IBOutlet weak var patientTable: UITableView!
+    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var logoContainerView: UIView!
+    let cellReuseIdentifier = "homeCell"
+    
     @IBOutlet weak var devLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,23 +29,29 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             userDefaults.set(true, forKey: "standalone")
         }
         
-        patientTable.delegate = self
-        patientTable.dataSource = self
-
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.separatorStyle = .none
+        
+        let logoScene = SKScene(fileNamed: "LogoScene")
+        let skLogoView = logoContainerView as! SKView
+        skLogoView.presentScene(logoScene)
 
         // Do any additional setup after loading the view.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 10
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+    let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as UITableViewCell!
+        return cell
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+  
     }
 
     @IBAction func devRefreshPressed(_ sender: AnyObject) {

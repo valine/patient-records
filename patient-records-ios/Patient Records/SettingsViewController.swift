@@ -15,6 +15,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     @IBOutlet weak var standAloneSwitch: UISwitch!
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     
+    let emailAddress = "support@valine.io"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let userDefaults = UserDefaults()
@@ -77,7 +79,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     func configuredMailComposeViewController() -> MFMailComposeViewController {
         let mailComposerVC = MFMailComposeViewController()
         mailComposerVC.mailComposeDelegate = self
-        mailComposerVC.setToRecipients(["lukas@lukasvaline.com"])
+        mailComposerVC.setToRecipients([emailAddress])
         mailComposerVC.setSubject("Patient Records support request")
         mailComposerVC.setMessageBody("", isHTML: false)
         
