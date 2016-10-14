@@ -53,7 +53,7 @@ class PatientRespository {
                     var patient = Patient.defaultPatient()
                     
                     if let name = jsonPatient["name"] as? String {
-                        patient.name = name
+                        patient.firstName = name
                         print(name)
                     }
                     
@@ -75,47 +75,73 @@ class PatientRespository {
 
 struct Patient {
     var id: Int
-    var name: String
+    var dateAdded: Date
+    
+    var firstName: String
+    var middleName: String
+    var lastName: String
     var sex: UInt8 // 0 unknown, 1 male, 2 female, 9 not applicable
     var birthDate: Date
+    
     var phoneNumber: String
     var emailAddress: String
     var weight: [PatientWeight] // in kilograms
+    var height: [PatientHeight]
+    
     var familyStatus: UInt8 // 0 unknown, 1 known, 2 mother only, 3 father only, 4 other
+    
     var medicalIssues: String
     var currentMedications: String
     var previouslMedicalProblems: String
     var previousSurgery: String
-    var medicalRecomedations: [MedicalRecomendations]
-    var updates: [Updates]
-    var height: Double // in inches
-    var dateAdded: Date
     var allergies: String
     
+    var medicalRecomedations: [MedicalRecomendations]
+    var updates: [Updates]
+
     static func defaultPatient() -> Patient{
         return Patient(
-        id: 0, name: "unknown",
-        sex: 0,
-        birthDate: Date(),
-        phoneNumber: "unknown",
-        emailAddress: "unknown",
-        weight: [PatientWeight](),
-        familyStatus: 0,
-        medicalIssues: "unknown",
-        currentMedications: "unknown",
-        previouslMedicalProblems: "unknown",
-        previousSurgery: "unknown",
-        medicalRecomedations: [MedicalRecomendations](),
-        updates: [Updates](),
-        height: 0,
-        dateAdded: Date(),
-        allergies: "unknwon")
+            id: 0,
+            dateAdded: Date(),
+            
+            firstName: "unknown",
+            middleName: "unknown",
+            lastName: "unknown",
+            
+            sex: 0,
+            birthDate: Date(),
+            phoneNumber: "unknown",
+            emailAddress: "unknown",
+            weight: [PatientWeight](),
+            height: [PatientHeight](),
+            
+            familyStatus: 0,
+            
+            medicalIssues: "unknown",
+            currentMedications: "unknown",
+            previouslMedicalProblems: "unknown",
+            previousSurgery: "unknown",
+            allergies: "unknwon",
+            
+            medicalRecomedations: [MedicalRecomendations](),
+            updates: [Updates]()
+        )
+    }
+    
+    func toJSON() -> JSONSerialization {
+    
+        return JSONSerialization()
     }
 }
 
 
 struct PatientWeight {
     var weight: Double
+    var date: Date
+}
+
+struct PatientHeight {
+    var height: Double
     var date: Date
 }
 
