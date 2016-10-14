@@ -35,6 +35,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let logoScene = SKScene(fileNamed: "LogoScene")
         let skLogoView = logoContainerView as! SKView
+        skLogoView.allowsTransparency = true
         skLogoView.presentScene(logoScene)
 
         // Do any additional setup after loading the view.
