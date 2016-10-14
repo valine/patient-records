@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326401DA1CC600082EC2E /* AppDelegate.swift */; };
 		807326481DA1CC600082EC2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 807326461DA1CC600082EC2E /* Main.storyboard */; };
-		8073264A1DA1CC600082EC2E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 807326491DA1CC600082EC2E /* Assets.xcassets */; };
 		8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */; };
 		807326581DA1CC600082EC2E /* Patient_RecordsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326571DA1CC600082EC2E /* Patient_RecordsTests.swift */; };
 		807326631DA1CC600082EC2E /* Patient_RecordsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326621DA1CC600082EC2E /* Patient_RecordsUITests.swift */; };
 		807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326701DA1CD970082EC2E /* SearchViewController.swift */; };
 		807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326721DA1CDC00082EC2E /* HomeViewController.swift */; };
 		807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */; };
+		808D122E1DB180090017E17D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 808D122D1DB180090017E17D /* Assets.xcassets */; };
 		8091A14A1DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */; };
 		8091A14D1DA32E9E00D0A541 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8091A14C1DA32E9E00D0A541 /* MessageUI.framework */; };
 		8091A14F1DA44A9800D0A541 /* PatientRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8091A14E1DA44A9800D0A541 /* PatientRepository.swift */; };
@@ -48,7 +48,6 @@
 		8073263D1DA1CC600082EC2E /* Patient Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Patient Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		807326401DA1CC600082EC2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		807326471DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		807326491DA1CC600082EC2E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8073264C1DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8073264E1DA1CC600082EC2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		807326531DA1CC600082EC2E /* Patient RecordsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Patient RecordsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +59,7 @@
 		807326701DA1CD970082EC2E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		807326721DA1CDC00082EC2E /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatientViewController.swift; sourceTree = "<group>"; };
+		808D122D1DB180090017E17D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8091A1491DA2ED9A00D0A541 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		8091A14C1DA32E9E00D0A541 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		8091A14E1DA44A9800D0A541 /* PatientRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PatientRepository.swift; path = ../PatientRepository.swift; sourceTree = "<group>"; };
@@ -122,10 +122,10 @@
 			isa = PBXGroup;
 			children = (
 				807326401DA1CC600082EC2E /* AppDelegate.swift */,
-				807326491DA1CC600082EC2E /* Assets.xcassets */,
 				8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */,
 				807326461DA1CC600082EC2E /* Main.storyboard */,
 				8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */,
+				808D122D1DB180090017E17D /* Assets.xcassets */,
 				8073264E1DA1CC600082EC2E /* Info.plist */,
 				808D122C1DB17EA90017E17D /* data */,
 				808D122B1DB17E7C0017E17D /* views */,
@@ -302,8 +302,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */,
-				8073264A1DA1CC600082EC2E /* Assets.xcassets in Resources */,
 				80A36CD61DAE7EFB003F223E /* LogoScene.sks in Resources */,
+				808D122E1DB180090017E17D /* Assets.xcassets in Resources */,
 				807326481DA1CC600082EC2E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
