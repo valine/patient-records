@@ -71,6 +71,24 @@ app.get('/patient/:id', function (req, res) {
 
 })
 
+// This responds a GET request
+app.get('/patient/recent', function (req, res) {
+
+    var db = new sqlite3.Database(file);
+    db.serialize(function() {
+        var id = req.params.id
+        var sql = "SELECT name, id FROM Patients WHERE id=" + id;
+        db.all(sql, function(err, rows) {
+            res.send(JSON.stringify(rows));
+            console.log(JSON.stringify(rows));
+        });
+    });
+    db.close();
+
+
+})
+
+
 //
 // SEARCH 
 //

@@ -76,6 +76,7 @@ class PatientRespository {
 struct Patient {
     var id: Int
     var dateAdded: Date
+    var lastSeen: Date
     
     var firstName: String
     var middleName: String
@@ -103,6 +104,7 @@ struct Patient {
         return Patient(
             id: 0,
             dateAdded: Date(),
+            lastSeen: Date(),
             
             firstName: "unknown",
             middleName: "unknown",
