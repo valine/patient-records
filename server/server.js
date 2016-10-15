@@ -24,9 +24,9 @@ var db = new sqlite3.Database(file);
 
 db.serialize(function() {
   if(!exists) {
-    db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, name char(50))");
+    db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, dateAdded datetime, name TEXT)");
 
-    var stmt = db.prepare("INSERT INTO Patients (id, name) VALUES (NULL, ?)");
+    var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, name) VALUES (NULL, current_timestamp, ?)");
     
     // Create some random test data.  This should be gone in the final version
     var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Megan", "Sherlock"];
@@ -53,6 +53,30 @@ db.serialize(function() {
 });
 db.close();
 
+
+//    ______     _   _            _
+//    | ___ \   | | (_)          | |  
+//    | |_/ /_ _| |_ _  ___ _ __ | |_ 
+//    |  __/ _` | __| |/ _ \ '_ \| __|
+//    | | | (_| | |_| |  __/ | | | |_ 
+//    \_|  \__,_|\__|_|\___|_| |_|\__|
+
+
+// This responds a GET request for the /list_user page.
+app.get('/patient', function (req, res) {
+
+    var db = new sqlite3.Database(file);
+    db.serialize(function() {
+        var sql = "SELECT id, name, dateAdded FROM Patients";
+        db.all(sql, function(err, rows) {
+            var patients = {"patients" : rows}
+            res.send(JSON.stringify(patients));
+            console.log(JSON.stringify(rows));
+        });
+    });
+    db.close();
+
+})
 
 // This responds a GET request
 app.get('/patient/:id', function (req, res) {
@@ -88,10 +112,12 @@ app.get('/patient/recent', function (req, res) {
 
 })
 
-
-//
-// SEARCH 
-//
+//     _____                     _     
+//    /  ___|                   | |    
+//    \ `--.  ___  __ _ _ __ ___| |__  
+//     `--. \/ _ \/ _` | '__/ __| '_ \ 
+//    /\__/ /  __/ (_| | | | (__| | | |
+//    \____/ \___|\__,_|_|  \___|_| |_|
 
 app.get('/search/:input', function(req, res) {
 	var searchInput = req.params.input;
@@ -106,26 +132,13 @@ app.get('/search/:input', function(req, res) {
 });
 
 // This responds a GET request for the /list_user page.
-app.get('/patient', function (req, res) {
-
-    var db = new sqlite3.Database(file);
-    db.serialize(function() {
-        var sql = "SELECT id, name FROM Patients";
-        db.all(sql, function(err, rows) {
-            var patients = {"patients" : rows}
-            res.send(JSON.stringify(patients));
-            console.log(JSON.stringify(rows));
-        });
-    });
-    db.close();
-
-})
-
-// This responds a GET request for the /list_user page.
 app.get('/patient_server', function (req, res) {
     res.send("patient-server");
     db.close();
 })
+
+
+
 
 app.post('/', function(request, response){
 console.log("poooosttttt");
