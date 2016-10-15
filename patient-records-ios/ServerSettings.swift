@@ -9,7 +9,6 @@
 import Foundation
 
 class ServerSettings {
-
     var serverAddress: NSURL?
     static let port: NSNumber = 8081
     

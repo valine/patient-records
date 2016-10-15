@@ -14,7 +14,6 @@ class CreatePatientViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         scrollView.contentSize = CGSize(width: 0, height: 1400)
         // Do any additional setup after loading the view.
     }
@@ -23,6 +22,4 @@ class CreatePatientViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
 }

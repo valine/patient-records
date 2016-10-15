@@ -102,7 +102,6 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
             Animate the scan view sliding downward.  
             This makes room for search results to appear.
         */
-        
         let animationDuration: TimeInterval = 0.3
         
         UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {

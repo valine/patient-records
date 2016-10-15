@@ -41,7 +41,6 @@ class PatientRespository {
     }
     
     static func JSONToPatients(data: Data) -> [Patient] {
-
         var patientObjects = [Patient]()
         
         do {
@@ -67,11 +66,9 @@ class PatientRespository {
         } catch {
             print("error serializing JSON: \(error)")
         }
-        
         return patientObjects
     }
 }
-
 
 struct Patient {
     var id: Int
@@ -131,11 +128,9 @@ struct Patient {
     }
     
     func toJSON() -> JSONSerialization {
-    
         return JSONSerialization()
     }
 }
-
 
 struct PatientWeight {
     var weight: Double
