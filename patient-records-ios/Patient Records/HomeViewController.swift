@@ -32,10 +32,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.contentInset = UIEdgeInsetsMake(125, 0, 0, 0)
         
         let logoScene = SKScene(fileNamed: "LogoScene")
         let skLogoView = logoContainerView as! SKView
         skLogoView.allowsTransparency = true
+        logoScene?.backgroundColor = .clear
+        skLogoView.backgroundColor = UIColor.clear
         skLogoView.presentScene(logoScene)
 
         // Do any additional setup after loading the view.
