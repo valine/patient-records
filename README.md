@@ -31,6 +31,6 @@ checklist for submision
 		3d touch to view patients
 		animated checkmarks and xs 
 		patient photo - !
-		
+		push updates from server 		
 		
 		

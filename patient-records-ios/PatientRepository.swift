@@ -208,7 +208,7 @@ struct Patient {
             "previousMedicalProblems": self.previouslMedicalProblems,
             "previousSurgery": self.previousSurgery,
             "allergies": self.allergies
-        ]
+        ] 
     }
     
     static func newFromJSON(json: [String: Any]) -> Patient {
