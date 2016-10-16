@@ -24,26 +24,44 @@ var db = new sqlite3.Database(file);
 
 db.serialize(function() {
   if(!exists) {
-    db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, dateAdded datetime, name TEXT)");
+    db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, dateAdded DATETIME, lastSeen DATETIME, firstName TEXT,  middleName TEXT,  lastName TEXT, sex INTEGER, birthdate DATE, phoneNumber TEXT, emailAddress TEXT, familyStatus INTEGER, medicalIssues TEXT, currentMedications TEXT, previousMedicalProblems TEXT, previousSurgery TEXT, allergies TEXT)");
 
-    var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, name) VALUES (NULL, current_timestamp, ?)");
+    var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Create some random test data.  This should be gone in the final version
-    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Megan", "Sherlock"];
+    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Megan", "Sherlock", "Ann", "Max", "Rory", "Quark", "Kirk", "Enright", "Snowden", "Blender", "Bash"];
+    var staticDates = ['2013-01-01 10:00:00','2009-03-05 09:00:00','2016-01-01 10:00:00','2005-01-03 10:00:00', '2005-01-03 10:00:00', '1982-01-03 10:00:00', '1763-01-03 10:00:00', '0003-01-03 10:00:00', '2031-01-03 10:00:00','2081-01-03 10:00:00']
+    
     var randomVal
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 100; i++) {
+    
         randomVal = Math.random() * 1000
-        stmt.run(staticNames[i % staticNames.length]);
+        stmt.run(
+            staticDates[i % staticDates.length], // dateAdded
+            staticNames[i % staticDates.length], // last seen
+            staticNames[i % staticNames.length], // first name
+            "middle",
+            "lastname",
+            4,
+            "birthdate",
+            "1234567890",
+            "luaks@valine.io",
+            0,
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+        );
     }
     
     stmt.finalize();
-    
     db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
     
   }
   
   //var sql = "SELECT rowid AS id, name FROM Patients";
-  var sql = "SELECT id, name FROM Patients";
+  var sql = "SELECT id, firstname FROM Patients";
 
     // Print the records as JSON
     db.all(sql, function(err, rows) {
@@ -79,37 +97,34 @@ app.get('/patient', function (req, res) {
 })
 
 // This responds a GET request
-app.get('/patient/:id', function (req, res) {
+app.get('/patient/id/:id', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
+    
         var id = req.params.id
-        var sql = "SELECT name, id FROM Patients WHERE id=" + id;
+        var sql = "SELECT id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies FROM Patients WHERE id=" + id;
         db.all(sql, function(err, rows) {
-            res.send(JSON.stringify(rows));
+            res.send(JSON.stringify(rows[0]));
             console.log(JSON.stringify(rows));
         });
     });
     db.close();
-
-
 })
 
 // This responds a GET request
-app.get('/patient/recent', function (req, res) {
+app.get('/patient/recent/', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var id = req.params.id
-        var sql = "SELECT name, id FROM Patients WHERE id=" + id;
+        var sql = "SELECT firstName, id, dateAdded FROM Patients ORDER BY dateAdded DESC LIMIT 15";
         db.all(sql, function(err, rows) {
             res.send(JSON.stringify(rows));
+            //res.send("working")
             console.log(JSON.stringify(rows));
         });
     });
     db.close();
-
-
 })
 
 //     _____                     _     

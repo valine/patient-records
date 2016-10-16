@@ -34,12 +34,12 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.separatorStyle = .none
         tableView.contentInset = UIEdgeInsetsMake(125, 0, 0, 0)
         
-        let logoScene = SKScene(fileNamed: "LogoScene")
-        let skLogoView = logoContainerView as! SKView
-        skLogoView.allowsTransparency = true
-        logoScene?.backgroundColor = .clear
-        skLogoView.backgroundColor = UIColor.clear
-        skLogoView.presentScene(logoScene)
+//        let logoScene = SKScene(fileNamed: "LogoScene")
+//        let skLogoView = logoContainerView as! SKView
+//        skLogoView.allowsTransparency = true
+//        logoScene?.backgroundColor = .clear
+//        skLogoView.backgroundColor = UIColor.clear
+//        skLogoView.presentScene(logoScene)
 
         // Do any additional setup after loading the view.
     }
@@ -60,7 +60,9 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     @IBAction func devRefreshPressed(_ sender: AnyObject) {
     
-          PatientRespository.getPatientById(id: 10, completion: {(value) in
+          PatientRespository.getPatientById(id: 10, completion: {(patient) in
+            
+          }, debug: {(value) in
                 self.devLabel.text = value
           })
     }

@@ -10,64 +10,42 @@ import Foundation
 
 class PatientRespository {
 
-    static func getPatientById(id: Int, completion: @escaping (_: String)->Void) {
+    static func getPatientById(id: Int, completion: @escaping (_: Patient)->Void, debug: @escaping (_: String)->Void) {
         
-            let listPatientsRequest = "patient"
-            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
-                
-            let urlWithPort = NSURLComponents(string: url.absoluteString)
-            urlWithPort?.port = ServerSettings.port;
-        
-            if let theUrl = urlWithPort?.url {
-                let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+        let listPatientsRequest = "patient/id/" + String(id)
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+            
+        let urlWithPort = NSURLComponents(string: url.absoluteString)
+        urlWithPort?.port = ServerSettings.port;
+    
+        if let theUrl = urlWithPort?.url {
+            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                   
+                     print(String(data: unwrappedData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!)
+                        let returnedPatient = Patient.newFromJSON(data: unwrappedData)
+                        completion(returnedPatient)
+                        debug("sent patient with name: " + String(returnedPatient.firstName))
+                    }
+                } else {
+                    DispatchQueue.main.async {
                     
-                    if let unwrappedData = data {
-                        DispatchQueue.main.async {
-                            completion(String(data: unwrappedData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion("No server found 🙁")
-                        }
+                        debug("Error")
                     }
                 }
-                task.resume()
+            }
+            task.resume()
+        
+        } else {
+            DispatchQueue.main.async {
             
-            } else {
-                DispatchQueue.main.async {
-                completion("Looks like you didn't enter a server address.")
+                debug("Looks like you didn't enter a server address.")
             }
         }
     }
     
-    static func JSONToPatients(data: Data) -> [Patient] {
-        var patientObjects = [Patient]()
-        
-        do {
-            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
-            
-            if let jsonPatients = json["patients"] as? [[String: AnyObject]] {
-                for jsonPatient in jsonPatients {
-                    
-                    var patient = Patient.defaultPatient()
-                    
-                    if let name = jsonPatient["name"] as? String {
-                        patient.firstName = name
-                        print(name)
-                    }
-                    
-                    if let id = jsonPatient["id"] as? Int {
-                        patient.id = id
-                    }
-                    
-                    patientObjects.append(patient)
-                }
-            }
-        } catch {
-            print("error serializing JSON: \(error)")
-        }
-        return patientObjects
-    }
+
 }
 
 struct Patient {
@@ -96,7 +74,7 @@ struct Patient {
     
     var medicalRecomedations: [MedicalRecomendations]
     var updates: [Updates]
-
+    
     static func defaultPatient() -> Patient{
         return Patient(
             id: 0,
@@ -128,25 +106,76 @@ struct Patient {
     }
     
     func toJSON() -> JSONSerialization {
+
         return JSONSerialization()
+    }
+    
+    static func newFromJSON(data: Data) -> Patient {
+
+        var patient = Patient.defaultPatient()
+        
+        do {
+        
+            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
+     
+            if let name = json[0]["name"] as? String {
+                patient.firstName = name
+                print(name)
+            }
+            
+            if let id = json[0]["id"] as? Int {
+                patient.id = id
+            }
+            
+            if let dateAdded = json[0]["dateAdded"] as? Date {
+                patient.dateAdded = dateAdded
+            }
+            
+        } catch {
+            print("error serializing JSON: \(error)")
+        }
+        
+        return patient
+    }
+    
+    static func newArrayFromJSON(data: Data) -> [Patient] {
+        var patientObjects = [Patient]()
+        
+        do {
+            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
+            
+            if let jsonPatients = json["patients"] as? [Data] {
+                for jsonPatient in jsonPatients {
+                    let patient = Patient.newFromJSON(data: jsonPatient)
+                    patientObjects.append(patient)
+                }
+            }
+        } catch {
+            print("error serializing JSON: \(error)")
+        }
+        return patientObjects
     }
 }
 
+@available(*, deprecated)
 struct PatientWeight {
     var weight: Double
     var date: Date
 }
 
+@available(*, deprecated)
 struct PatientHeight {
     var height: Double
     var date: Date
 }
 
+@available(*, deprecated)
 struct MedicalRecomendations {
     var recomendation: String
     var date: Date
 }
 
+@available(*, deprecated)
 struct Updates {
     var update: String
     var date: Date
