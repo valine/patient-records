@@ -33,7 +33,7 @@ db.serialize(function() {
     var staticDates = ['2013-01-01 10:00:00','2009-03-05 09:00:00','2016-01-01 10:00:00','2005-01-03 10:00:00', '2005-01-03 10:00:00', '1982-01-03 10:00:00', '1763-01-03 10:00:00', '0003-01-03 10:00:00', '2031-01-03 10:00:00','2081-01-03 10:00:00']
     
     var randomVal
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 40; i++) {
     
         randomVal = Math.random() * 1000
         stmt.run(
@@ -85,7 +85,7 @@ app.get('/patient', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var sql = "SELECT id, name, dateAdded FROM Patients";
+        var sql = "SELECT id, firstName, dateAdded FROM Patients";
         db.all(sql, function(err, rows) {
             var patients = {"patients" : rows}
             res.send(JSON.stringify(patients));
@@ -119,7 +119,8 @@ app.get('/patient/recent/', function (req, res) {
     db.serialize(function() {
         var sql = "SELECT firstName, id, dateAdded FROM Patients ORDER BY dateAdded DESC LIMIT 15";
         db.all(sql, function(err, rows) {
-            res.send(JSON.stringify(rows));
+            var patients = {"patients" : rows}
+            res.send(JSON.stringify(patients));
             //res.send("working")
             console.log(JSON.stringify(rows));
         });

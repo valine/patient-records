@@ -22,15 +22,17 @@ class PatientRespository {
             let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
                 if let unwrappedData = data {
                     DispatchQueue.main.async {
-                   
-                     print(String(data: unwrappedData, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))!)
-                        let returnedPatient = Patient.newFromJSON(data: unwrappedData)
-                        completion(returnedPatient)
-                        debug("sent patient with name: " + String(returnedPatient.firstName))
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+                            let returnedPatient = Patient.newFromJSON(json: json)
+                            completion(returnedPatient)
+                            debug("sent patient with name: " + String(returnedPatient.firstName))
+                        } catch {
+                            print("error serializing JSON: \(error)")
+                        } 
                     }
                 } else {
                     DispatchQueue.main.async {
-                    
                         debug("Error")
                     }
                 }
@@ -39,13 +41,68 @@ class PatientRespository {
         
         } else {
             DispatchQueue.main.async {
-            
                 debug("Looks like you didn't enter a server address.")
             }
         }
     }
     
-
+    static func getPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
+        let listPatientsRequest = "patient"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+            
+        let urlWithPort = NSURLComponents(string: url.absoluteString)
+        urlWithPort?.port = ServerSettings.port;
+    
+        if let theUrl = urlWithPort?.url {
+            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                        completion(returnedPatients)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        debug("Error")
+                    }
+                }
+            }
+            task.resume()
+        
+        } else {
+            DispatchQueue.main.async {
+                debug("Looks like you didn't enter a server address.")
+            }
+        }
+    }
+    
+    static func getRecentPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
+        let listPatientsRequest = "patient/recent"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+            
+        let urlWithPort = NSURLComponents(string: url.absoluteString)
+        urlWithPort?.port = ServerSettings.port;
+    
+        if let theUrl = urlWithPort?.url {
+            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                        completion(returnedPatients)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        debug("Error")
+                    }
+                }
+            }
+            task.resume()
+        
+        } else {
+            DispatchQueue.main.async {
+                debug("Looks like you didn't enter a server address.")
+            }
+        }
+    }
 }
 
 struct Patient {
@@ -110,72 +167,65 @@ struct Patient {
         return JSONSerialization()
     }
     
-    static func newFromJSON(data: Data) -> Patient {
+    static func newFromJSON(json: [String: Any]) -> Patient {
 
         var patient = Patient.defaultPatient()
-        
-        do {
-        
-            let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [[String: Any]]
-     
-            if let name = json[0]["name"] as? String {
-                patient.firstName = name
-                print(name)
-            }
-            
-            if let id = json[0]["id"] as? Int {
-                patient.id = id
-            }
-            
-            if let dateAdded = json[0]["dateAdded"] as? Date {
-                patient.dateAdded = dateAdded
-            }
-            
-        } catch {
-            print("error serializing JSON: \(error)")
+ 
+        if let firstname = json["firstName"] as? String {
+            patient.firstName = firstname
+            print(firstname)
         }
         
+        if let id = json["id"] as? Int {
+            patient.id = id
+        }
+        
+        if let dateAdded = json["dateAdded"] as? Date {
+            patient.dateAdded = dateAdded
+        }
+
         return patient
     }
     
     static func newArrayFromJSON(data: Data) -> [Patient] {
         var patientObjects = [Patient]()
-        
+
         do {
             let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String: Any]
             
-            if let jsonPatients = json["patients"] as? [Data] {
+            if let jsonPatients = json["patients"] as? [[String: Any]] {
                 for jsonPatient in jsonPatients {
-                    let patient = Patient.newFromJSON(data: jsonPatient)
+                    let patient = Patient.newFromJSON(json: jsonPatient)
                     patientObjects.append(patient)
                 }
+                
+                 print("hello" + String(jsonPatients.count))
             }
+            
         } catch {
             print("error serializing JSON: \(error)")
         }
+        
         return patientObjects
     }
 }
 
-@available(*, deprecated)
+
 struct PatientWeight {
     var weight: Double
     var date: Date
 }
 
-@available(*, deprecated)
 struct PatientHeight {
     var height: Double
     var date: Date
 }
 
-@available(*, deprecated)
 struct MedicalRecomendations {
     var recomendation: String
     var date: Date
 }
 
-@available(*, deprecated)
 struct Updates {
     var update: String
     var date: Date

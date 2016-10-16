@@ -33,7 +33,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /// MARK: UI interaction

@@ -9,8 +9,9 @@
 import UIKit
 
 class HomeTableViewCell: UITableViewCell {
-    @IBOutlet weak var patientName: UILabel!
-
+    @IBOutlet weak var id: UILabel!
+    @IBOutlet weak var name: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

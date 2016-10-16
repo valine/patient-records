@@ -13,7 +13,6 @@ class ServerSettings {
     static let port: NSNumber = 8081
     
     //MARK: Shared Instance
-
     static let sharedInstance : ServerSettings = {
         let instance = ServerSettings()
         return instance

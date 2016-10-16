@@ -59,7 +59,8 @@
                                             <color key="backgroundColor" red="0.94524842500686646" green="0.9607967734336853" blue="0.96085768938064575" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="patientName" destination="boV-tH-T7M" id="Je9-J4-7oN"/>
+                                            <outlet property="id" destination="BlO-Ny-XVO" id="rDS-88-OlB"/>
+                                            <outlet property="name" destination="boV-tH-T7M" id="BvA-2H-E8z"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
