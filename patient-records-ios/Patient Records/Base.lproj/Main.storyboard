@@ -12,7 +12,6 @@
         <!--Home-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
                 <viewController id="9pv-A4-QxB" customClass="HomeViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
@@ -83,14 +82,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Here are your most recent patients" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Tlz-KO-EGq">
-                                            <rect key="frame" x="95" y="74" width="260" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.58605896470931396" green="0.58790485439796958" blue="0.58261542396679555" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="dev" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TcQ-t8-5oy">
                                             <rect key="frame" x="24" y="84" width="343" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -98,19 +89,27 @@
                                             <color key="textColor" red="0.51286881345177671" green="0.51286881345177671" blue="0.51286881345177671" alpha="0.3420109160958904" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-sB-2At" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
-                                            <rect key="frame" x="21" y="33" width="59" height="59"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" red="0.9540371192893401" green="0.9540371192893401" blue="0.9540371192893401" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </view>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Here are your most recent patients" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Tlz-KO-EGq">
+                                            <rect key="frame" x="86" y="74" width="260" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.58605896470931396" green="0.58790485439796958" blue="0.58261542396679555" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Welcome Back" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                            <rect key="frame" x="95" y="36" width="238" height="40"/>
+                                            <rect key="frame" x="86" y="36" width="238" height="40"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="28"/>
                                             <color key="textColor" red="0.18425755428095844" green="0.18472041218186613" blue="0.20293102825583764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-sB-2At" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="33" width="59" height="59"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.9540371192893401" green="0.9540371192893401" blue="0.9540371192893401" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
                                     </subviews>
                                 </view>
                                 <blurEffect style="light"/>
@@ -134,6 +133,7 @@
                         <outlet property="welcomeLabel" destination="KQZ-1w-vlD" id="PQK-RY-99v"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="732" y="-729.08545727136436"/>
         </scene>
@@ -454,7 +454,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Name Here" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aLN-Qa-kFb">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aLN-Qa-kFb">
                                 <rect key="frame" x="23" y="122" width="329" height="30"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -505,7 +505,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="zMU-U7-6q0" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="home" id="acW-dT-cKf"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Ubn-nC-xax">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Ubn-nC-xax">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -524,7 +524,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Cek-hV-hG6" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Search" image="search" id="k89-io-qhW"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bad-1i-m67">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="bad-1i-m67">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -543,7 +543,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tQb-5P-A09" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="New Patient" image="new-patient" id="cPa-gy-q4n"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zc7-yE-gwi">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="zc7-yE-gwi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -561,7 +561,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DAy-B4-7W2" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="izP-uw-gww">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="izP-uw-gww">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

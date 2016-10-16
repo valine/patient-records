@@ -103,6 +103,35 @@ class PatientRespository {
             }
         }
     }
+    
+    static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
+        let listPatientsRequest = "patient/search/" + input
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+            
+        let urlWithPort = NSURLComponents(string: url.absoluteString)
+        urlWithPort?.port = ServerSettings.port;
+    
+        if let theUrl = urlWithPort?.url {
+            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                        completion(returnedPatients)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        debug("Error")
+                    }
+                }
+            }
+            task.resume()
+        
+        } else {
+            DispatchQueue.main.async {
+                debug("Looks like you didn't enter a server address.")
+            }
+        }
+    }
 }
 
 struct Patient {
@@ -162,9 +191,24 @@ struct Patient {
         )
     }
     
-    func toJSON() -> JSONSerialization {
-
-        return JSONSerialization()
+    func toDictionary() -> [String: Any] {
+        return [
+            "id": self.id,
+            "dateAdded": self.dateAdded,
+            "lastSeen": self.lastSeen,
+            "firstName": self.firstName,
+            "middleName": self.middleName,
+            "lastName": self.lastName,
+            "sex": self.sex,
+            "birthDate": self.birthDate,
+            "phoneNumber": self.phoneNumber,
+            "emailAddres": self.emailAddress,
+            "medicalIssues": self.medicalIssues,
+            "currentMedications": self.currentMedications,
+            "previousMedicalProblems": self.previouslMedicalProblems,
+            "previousSurgery": self.previousSurgery,
+            "allergies": self.allergies
+        ]
     }
     
     static func newFromJSON(json: [String: Any]) -> Patient {

@@ -14,10 +14,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var welcomeLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
-    
+
     @IBOutlet weak var logoContainerView: UIView!
-    let cellReuseIdentifier = "homeCell"
     
+    let cellReuseIdentifier = "homeCell"
     var patients = [Patient]()
     
     @IBOutlet weak var devLabel: UILabel!
@@ -57,8 +57,8 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell:HomeTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HomeTableViewCell!
-    
+        
+        let cell:HomeTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HomeTableViewCell!
         let patient = patients[indexPath.item]
         cell.name.text = patient.firstName + " " + patient.lastName
         cell.id.text = "#" + String(patient.id)

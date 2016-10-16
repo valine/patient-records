@@ -15,3 +15,22 @@ checklist for submision
     https should be enabled
 
     support website should be up -- minor changes to valine.io
+
+	features left:
+
+		post patient - !!!
+		weight table - !!
+		height table - !!
+		notes table - !
+		animated logo 
+		view single patient - !!!
+		qr code - !! 
+		doctor name - !
+
+		auto detect server
+		3d touch to view patients
+		animated checkmarks and xs 
+		patient photo - !
+		
+		
+		

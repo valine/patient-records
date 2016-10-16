@@ -139,7 +139,7 @@ app.get('/search/:input', function(req, res) {
 	var searchInput = req.params.input;
 	var db = new sqlite3.Database(file);
 	db.serialize(function() {
-		var query = "SELECT name FROM patients WHERE name LIKE \"%" + searchInput + "%\"";
+		var query = "SELECT id, firstName FROM patients WHERE firstName LIKE \"%" + searchInput + "%\"";
 		db.all(query, function(err, rows){
 			res.send(JSON.stringify(rows));
 		});
@@ -157,7 +157,37 @@ app.get('/patient_server', function (req, res) {
 
 
 app.post('/', function(request, response){
-console.log("poooosttttt");
+
+	var db = new sqlite3.Database(file);
+	db.serialize(function() {
+    
+        var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
+        stmt.run(
+            "dateAdded", // dateAdded
+            "lastSeen", // last seen
+            "firstName", // first name
+            "middle",
+            "lastname",
+            4,
+            "birthdate",
+            "1234567890",
+            "luaks@valine.io",
+            0,
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown",
+            "unknown"
+        );
+    
+
+        
+		});
+	});
+
+	db.close();
+    console.log("poooosttttt");
     console.log(request.body.user.name);
     console.log(request.body.user.email);
 });
