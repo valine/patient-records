@@ -660,12 +660,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Patient Onboarding" id="hQI-uM-Rxf">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ubu-nL-J63">
+                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="ubu-nL-J63">
                             <connections>
                                 <action selector="cancelTapped:" destination="8rJ-Kc-sve" id="gde-DN-DgK"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="save" id="AXq-J5-abl">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="AXq-J5-abl">
                             <connections>
                                 <action selector="saveTapped:" destination="8rJ-Kc-sve" id="Dkw-0k-tdu"/>
                             </connections>
