@@ -25,16 +25,18 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         standAloneSwitch.isOn = isStandlone
         
         serverAddressField.delegate = self
-        serverAddressField.text = ServerSettings.sharedInstance.getServerAddress().absoluteString
+        serverAddressField.text = ServerSettings
+                                        .sharedInstance
+                                        .getServerAddress()
+                                        .absoluteString
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     /// MARK: UI interaction
-    
+
     @IBAction func dismissTapped(_ sender: AnyObject) {
         serverAddressField.resignFirstResponder()
         

@@ -9,12 +9,11 @@
 import Foundation
 
 class ServerSettings {
-
     var serverAddress: NSURL?
     static let port: NSNumber = 8081
     
+    let defaultUrl = URL(fileURLWithPath: "https://localhost")
     //MARK: Shared Instance
-
     static let sharedInstance : ServerSettings = {
         let instance = ServerSettings()
         return instance
@@ -31,7 +30,19 @@ class ServerSettings {
         }
     }
     
-    func getServerAddress() -> NSURL {
-        return serverAddress!
+    func getServerAddress() -> URL {
+    
+        if let address = NSURLComponents(string: (serverAddress?.absoluteString)!) {
+            address.port = ServerSettings.port
+            
+            if let url = address.url {
+                return url
+            } else {
+                return defaultUrl
+            }
+            
+        } else {
+            return defaultUrl
+        }
     }
 }
