@@ -18,7 +18,7 @@ checklist for submision
 
 	features left:
 
-		post patient - !!!
+		p̶o̶s̶t̶ ̶p̶a̶t̶i̶e̶n̶t̶ ̶-̶ ̶!̶!̶!̶
 		update patient - !!!
 		delete patient - !!!
 		weight table - !!
@@ -34,5 +34,6 @@ checklist for submision
 		animated checkmarks and xs 
 		patient photo - !
 		push updates from server 		
-		ipad layout 	
+		i̶p̶a̶d̶ ̶l̶a̶y̶o̶u̶t̶
+		metric or imperial option
 		
