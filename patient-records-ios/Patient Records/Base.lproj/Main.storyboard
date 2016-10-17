@@ -231,7 +231,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Options" id="EPu-ej-HQf">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="done" id="27Q-xo-xCN">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="done" id="27Q-xo-xCN">
                             <connections>
                                 <action selector="dismissTapped:" destination="HaS-Ic-FbP" id="I7y-te-SJo"/>
                             </connections>
@@ -262,11 +262,11 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bd0-r3-iZT">
                                 <rect key="frame" x="0.0" y="0.0" width="500" height="2000"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NJc-8b-rxb">
-                                        <rect key="frame" x="0.0" y="0.0" width="500" height="1928"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NJc-8b-rxb">
+                                        <rect key="frame" x="0.0" y="64" width="500" height="1928"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhu-o3-5Rc">
-                                                <rect key="frame" x="8" y="147" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dhu-o3-5Rc">
+                                                <rect key="frame" x="0.0" y="100" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="First Name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Csa-kx-AGs">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -289,8 +289,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="Xoq-dN-oEy"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3pa-JM-ZCY">
-                                                <rect key="frame" x="8" y="247" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3pa-JM-ZCY">
+                                                <rect key="frame" x="0.0" y="200" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Middle Name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="QDz-7J-kgJ">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -313,8 +313,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="zdt-KD-vUX"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSv-Ob-KaC">
-                                                <rect key="frame" x="8" y="347" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JSv-Ob-KaC">
+                                                <rect key="frame" x="0.0" y="300" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Last Name" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="BXp-8K-814">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -337,8 +337,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="0B2-8Y-8sh"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dJj-PY-nLq">
-                                                <rect key="frame" x="8" y="447" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dJj-PY-nLq">
+                                                <rect key="frame" x="0.0" y="400" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Gender" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="pKx-nh-ClS">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -364,8 +364,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="jEY-xC-Q79"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mrD-bP-6Kb">
-                                                <rect key="frame" x="8" y="747" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrD-bP-6Kb">
+                                                <rect key="frame" x="0.0" y="700" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Phone Number" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="TBg-UA-L1Y">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -388,8 +388,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="92d-P2-eMw"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lCw-jn-lAn">
-                                                <rect key="frame" x="8" y="847" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCw-jn-lAn">
+                                                <rect key="frame" x="0.0" y="800" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Email Address" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Plh-ec-xAf">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -412,8 +412,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="gnQ-Hx-V4c"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rnb-Xv-oQh">
-                                                <rect key="frame" x="8" y="947" width="500" height="56"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnb-Xv-oQh">
+                                                <rect key="frame" x="0.0" y="900" width="500" height="56"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Family Status" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="byL-F5-5q7">
                                                         <rect key="frame" x="17" y="8" width="465" height="20"/>
@@ -440,8 +440,8 @@
                                                     <constraint firstAttribute="height" constant="56" id="0FT-bv-XbA"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OUQ-jw-4WH">
-                                                <rect key="frame" x="8" y="1278" width="500" height="123"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OUQ-jw-4WH">
+                                                <rect key="frame" x="0.0" y="1231" width="500" height="123"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Medical Issues" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="kvt-dt-ptf">
                                                         <rect key="frame" x="16" y="8" width="465" height="20"/>
@@ -464,8 +464,8 @@
                                                     <constraint firstAttribute="height" constant="123" id="MDf-Mf-6T1"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O9n-WZ-LLX">
-                                                <rect key="frame" x="8" y="1062" width="500" height="123"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O9n-WZ-LLX">
+                                                <rect key="frame" x="0.0" y="1015" width="500" height="123"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Previous Medical Problems" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="pZO-bX-DL7">
                                                         <rect key="frame" x="15" y="8" width="466" height="20"/>
@@ -485,8 +485,8 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2I5-6X-TaJ">
-                                                <rect key="frame" x="8" y="1425" width="500" height="123"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2I5-6X-TaJ">
+                                                <rect key="frame" x="0.0" y="1378" width="500" height="123"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Previous Surgery" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="b8C-Ax-OR6">
                                                         <rect key="frame" x="15" y="8" width="466" height="20"/>
@@ -509,8 +509,8 @@
                                                     <constraint firstAttribute="height" constant="123" id="KDh-HN-crX"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="t3I-YN-bIP">
-                                                <rect key="frame" x="8" y="1578" width="500" height="148"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t3I-YN-bIP">
+                                                <rect key="frame" x="0.0" y="1531" width="500" height="148"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Allergies" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="MWC-C3-Eg1">
                                                         <rect key="frame" x="15" y="8" width="466" height="20"/>
@@ -530,8 +530,8 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bjU-74-VAc">
-                                                <rect key="frame" x="8" y="547" width="500" height="135"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bjU-74-VAc">
+                                                <rect key="frame" x="0.0" y="500" width="500" height="135"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Date of Birth" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="xhq-vo-KBm">
                                                         <rect key="frame" x="17" y="8" width="466" height="20"/>
@@ -555,8 +555,8 @@
                                                     <constraint firstAttribute="height" constant="135" id="R8H-eJ-J8Z"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r2O-RG-kMP">
-                                                <rect key="frame" x="8" y="1734" width="500" height="123"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r2O-RG-kMP">
+                                                <rect key="frame" x="0.0" y="1687" width="500" height="123"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Current Medications" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wgt-cg-cF7">
                                                         <rect key="frame" x="15" y="8" width="466" height="20"/>
@@ -576,6 +576,13 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
+                                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Patient Photo" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="v52-eU-5fR">
+                                                <rect key="frame" x="17" y="46" width="466" height="20"/>
+                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <color key="textColor" red="0.11507308550000001" green="0.16521225619999999" blue="0.21700939120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -599,6 +606,7 @@
                                             <constraint firstItem="mrD-bP-6Kb" firstAttribute="leading" secondItem="OUQ-jw-4WH" secondAttribute="leading" id="TTS-gR-LLt"/>
                                             <constraint firstItem="JSv-Ob-KaC" firstAttribute="top" secondItem="NJc-8b-rxb" secondAttribute="top" constant="300" id="USg-mH-zfx"/>
                                             <constraint firstItem="mrD-bP-6Kb" firstAttribute="trailing" secondItem="bjU-74-VAc" secondAttribute="trailing" id="VSG-rE-ieC"/>
+                                            <constraint firstItem="v52-eU-5fR" firstAttribute="centerX" secondItem="NJc-8b-rxb" secondAttribute="centerX" id="WtA-ZM-AJ6"/>
                                             <constraint firstItem="lCw-jn-lAn" firstAttribute="top" secondItem="mrD-bP-6Kb" secondAttribute="bottom" constant="44" id="XGt-vT-5xD"/>
                                             <constraint firstItem="r2O-RG-kMP" firstAttribute="top" secondItem="NJc-8b-rxb" secondAttribute="top" constant="1687" id="XSq-ha-FNO"/>
                                             <constraint firstItem="mrD-bP-6Kb" firstAttribute="trailing" secondItem="JSv-Ob-KaC" secondAttribute="trailing" id="XvL-PJ-TZw"/>
@@ -626,11 +634,17 @@
                                             <constraint firstItem="mrD-bP-6Kb" firstAttribute="top" secondItem="NJc-8b-rxb" secondAttribute="top" constant="700" id="zf4-Ff-BXK"/>
                                         </constraints>
                                     </view>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="Z89-wj-KuN">
+                                        <rect key="frame" x="17" y="19" width="466" height="88"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="NJc-8b-rxb" secondAttribute="trailing" priority="750" id="GnB-BW-bme"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="64" id="Uaf-nr-m3n"/>
+                                    <constraint firstItem="v52-eU-5fR" firstAttribute="leading" secondItem="bd0-r3-iZT" secondAttribute="leading" constant="17" id="bKW-xT-SZu"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="centerX" secondItem="bd0-r3-iZT" secondAttribute="centerX" id="ojS-fr-2aP"/>
+                                    <constraint firstItem="v52-eU-5fR" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="110" id="sQN-cP-6vD"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="width" relation="lessThanOrEqual" secondItem="bd0-r3-iZT" secondAttribute="width" id="scM-uB-OqR"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="bottom" secondItem="bd0-r3-iZT" secondAttribute="bottomMargin" id="sr6-UR-f0o"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="leading" secondItem="bd0-r3-iZT" secondAttribute="leading" priority="750" id="wfC-dD-gvZ"/>
@@ -646,7 +660,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Patient Onboarding" id="hQI-uM-Rxf">
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="ubu-nL-J63">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ubu-nL-J63">
                             <connections>
                                 <action selector="cancelTapped:" destination="8rJ-Kc-sve" id="gde-DN-DgK"/>
                             </connections>
@@ -748,7 +762,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="S8L-9L-EWb">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="cancel" id="opt-mh-pxs">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="opt-mh-pxs">
                             <connections>
                                 <action selector="cancelTapped:" destination="tOn-Gh-bsr" id="1jK-YQ-TGg"/>
                             </connections>
@@ -854,6 +868,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="empty-profile-image" width="75" height="75"/>
         <image name="empty-profile-image-thumbnail" width="22" height="22"/>
         <image name="home" width="20" height="20"/>
         <image name="new-patient" width="20" height="20"/>
