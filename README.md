@@ -20,6 +20,7 @@ checklist for submision
 
 		post patient - !!!
 		update patient - !!!
+		delete patient - !!!
 		weight table - !!
 		height table - !!
 		notes table - !
