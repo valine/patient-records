@@ -70,12 +70,13 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
 
     @IBAction func devRefreshPressed(_ sender: AnyObject) {
-          PatientRespository.getRecentPatients(completion: {(value) in
-            self.patients = value
-            print(value.count)
-          }, debug: {(value) in
-                self.devLabel.text = value
-          })
+
+        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+        }, debug: {(value) in
+            self.devLabel.text = value
+        })
     }
     
     override func didReceiveMemoryWarning() {

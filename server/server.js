@@ -12,7 +12,7 @@ var server = app.listen(8081, function () {
    var host = server.address().address
    var port = server.address().port
    
-   console.log("Example app listening at http://%s:%s", host, port)
+   console.log("Patient Records listening at http://%s:%s", host, port)
 })
 var bodyParser = require('body-parser')
 
@@ -35,7 +35,7 @@ db.serialize(function() {
     var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     
     // Create some random test data.  This should be gone in the final version
-    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Megan", "Sherlock", "Ann", "Max", "Rory", "Quark", "Kirk", "Enright", "Snowden", "Blender", "Bash"];
+    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Sherlock", "Ann", "Max", "Rory", "Quark", "Kirk", "Snowden", "Blender", "Bash"];
     var staticDates = ['2013-01-01 10:00:00','2009-03-05 09:00:00','2016-01-01 10:00:00','2005-01-03 10:00:00', '2005-01-03 10:00:00', '1982-01-03 10:00:00', '1763-01-03 10:00:00', '0003-01-03 10:00:00', '2031-01-03 10:00:00','2081-01-03 10:00:00']
     
     var randomVal
@@ -148,7 +148,7 @@ app.get('/search/:input', function(req, res) {
 		var query = "SELECT id, firstName FROM patients WHERE firstName LIKE \"%" + searchInput + "%\"";
 		db.all(query, function(err, rows){
 			res.send(JSON.stringify(rows));
-		});
+		})
 	});
 	db.close();
 });
@@ -166,8 +166,9 @@ app.post('/patient/add', function(request, response){
 	db.serialize(function() {
     
         var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        
+        console.log("post")
         console.log(request.body.firstName)
+        console.log(request.body.lastName)
         
         stmt.run(
             request.body.dateAdded, // dateAdded
@@ -192,6 +193,8 @@ app.post('/patient/add', function(request, response){
 
     
 	db.close();
-    console.log("poooosttttt");
+
+    
+    response.send("success");
 
 });

@@ -121,5 +121,8 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
         return true;
     }
     
+    @IBAction func cancelTapped(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
 
 }
