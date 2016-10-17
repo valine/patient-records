@@ -22,4 +22,28 @@ class CreatePatientViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func savePatientTapped(_ sender: AnyObject) {
+    
+        var patient = Patient.defaultPatient()
+        patient.firstName = "Lukas"
+        patient.lastName = "Valine"
+        patient.sex = 0
+        patient.allergies = "None"
+        
+        PatientRespository.addPatient(json: patient.toDictionary())
+    
+    }
+    @IBAction func touchUp(_ sender: Any) {
+        
+        var patient = Patient.defaultPatient()
+        patient.firstName = "Lukas"
+        patient.lastName = "Valine"
+        patient.sex = 0
+        patient.allergies = "None"
+        
+        PatientRespository.addPatient(json: patient.toDictionary())
+    
+    
+    }
 }

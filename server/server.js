@@ -14,6 +14,12 @@ var server = app.listen(8081, function () {
    
    console.log("Example app listening at http://%s:%s", host, port)
 })
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
 
 var fs = require("fs");
 var file = "patient-records.db";
@@ -33,7 +39,7 @@ db.serialize(function() {
     var staticDates = ['2013-01-01 10:00:00','2009-03-05 09:00:00','2016-01-01 10:00:00','2005-01-03 10:00:00', '2005-01-03 10:00:00', '1982-01-03 10:00:00', '1763-01-03 10:00:00', '0003-01-03 10:00:00', '2031-01-03 10:00:00','2081-01-03 10:00:00']
     
     var randomVal
-    for (var i = 0; i < 40; i++) {
+    for (var i = 0; i < 3; i++) {
     
         randomVal = Math.random() * 1000
         stmt.run(
@@ -154,40 +160,38 @@ app.get('/patient_server', function (req, res) {
 })
 
 
-
-
-app.post('/', function(request, response){
+app.post('/patient/add', function(request, response){
 
 	var db = new sqlite3.Database(file);
 	db.serialize(function() {
     
         var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         
-        stmt.run(
-            "dateAdded", // dateAdded
-            "lastSeen", // last seen
-            "firstName", // first name
-            "middle",
-            "lastname",
-            4,
-            "birthdate",
-            "1234567890",
-            "luaks@valine.io",
-            0,
-            "unknown",
-            "unknown",
-            "unknown",
-            "unknown",
-            "unknown"
-        );
-    
-
+        console.log(request.body.firstName)
         
-		});
+        stmt.run(
+            request.body.dateAdded, // dateAdded
+            request.body.lastSeen, // last seen
+            request.body.firstName, // first name
+            request.body.middleName,
+            request.body.lastName,
+            request.body.sex,
+            request.body.birthDate,
+            request.body.phoneNumber,
+            request.body.emailAddress,
+            request.body.familyStatus,
+            request.body.medicalIssues,
+            request.body.currentMedications,
+            request.body.previousMedicalProblems,
+            request.body.previousSurgery,
+            request.body.allergies
+        );
+        
+        stmt.finalize();
 	});
 
+    
 	db.close();
     console.log("poooosttttt");
-    console.log(request.body.user.name);
-    console.log(request.body.user.email);
+
 });

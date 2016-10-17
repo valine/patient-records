@@ -13,77 +13,55 @@ class PatientRespository {
     static func getPatientById(id: Int, completion: @escaping (_: Patient)->Void, debug: @escaping (_: String)->Void) {
         
         let listPatientsRequest = "patient/id/" + String(id)
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
-            
-        let urlWithPort = NSURLComponents(string: url.absoluteString)
-        urlWithPort?.port = ServerSettings.port;
-    
-        if let theUrl = urlWithPort?.url {
-            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
-                if let unwrappedData = data {
-                    DispatchQueue.main.async {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
-                            let returnedPatient = Patient.newFromJSON(json: json)
-                            completion(returnedPatient)
-                            debug("sent patient with name: " + String(returnedPatient.firstName))
-                        } catch {
-                            print("error serializing JSON: \(error)")
-                        } 
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        debug("Error")
-                    }
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if let unwrappedData = data {
+                DispatchQueue.main.async {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+                        let returnedPatient = Patient.newFromJSON(json: json)
+                        completion(returnedPatient)
+                        debug("sent patient with name: " + String(returnedPatient.firstName))
+                    } catch {
+                        print("error serializing JSON: \(error)")
+                    } 
+                }
+            } else {
+                DispatchQueue.main.async {
+                    debug("Error")
                 }
             }
-            task.resume()
-        
-        } else {
-            DispatchQueue.main.async {
-                debug("Looks like you didn't enter a server address.")
-            }
         }
+        task.resume()
+
     }
     
     static func getPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
         let listPatientsRequest = "patient"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
-            
-        let urlWithPort = NSURLComponents(string: url.absoluteString)
-        urlWithPort?.port = ServerSettings.port;
-    
-        if let theUrl = urlWithPort?.url {
-            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
-                if let unwrappedData = data {
-                    DispatchQueue.main.async {
-                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
-                        completion(returnedPatients)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        debug("Error")
-                    }
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if let unwrappedData = data {
+                DispatchQueue.main.async {
+                    let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                    completion(returnedPatients)
+                }
+            } else {
+                DispatchQueue.main.async {
+                    debug("Error")
                 }
             }
-            task.resume()
-        
-        } else {
-            DispatchQueue.main.async {
-                debug("Looks like you didn't enter a server address.")
-            }
         }
+        task.resume()
     }
     
     static func getRecentPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
         let listPatientsRequest = "patient/recent"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
-            
-        let urlWithPort = NSURLComponents(string: url.absoluteString)
-        urlWithPort?.port = ServerSettings.port;
-    
-        if let theUrl = urlWithPort?.url {
-            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
                 if let unwrappedData = data {
                     DispatchQueue.main.async {
                         let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
@@ -96,23 +74,16 @@ class PatientRespository {
                 }
             }
             task.resume()
-        
-        } else {
-            DispatchQueue.main.async {
-                debug("Looks like you didn't enter a server address.")
-            }
-        }
     }
     
     static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
         let listPatientsRequest = "patient/search/" + input
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)!
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
             
         let urlWithPort = NSURLComponents(string: url.absoluteString)
         urlWithPort?.port = ServerSettings.port;
     
-        if let theUrl = urlWithPort?.url {
-            let task = URLSession.shared.dataTask(with: (theUrl) as URL) {(data, response, error) in
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
                 if let unwrappedData = data {
                     DispatchQueue.main.async {
                         let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
@@ -125,12 +96,52 @@ class PatientRespository {
                 }
             }
             task.resume()
-        
-        } else {
-            DispatchQueue.main.async {
-                debug("Looks like you didn't enter a server address.")
+    }
+    
+    static func addPatient(json: [String: Any]) {
+
+        do {
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: json)
+            
+            print(jsonData)
+            // create post request
+            let listPatientsRequest = "patient/add"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+            let request = NSMutableURLRequest(url: url as URL)
+            request.httpMethod = "POST"
+
+            // insert json data to the request
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+            let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
+            
+            print(theJSONText!)
+            request.httpBody = jsonData
+
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                if error != nil{
+                    print("Error -> \(error)")
+                    return
+                }
+
+                do {
+                    let result = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:AnyObject]
+
+                    print("Result -> \(result)")
+
+                } catch {
+                    print("Error -> \(error)")
+                }
             }
+
+            task.resume()
+
+        } catch {
+            print(error)
         }
+    
     }
 }
 
@@ -194,13 +205,13 @@ struct Patient {
     func toDictionary() -> [String: Any] {
         return [
             "id": self.id,
-            "dateAdded": self.dateAdded,
-            "lastSeen": self.lastSeen,
+            "dateAdded":  String(describing: self.dateAdded),
+            "lastSeen":  String(describing: self.lastSeen),
             "firstName": self.firstName,
             "middleName": self.middleName,
             "lastName": self.lastName,
             "sex": self.sex,
-            "birthDate": self.birthDate,
+            "birthDate": String(describing: self.birthDate),
             "phoneNumber": self.phoneNumber,
             "emailAddres": self.emailAddress,
             "medicalIssues": self.medicalIssues,
@@ -208,7 +219,7 @@ struct Patient {
             "previousMedicalProblems": self.previouslMedicalProblems,
             "previousSurgery": self.previousSurgery,
             "allergies": self.allergies
-        ] 
+        ]
     }
     
     static func newFromJSON(json: [String: Any]) -> Patient {
