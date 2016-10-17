@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11535.1" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="49e-Tb-3d3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11535.1" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5WV-6f-IPZ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11523"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home-->
+        <!--Home View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
                 <viewController id="9pv-A4-QxB" customClass="HomeViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
@@ -117,15 +118,34 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Home" id="IHB-1Z-2X4">
-                        <barButtonItem key="rightBarButtonItem" image="settings" style="plain" id="ex9-dU-r4L">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="IHB-1Z-2X4">
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="GdE-SZ-IjV">
                             <connections>
-                                <segue destination="DAy-B4-7W2" kind="popoverPresentation" popoverAnchorBarButtonItem="ex9-dU-r4L" id="PSs-wS-oVZ">
+                                <segue destination="DAy-B4-7W2" kind="popoverPresentation" popoverAnchorBarButtonItem="GdE-SZ-IjV" id="aQp-Ut-SWh">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
                         </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="new-patient" id="9PH-su-5qu">
+                                <connections>
+                                    <segue destination="tQb-5P-A09" kind="popoverPresentation" popoverAnchorBarButtonItem="9PH-su-5qu" id="cwl-W2-vO7">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="search" id="jAF-0y-wB1">
+                                <connections>
+                                    <segue destination="Cek-hV-hG6" kind="popoverPresentation" popoverAnchorBarButtonItem="jAF-0y-wB1" id="del-Ju-d5c">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem image="qrcodeicon" id="1Za-6q-zEk"/>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="devLabel" destination="TcQ-t8-5oy" id="EbH-Oy-G8M"/>
                         <outlet property="logoContainerView" destination="JSx-sB-2At" id="yT1-8V-wTO"/>
@@ -403,7 +423,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="789.60000000000002" y="597.30134932533736"/>
+            <point key="canvasLocation" x="1593" y="721"/>
         </scene>
         <!--Search-->
         <scene sceneID="8An-Bj-6Jd">
@@ -484,27 +504,20 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tLg-68-0fd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1512.8" y="-2.2488755622188905"/>
+            <point key="canvasLocation" x="842" y="121"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="yl2-sM-qoP">
+        <!--Split View Controller-->
+        <scene sceneID="ra5-6I-aC0">
             <objects>
-                <tabBarController id="49e-Tb-3d3" sceneMemberID="viewController">
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="W28-zg-YXA">
-                        <rect key="frame" x="0.0" y="975" width="768" height="49"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                    </tabBar>
+                <splitViewController id="5WV-6f-IPZ" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="zMU-U7-6q0" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
-                        <segue destination="tQb-5P-A09" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
-                        <segue destination="Cek-hV-hG6" kind="relationship" relationship="viewControllers" id="lTh-nK-zRK"/>
+                        <segue destination="zMU-U7-6q0" kind="relationship" relationship="masterViewController" id="UPX-ZS-nbq"/>
+                        <segue destination="tQb-5P-A09" kind="relationship" relationship="detailViewController" id="22w-45-ITz"/>
                     </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HuB-VB-40B" sceneMemberID="firstResponder"/>
+                </splitViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uga-6Z-9W1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1022" y="87"/>
+            <point key="canvasLocation" x="-1250" y="-104"/>
         </scene>
         <!--Home-->
         <scene sceneID="Gnd-QC-B8V">
@@ -591,4 +604,7 @@
         <image name="search" width="20" height="20"/>
         <image name="settings" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="22w-45-ITz"/>
+    </inferredMetricsTieBreakers>
 </document>

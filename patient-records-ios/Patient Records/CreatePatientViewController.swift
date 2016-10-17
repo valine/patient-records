@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreatePatientViewController: UIViewController {
+class CreatePatientViewController: UIViewController, UISplitViewControllerDelegate {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var SymptomSummary: UITextField!
 

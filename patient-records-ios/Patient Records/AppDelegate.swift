@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
 
@@ -22,7 +22,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]\
         UITabBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
         
-          return true
+        let splitViewController = self.window!.rootViewController as! UISplitViewController
+        splitViewController.delegate = self
+        splitViewController.preferredDisplayMode = .allVisible
+        
+        return true
+    }
+    
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController:UIViewController, onto primaryViewController:UIViewController) -> Bool {
+        
+        return true
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
