@@ -32,5 +32,5 @@ checklist for submision
 		animated checkmarks and xs 
 		patient photo - !
 		push updates from server 		
-		
+		ipad layout 	
 		
