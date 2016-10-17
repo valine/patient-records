@@ -19,6 +19,7 @@ checklist for submision
 	features left:
 
 		post patient - !!!
+		update patient - !!!
 		weight table - !!
 		height table - !!
 		notes table - !
