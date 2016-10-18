@@ -55,39 +55,39 @@ db.serialize(function() {
      
     db.run(createTable);
     
-    var insertRow = "INSERT INTO Patients (id"
-    
-    for (i = 0; i < config.options.length; i++) {
-        insertRow += ", "
-        insertRow += config.options[i].columnName + " "
-    }
-    
-    insertRow += ") VALUES (NULL"
-    
-    for (i = 0; i < config.options.length; i++) {
-        insertRow += ", "
+    for (j = 0; j < 10; j++) {
+        var insertRow = "INSERT INTO Patients (id"
         
-        if (config.options[i].type == "textFieldCell") {
-            insertRow += "\"" + config.options[i].defaultValue + "\""
-        
-        } else if (config.options[i].type == "textViewCell") {
-            insertRow += "\"" + config.options[i].defaultValue + "\""
-        
-        } else if (config.options[i].type == "integerCell") {
-            insertRow += config.options[i].defaultValue
-        
-        } else if (config.options[i].type == "dateCell") {
-            insertRow += "\"" + config.options[i].defaultValue + "\""
-        } else {
-            insertRow += "\"" + config.options[i].defaultValue + "\""
+        for (i = 0; i < config.options.length; i++) {
+            insertRow += ", "
+            insertRow += config.options[i].columnName + " "
         }
+        
+        insertRow += ") VALUES (NULL"
+        
+        for (i = 0; i < config.options.length; i++) {
+            insertRow += ", "
+            
+            if (config.options[i].type == "textFieldCell") {
+                insertRow += "\"" + config.options[i].defaultValue + "\""
+            
+            } else if (config.options[i].type == "textViewCell") {
+                insertRow += "\"" + config.options[i].defaultValue + "\""
+            
+            } else if (config.options[i].type == "integerCell") {
+                insertRow += config.options[i].defaultValue
+            
+            } else if (config.options[i].type == "dateCell") {
+                insertRow += "\"" + config.options[i].defaultValue + "\""
+            } else {
+                insertRow += "\"" + config.options[i].defaultValue + "\""
+            }
+        }
+        
+        insertRow += ")"
+        
+        db.run(insertRow)
     }
-    
-    insertRow += ")"
-    
-    console.log(insertRow)
-    
-    db.run(insertRow)
     
     db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
   }
@@ -133,9 +133,18 @@ app.get('/patient/id/:id', function (req, res) {
     var db = new sqlite3.Database(file);
     db.serialize(function() {
     
+        var selectPatient = "SELECT id"
+    
+        for (i = 0; i < config.options.length; i++) {
+            selectPatient += ", "
+            selectPatient += config.options[i].columnName
+        }
+        
         var id = req.params.id
-        var sql = "SELECT id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies FROM Patients WHERE id=" + id;
-        db.all(sql, function(err, rows) {
+        selectPatient +=  " FROM Patients WHERE id=" + id
+
+        console.log(selectPatient)
+        db.all(selectPatient, function(err, rows) {
             res.send(JSON.stringify(rows[0]));
             console.log(JSON.stringify(rows));
         });
@@ -148,15 +157,16 @@ app.get('/patient/recent/', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var sql = "SELECT firstName, id, dateAdded FROM Patients ORDER BY dateAdded DESC LIMIT 15";
+        var sql = "SELECT firstName, lastName, id, dateAdded FROM Patients ORDER BY dateAdded DESC LIMIT 15";
         db.all(sql, function(err, rows) {
             var patients = {"patients" : rows}
             res.send(JSON.stringify(patients));
-            //res.send("working")
             console.log(JSON.stringify(rows));
         });
     });
     db.close();
+    
+    res.send("done")
 })
 
 //     _____                     _     
@@ -190,30 +200,60 @@ app.post('/patient/add', function(request, response){
 	var db = new sqlite3.Database(file);
 	db.serialize(function() {
     
-        var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        console.log("post")
-        console.log(request.body.firstName)
-        console.log(request.body.lastName)
+    console.log(request.body.firstName)
+    console.log(request.body.lastName)
         
-        stmt.run(
-            request.body.dateAdded, // dateAdded
-            request.body.lastSeen, // last seen
-            request.body.firstName, // first name
-            request.body.middleName,
-            request.body.lastName,
-            request.body.sex,
-            request.body.birthDate,
-            request.body.phoneNumber,
-            request.body.emailAddress,
-            request.body.familyStatus,
-            request.body.medicalIssues,
-            request.body.currentMedications,
-            request.body.previousMedicalProblems,
-            request.body.previousSurgery,
-            request.body.allergies
-        );
+    var insertRow = "INSERT INTO Patients (id"
+    
+    for (i = 0; i < config.options.length; i++) {
+        insertRow += ", "
+        insertRow += config.options[i].columnName + " "
+    }
+    
+    insertRow += ") VALUES (NULL"
+    
+    for (i = 0; i < config.options.length; i++) {
+        insertRow += ", "
         
-        stmt.finalize();
+        if (config.options[i].type == "textFieldCell") {
+            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+        
+        } else if (config.options[i].type == "textViewCell") {
+            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+        
+        } else if (config.options[i].type == "integerCell") {
+            insertRow += request.body[config.options[i].columnName]
+        
+        } else if (config.options[i].type == "dateCell") {
+            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+        } else {
+            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+        }
+    }
+    
+    insertRow += ")"
+    
+    db.run(insertRow)
+        
+//        stmt.run(
+//            request.body.dateAdded, // dateAdded
+//            request.body.lastSeen, // last seen
+//            request.body.firstName, // first name
+//            request.body.middleName,
+//            request.body.lastName,
+//            request.body.sex,
+//            request.body.birthDate,
+//            request.body.phoneNumber,
+//            request.body.emailAddress,
+//            request.body.familyStatus,
+//            request.body.medicalIssues,
+//            request.body.currentMedications,
+//            request.body.previousMedicalProblems,
+//            request.body.previousSurgery,
+//            request.body.allergies
+//        );
+//        
+//        stmt.finalize();
 	});
 
     
