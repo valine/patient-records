@@ -13,7 +13,7 @@ class TextFieldCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textField: UITextField!
-    
+    @IBOutlet weak var viewLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
     }

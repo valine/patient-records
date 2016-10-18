@@ -13,6 +13,7 @@ class IntegerCell: UITableViewCell {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var control: UISegmentedControl!
+    @IBOutlet weak var viewLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

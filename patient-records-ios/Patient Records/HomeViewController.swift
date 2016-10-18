@@ -17,7 +17,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var logoContainerView: UIView!
     
-    var detailViewController: CreatePatientViewController!
+    //var detailViewController: CreatePatientViewController!
     
     let cellReuseIdentifier = "homeCell"
     var patients = [Patient]()
@@ -31,11 +31,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         if !userDefaults.bool(forKey: "isNotFirstLaunch") {
             userDefaults.set(true, forKey: "isNotFirstLaunch")
             userDefaults.set(true, forKey: "standalone")
-        }
-        
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? CreatePatientViewController
         }
         
         tableView.dataSource = self
@@ -74,21 +69,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-//        detailViewController.isEditing = true
-//
-//        let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
-//        let id = Int(cell.id.text!)
-//        
-//        PatientRespository.getPatientById(id: id!, completion: {(patient) in
-//          
-//            self.detailViewController.patient = patient
-//
-//            if let detailViewController
-//            self.splitViewController?.showDetailViewController(self.detailViewController.navigationController!, sender: id)
-//
-//        }, debug: {(debug) in })
-//       
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -101,13 +81,19 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
+                controller.mode = .view
 
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
-                    controller.patient = patient
+                    controller.patientDictionary = patient
 
                 }, debug: {(debug) in })
            
             }
+        } else if segue.identifier == "newPatient" {
+        
+            let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+            
+            controller.mode = .new
         }
     }
 
@@ -117,7 +103,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-            self.devLabel.text = value
+
         })
     }
     
