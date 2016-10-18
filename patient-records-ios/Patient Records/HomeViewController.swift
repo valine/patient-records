@@ -56,6 +56,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }, debug: {(value) in
             self.devLabel.text = value
         })
+        
+        PatientAttributeSettings.getAttributeSettings()
 
     }
     
@@ -97,15 +99,13 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             
                 let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
                 let id = Int(cell.id.text!)
+                
+                let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
 
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
-
-                    
-                    let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
                     controller.patient = patient
-                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
-                    controller.navigationItem.leftItemsSupplementBackButton = true
-
 
                 }, debug: {(debug) in })
            

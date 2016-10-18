@@ -1,11 +1,12 @@
 {"options" : [
         
-        {"title": "firstName", "type" : "textField"},
-        {"title": "middleName", "type" : "textField"},
-        {"title": "lastName", "type" : "textField"},
-        {"title": "sex", "type" : "int"},
-        {"title": "weight", "type" : "intArray"},
-        {"title": "allergies", "type" : "textView"},
+        {"columnName": "firstName", "title": "First Name", "type" : "textField", "defaultValue":"unknkown"},
+        {"columnName": "middleName", "title": "Middle Name", "type" : "textField", "defaultValue":"unknkown"},
+        {"columnName": "sex", "title": "Gender", "type" : "Integer", "defaultValue":0, "valueKeys": ["Male", "Female", "Unknown"]},
+        {"columnName": "birthDate", "title": "Birth Date", "type" : "Date", "defaultValue":"unknkown"},
+        {"columnName": "allergies", "title": "Allergies", "type" : "textView", "defaultValue":"unknkown"},
+        {"columnName": "weight", "title": "Weight", "type" : "IntegerArray", "defaultValue":"unknkown"}
+
     ]
     
 }

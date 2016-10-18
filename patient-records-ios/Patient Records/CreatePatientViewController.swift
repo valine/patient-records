@@ -32,12 +32,8 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.contentSize = CGSize(width: 0, height: 14000)
-        patient = Patient.defaultPatient()
+        //patient = Patient.defaultPatient()
     }
-//    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//            self.sender = sender as! HomeTableViewCell
-//    }
 
     func configureView() {
     
@@ -69,12 +65,13 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     
     @IBAction func saveTapped(_ sender: Any) {
         
-        patient?.firstName = "Lukas"
-        patient?.lastName = "Valine"
-        patient?.sex = 0
-        patient?.allergies = "None"
+        var patient = Patient.defaultPatient()
+        patient.firstName = "Lukas"
+        patient.lastName = "Valine"
+        patient.sex = 0
+        patient.allergies = "None"
         
-        PatientRespository.addPatient(json: (patient?.toDictionary())!)
+        PatientRespository.addPatient(json: patient.toDictionary())
         
         self.dismiss(animated: true, completion: nil)
     }

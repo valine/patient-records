@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8018A16B1DB5AC0B00FEA993 /* PatientAttributeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A16A1DB5AC0B00FEA993 /* PatientAttributeSettings.swift */; };
+		8018A16D1DB5B03300FEA993 /* patient-attributes.json in Resources */ = {isa = PBXBuildFile; fileRef = 8018A16C1DB5B03300FEA993 /* patient-attributes.json */; };
 		807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326401DA1CC600082EC2E /* AppDelegate.swift */; };
 		807326481DA1CC600082EC2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 807326461DA1CC600082EC2E /* Main.storyboard */; };
 		8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */; };
@@ -45,6 +47,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8018A16A1DB5AC0B00FEA993 /* PatientAttributeSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatientAttributeSettings.swift; sourceTree = "<group>"; };
+		8018A16C1DB5B03300FEA993 /* patient-attributes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "patient-attributes.json"; path = "../../patient-attributes.json"; sourceTree = "<group>"; };
 		8073263D1DA1CC600082EC2E /* Patient Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Patient Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		807326401DA1CC600082EC2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		807326471DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -126,6 +130,7 @@
 				807326461DA1CC600082EC2E /* Main.storyboard */,
 				8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */,
 				808D122D1DB180090017E17D /* Assets.xcassets */,
+				8018A16C1DB5B03300FEA993 /* patient-attributes.json */,
 				8073264E1DA1CC600082EC2E /* Info.plist */,
 				808D122C1DB17EA90017E17D /* data */,
 				808D122B1DB17E7C0017E17D /* views */,
@@ -179,6 +184,7 @@
 			children = (
 				8091A14E1DA44A9800D0A541 /* PatientRepository.swift */,
 				8091A1501DA4536B00D0A541 /* ServerSettings.swift */,
+				8018A16A1DB5AC0B00FEA993 /* PatientAttributeSettings.swift */,
 			);
 			name = data;
 			sourceTree = "<group>";
@@ -305,6 +311,7 @@
 				80A36CD61DAE7EFB003F223E /* LogoScene.sks in Resources */,
 				808D122E1DB180090017E17D /* Assets.xcassets in Resources */,
 				807326481DA1CC600082EC2E /* Main.storyboard in Resources */,
+				8018A16D1DB5B03300FEA993 /* patient-attributes.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +347,7 @@
 				80E743541DA20DEF004898B8 /* NestableUIView.swift in Sources */,
 				80E743561DA29F76004898B8 /* SettingsViewController.swift in Sources */,
 				8091A14F1DA44A9800D0A541 /* PatientRepository.swift in Sources */,
+				8018A16B1DB5AC0B00FEA993 /* PatientAttributeSettings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
