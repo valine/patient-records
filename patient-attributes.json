@@ -1,11 +1,18 @@
 {"options" : [
         
-        {"title": "firstName", "type" : "textField"},
-        {"title": "middleName", "type" : "textField"},
-        {"title": "lastName", "type" : "textField"},
-        {"title": "sex", "type" : "int"},
-        {"title": "weight", "type" : "intArray"},
-        {"title": "allergies", "type" : "textView"},
+        
+         {"columnName": "firstName", "columnHeight" : 95, "title": "First Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+         
+         {"columnName": "middleName", "columnHeight": 95, "title": "Middle Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+       
+         {"columnName": "sex", "columnHeight": 95, "title": "Gender", "type" : "integerCell", "defaultValue":0, "valueKeys": ["Male", "Female", "Unknown"]},
+        {"columnName": "notes", "columnHeight": 170, "title": "Notes", "type" : "textViewCell", "defaultValue":"unknown"},
+       
+         {"columnName": "birthDate", "columnHeight": 170, "title": "Birth Date", "type" : "dateCell", "defaultValue":"unknown"},
+       
+         {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"unknown"},
+       
+         {"columnName": "weight", "columnHeight": 170, "title": "Weight", "type" : "integerArrayCell", "defaultValue":"unknown"}
     ]
     
 }

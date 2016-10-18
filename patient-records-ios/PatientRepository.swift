@@ -10,7 +10,7 @@ import Foundation
 
 class PatientRespository {
 
-    static func getPatientById(id: Int, completion: @escaping (_: Patient)->Void, debug: @escaping (_: String)->Void) {
+    static func getPatientById(id: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
         
         let listPatientsRequest = "patient/id/" + String(id)
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -20,8 +20,10 @@ class PatientRespository {
                 DispatchQueue.main.async {
                     do {
                         let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+                        
                         let returnedPatient = Patient.newFromJSON(json: json)
-                        completion(returnedPatient)
+        
+                        completion(json)
                         debug("sent patient with name: " + String(returnedPatient.firstName))
                     } catch {
                         print("error serializing JSON: \(error)")
@@ -200,6 +202,27 @@ struct Patient {
             medicalRecomedations: [MedicalRecomendations](),
             updates: [Updates]()
         )
+    }
+    
+    static func defaultPatientDictionary() -> [String: Any] {
+        let options = PatientAttributeSettings.getAttributeSettings()
+        var patient: [String : Any] = [:]
+        for option in options! {
+        
+            let columnName = option["columnName"] as! String
+            let type = option["type"] as! String
+            
+            if type == "integerCell" {
+                let defaultValue = option["defaultValue"] as! Int
+                patient[columnName] = defaultValue
+            } else {
+                let defaultValue = option["defaultValue"] as! String
+                patient[columnName] = defaultValue
+            
+            }
+        }
+        
+        return patient
     }
     
     func toDictionary() -> [String: Any] {

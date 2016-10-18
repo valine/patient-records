@@ -17,7 +17,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var logoContainerView: UIView!
     
-    var detailViewController: CreatePatientViewController!
+    //var detailViewController: CreatePatientViewController!
     
     let cellReuseIdentifier = "homeCell"
     var patients = [Patient]()
@@ -33,15 +33,11 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             userDefaults.set(true, forKey: "standalone")
         }
         
-        if let split = self.splitViewController {
-            let controllers = split.viewControllers
-            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? CreatePatientViewController
-        }
-        
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        tableView.contentInset = UIEdgeInsetsMake(125, 0, 0, 0)
+        let welcomeHeaderHeight: CGFloat = 100
+        tableView.contentInset = UIEdgeInsetsMake(welcomeHeaderHeight + self.topLayoutGuide.length, 0, 0, 0)
         
         let logoScene = SKScene(fileNamed: "LogoScene")
         let skLogoView = logoContainerView as! SKView
@@ -54,9 +50,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-            self.devLabel.text = value
+           
         })
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,21 +69,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-//        detailViewController.isEditing = true
-//
-//        let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
-//        let id = Int(cell.id.text!)
-//        
-//        PatientRespository.getPatientById(id: id!, completion: {(patient) in
-//          
-//            self.detailViewController.patient = patient
-//
-//            if let detailViewController
-//            self.splitViewController?.showDetailViewController(self.detailViewController.navigationController!, sender: id)
-//
-//        }, debug: {(debug) in })
-//       
-
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -97,19 +77,23 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             
                 let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
                 let id = Int(cell.id.text!)
+                
+                let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+                controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
+                controller.mode = .view
 
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
-
-                    
-                    let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
-                    controller.patient = patient
-                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
-                    controller.navigationItem.leftItemsSupplementBackButton = true
-
+                    controller.patientDictionary = patient
 
                 }, debug: {(debug) in })
            
             }
+        } else if segue.identifier == "newPatient" {
+        
+            let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+            
+            controller.mode = .new
         }
     }
 
@@ -119,7 +103,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-            self.devLabel.text = value
+
         })
     }
     
