@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreatePatientViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource {
+class CreatePatientViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     @IBOutlet weak var SymptomSummary: UITextField!
 
   //  @IBOutlet weak var scrollView: UIScrollView!
@@ -40,61 +40,10 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     }
 
     func configureView() {
-    
-        for (i, option) in options!.enumerated() {
-            if i != 0 {
-                
-                let type = option["type"]  as! String
-                
-                if type == "textField" {
-                   
-                    let cell = tableView.cellForRow(at: IndexPath(item: i - 1, section: 0)) as! TextFieldCell
-                    
-                    //cell.titleLabel.text = title
 
-                
-                } else if type == "integerCell" {
-                     let cell = tableView.cellForRow(at: IndexPath(item: i - 1, section: 0)) as! IntegerCell
-                    
-                   // cell.titleLabel.text = title
-                    
-
-                } else if type == "textViewCell" {
-                     let cell = tableView.cellForRow(at: IndexPath(item: i - 1, section: 0)) as! TextViewCell
-                   // cell.titleLabel.text = title
-
-                } else if type == "dateCell" {
-                     let cell = tableView.cellForRow(at: IndexPath(item: i - 1, section: 0))  as! DateCell
-                   // cell.titlelabel.text = title
-                
-                } else {
-                    let cell = tableView.cellForRow(at: IndexPath(item: i - 1, section: 0))  as! TextFieldCell
-                   // cell.titleLabel.text = title
-
-                }
             
-            }
-            
-        }
-    
-//            for textField in textFields {
-//                textField.isEnabled = false
-//                textField.borderStyle = .none
-//                textField.backgroundColor = .clear
-//            }
-//            
-//            for segmentedControl in segmentedControls {
-//                segmentedControl.isEnabled = false
-//                segmentedControl.backgroundColor = .clear
-//            }
-//            
-//            for textView in textViews {
-//                textView.isEditable = false
-//                textView.backgroundColor = .clear
-//            }
-//            
-//            textFields[0].text = patient?.firstName
     }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
@@ -143,6 +92,7 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
                 return cell
             } else if type == "textViewCell" {
                 let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
+                cell.textView.delegate = self
                 cell.titleLabel.text = title
                 return cell
             } else if type == "dateCell" {
@@ -189,6 +139,33 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     @IBAction func cancelTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
 
+    @IBAction func integerCellChanged(_ sender: Any) {
+    let toggle = sender as! UISegmentedControl
+        
+        print(toggle.selectedSegmentIndex)
+    }
+
+    @IBAction func textFieldEditingChanged(_ sender: Any) {
+        let textField = sender as! UITextField
+        
+        print(textField.text!)
+        
+        let cell = textField.superview?.superview
+        
+        let index = tableView.indexPath(for: cell as! UITableViewCell)?.item
+        print(options?[index! - 1]["columnName"] as! String)
+    }
+
+    @IBAction func dateValueChanged(_ sender: Any) {
+        let dateView = sender as! UIDatePicker
+        print(dateView.date)
+        
+        //let cell = dateView.superclass as! DateCell
+        
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        print(textView.text)
+    }
 }

@@ -31,7 +31,7 @@ var db = new sqlite3.Database(file);
 db.serialize(function() {
   if(!exists) {
   
-    var createTable = "CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT"
+    var createTable = "CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, dateAdded DATETIME"
   
      for (i = 0; i < config.options.length; i++) {
         createTable += ", "
@@ -56,14 +56,15 @@ db.serialize(function() {
     db.run(createTable);
     
     for (j = 0; j < 10; j++) {
-        var insertRow = "INSERT INTO Patients (id"
+
+        var insertRow = "INSERT INTO Patients (id, dateAdded"
         
         for (i = 0; i < config.options.length; i++) {
             insertRow += ", "
             insertRow += config.options[i].columnName + " "
         }
         
-        insertRow += ") VALUES (NULL"
+        insertRow += ") VALUES (NULL, \"" + getDateTime() + "\""
         
         for (i = 0; i < config.options.length; i++) {
             insertRow += ", "
@@ -133,7 +134,7 @@ app.get('/patient/id/:id', function (req, res) {
     var db = new sqlite3.Database(file);
     db.serialize(function() {
     
-        var selectPatient = "SELECT id"
+        var selectPatient = "SELECT id, dateAdded"
     
         for (i = 0; i < config.options.length; i++) {
             selectPatient += ", "
@@ -157,7 +158,8 @@ app.get('/patient/recent/', function (req, res) {
 
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var sql = "SELECT firstName, lastName, id, dateAdded FROM Patients ORDER BY dateAdded DESC LIMIT 15";
+        var sql = "SELECT id, dateAdded, firstName FROM Patients ORDER BY dateAdded DESC LIMIT 15";
+        
         db.all(sql, function(err, rows) {
             var patients = {"patients" : rows}
             res.send(JSON.stringify(patients));
@@ -165,8 +167,7 @@ app.get('/patient/recent/', function (req, res) {
         });
     });
     db.close();
-    
-    res.send("done")
+
 })
 
 //     _____                     _     
@@ -202,15 +203,17 @@ app.post('/patient/add', function(request, response){
     
     console.log(request.body.firstName)
     console.log(request.body.lastName)
+    
+    var date = new Date();
         
-    var insertRow = "INSERT INTO Patients (id"
+    var insertRow = "INSERT INTO Patients (id, dateAdded"
     
     for (i = 0; i < config.options.length; i++) {
         insertRow += ", "
         insertRow += config.options[i].columnName + " "
     }
     
-    insertRow += ") VALUES (NULL"
+    insertRow += ") VALUES (NULL, \"" + getDateTime() + "\""
     
     for (i = 0; i < config.options.length; i++) {
         insertRow += ", "
@@ -263,3 +266,28 @@ app.post('/patient/add', function(request, response){
     response.send("success");
 
 });
+
+function getDateTime() {
+
+    var date = new Date();
+
+    var hour = date.getHours();
+    hour = (hour < 10 ? "0" : "") + hour;
+
+    var min  = date.getMinutes();
+    min = (min < 10 ? "0" : "") + min;
+
+    var sec  = date.getSeconds();
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    var year = date.getFullYear();
+
+    var month = date.getMonth() + 1;
+    month = (month < 10 ? "0" : "") + month;
+
+    var day  = date.getDate();
+    day = (day < 10 ? "0" : "") + day;
+
+    return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+
+}

@@ -11,8 +11,10 @@ import UIKit
 
 class TextViewCell: UITableViewCell {
 
-    @IBOutlet var textView: [UITextView]!
+
+    @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var titleLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

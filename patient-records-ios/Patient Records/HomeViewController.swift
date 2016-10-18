@@ -41,7 +41,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        tableView.contentInset = UIEdgeInsetsMake(125, 0, 0, 0)
+        let welcomeHeaderHeight: CGFloat = 100
+        tableView.contentInset = UIEdgeInsetsMake(welcomeHeaderHeight + self.topLayoutGuide.length, 0, 0, 0)
         
         let logoScene = SKScene(fileNamed: "LogoScene")
         let skLogoView = logoContainerView as! SKView
@@ -54,11 +55,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-            self.devLabel.text = value
+           
         })
-        
-        PatientAttributeSettings.getAttributeSettings()
-
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
