@@ -1,11 +1,11 @@
 {"options" : [
         
-        {"columnName": "firstName", "title": "First Name", "type" : "textField", "defaultValue":"unknkown"},
-        {"columnName": "middleName", "title": "Middle Name", "type" : "textField", "defaultValue":"unknkown"},
-        {"columnName": "sex", "title": "Gender", "type" : "Integer", "defaultValue":0, "valueKeys": ["Male", "Female", "Unknown"]},
-        {"columnName": "birthDate", "title": "Birth Date", "type" : "Date", "defaultValue":"unknkown"},
-        {"columnName": "allergies", "title": "Allergies", "type" : "textView", "defaultValue":"unknkown"},
-        {"columnName": "weight", "title": "Weight", "type" : "IntegerArray", "defaultValue":"unknkown"}
+        {"columnName": "firstName", "columnHeight" : 110, "title": "First Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+        {"columnName": "middleName", "columnHeight": 110, "title": "Middle Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+        {"columnName": "sex", "columnHeight": 110, "title": "Gender", "type" : "integerCell", "defaultValue":0, "valueKeys": ["Male", "Female", "Unknown"]},
+        {"columnName": "birthDate", "columnHeight": 170, "title": "Birth Date", "type" : "dateCell", "defaultValue":"unknown"},
+        {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"unknown"},
+        {"columnName": "weight", "columnHeight": 170, "title": "Weight", "type" : "integerArrayCell", "defaultValue":"unknown"}
 
     ]
     

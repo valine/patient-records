@@ -19,7 +19,7 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
+var config = require('../patient-attributes.json');
 
 var fs = require("fs");
 var file = "patient-records.db";
@@ -30,44 +30,69 @@ var db = new sqlite3.Database(file);
 
 db.serialize(function() {
   if(!exists) {
-    db.run("CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT, dateAdded DATETIME, lastSeen DATETIME, firstName TEXT,  middleName TEXT,  lastName TEXT, sex INTEGER, birthdate DATE, phoneNumber TEXT, emailAddress TEXT, familyStatus INTEGER, medicalIssues TEXT, currentMedications TEXT, previousMedicalProblems TEXT, previousSurgery TEXT, allergies TEXT)");
-
-    var stmt = db.prepare("INSERT INTO Patients (id, dateAdded, lastSeen, firstName, middleName, lastName, sex, birthdate, phoneNumber, emailAddress, familyStatus, medicalIssues, currentMedications, previousMedicalProblems, previousSurgery, allergies) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+  
+    var createTable = "CREATE TABLE Patients (id INTEGER PRIMARY KEY AUTOINCREMENT"
+  
+     for (i = 0; i < config.options.length; i++) {
+        createTable += ", "
+        createTable += config.options[i].columnName + " "
+        
+        if (config.options[i].type == "textFieldCell") {
+            createTable += "TEXT"
+        
+        } else if (config.options[i].type == "textViewCell") {
+            createTable += "TEXT"
+        
+        } else if (config.options[i].type == "integerCell") {
+            createTable += "INTEGER"
+        
+        } else if (config.options[i].type == "dateCell") {
+            createTable += "DATETIME"
+        }
+     }
+     
+    createTable += ")"
+     
+    db.run(createTable);
     
-    // Create some random test data.  This should be gone in the final version
-    var staticNames = ["Bob", "John Smith", "Mr. Robot", "Eminem", "Jane", "Jim", "Sherlock", "Ann", "Max", "Rory", "Quark", "Kirk", "Snowden", "Blender", "Bash"];
-    var staticDates = ['2013-01-01 10:00:00','2009-03-05 09:00:00','2016-01-01 10:00:00','2005-01-03 10:00:00', '2005-01-03 10:00:00', '1982-01-03 10:00:00', '1763-01-03 10:00:00', '0003-01-03 10:00:00', '2031-01-03 10:00:00','2081-01-03 10:00:00']
+    var insertRow = "INSERT INTO Patients (id"
     
-    var randomVal
-    for (var i = 0; i < 3; i++) {
-    
-        randomVal = Math.random() * 1000
-        stmt.run(
-            staticDates[i % staticDates.length], // dateAdded
-            staticNames[i % staticDates.length], // last seen
-            staticNames[i % staticNames.length], // first name
-            "middle",
-            "lastname",
-            4,
-            "birthdate",
-            "1234567890",
-            "luaks@valine.io",
-            0,
-            "unknown",
-            "unknown",
-            "unknown",
-            "unknown",
-            "unknown"
-        );
+    for (i = 0; i < config.options.length; i++) {
+        insertRow += ", "
+        insertRow += config.options[i].columnName + " "
     }
     
-    stmt.finalize();
-    db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
+    insertRow += ") VALUES (NULL"
     
+    for (i = 0; i < config.options.length; i++) {
+        insertRow += ", "
+        
+        if (config.options[i].type == "textFieldCell") {
+            insertRow += "\"" + config.options[i].defaultValue + "\""
+        
+        } else if (config.options[i].type == "textViewCell") {
+            insertRow += "\"" + config.options[i].defaultValue + "\""
+        
+        } else if (config.options[i].type == "integerCell") {
+            insertRow += config.options[i].defaultValue
+        
+        } else if (config.options[i].type == "dateCell") {
+            insertRow += "\"" + config.options[i].defaultValue + "\""
+        } else {
+            insertRow += "\"" + config.options[i].defaultValue + "\""
+        }
+    }
+    
+    insertRow += ")"
+    
+    console.log(insertRow)
+    
+    db.run(insertRow)
+    
+    db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
   }
   
-  //var sql = "SELECT rowid AS id, name FROM Patients";
-  var sql = "SELECT id, firstname FROM Patients";
+    var sql = "SELECT id, firstName FROM Patients";
 
     // Print the records as JSON
     db.all(sql, function(err, rows) {
