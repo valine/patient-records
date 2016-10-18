@@ -9,13 +9,15 @@
 import UIKit
 import SpriteKit
 
-class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var logoContainerView: UIView!
+    
+    var detailViewController: CreatePatientViewController!
     
     let cellReuseIdentifier = "homeCell"
     var patients = [Patient]()
@@ -29,6 +31,11 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if !userDefaults.bool(forKey: "isNotFirstLaunch") {
             userDefaults.set(true, forKey: "isNotFirstLaunch")
             userDefaults.set(true, forKey: "standalone")
+        }
+        
+        if let split = self.splitViewController {
+            let controllers = split.viewControllers
+            self.detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? CreatePatientViewController
         }
         
         tableView.dataSource = self
@@ -61,12 +68,49 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell:HomeTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HomeTableViewCell!
         let patient = patients[indexPath.item]
         cell.name.text = patient.firstName + " " + patient.lastName
-        cell.id.text = "#" + String(patient.id)
+        cell.id.text = String(patient.id)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
+//        detailViewController.isEditing = true
+//
+//        let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
+//        let id = Int(cell.id.text!)
+//        
+//        PatientRespository.getPatientById(id: id!, completion: {(patient) in
+//          
+//            self.detailViewController.patient = patient
+//
+//            if let detailViewController
+//            self.splitViewController?.showDetailViewController(self.detailViewController.navigationController!, sender: id)
+//
+//        }, debug: {(debug) in })
+//       
+
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            if let indexPath = self.tableView.indexPathForSelectedRow {
+            
+                let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
+                let id = Int(cell.id.text!)
+
+                PatientRespository.getPatientById(id: id!, completion: {(patient) in
+
+                    
+                    let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+                    controller.patient = patient
+                    controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                    controller.navigationItem.leftItemsSupplementBackButton = true
+
+
+                }, debug: {(debug) in })
+           
+            }
+        }
     }
 
     @IBAction func devRefreshPressed(_ sender: AnyObject) {

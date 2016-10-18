@@ -1,0 +1,11 @@
+{"options" : [
+        
+        {"title": "firstName", "type" : "textField"},
+        {"title": "middleName", "type" : "textField"},
+        {"title": "lastName", "type" : "textField"},
+        {"title": "sex", "type" : "int"},
+        {"title": "weight", "type" : "intArray"},
+        {"title": "allergies", "type" : "textView"},
+    ]
+    
+}

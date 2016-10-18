@@ -62,6 +62,7 @@
                                         <connections>
                                             <outlet property="id" destination="BlO-Ny-XVO" id="rDS-88-OlB"/>
                                             <outlet property="name" destination="boV-tH-T7M" id="BvA-2H-E8z"/>
+                                            <segue destination="tQb-5P-A09" kind="showDetail" identifier="showDetail" id="1oc-cb-uis"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -577,7 +578,7 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             </view>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="Patient Photo" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="v52-eU-5fR">
-                                                <rect key="frame" x="17" y="46" width="466" height="20"/>
+                                                <rect key="frame" x="17" y="66" width="466" height="20"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" red="0.11507308550000001" green="0.16521225619999999" blue="0.21700939120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -634,17 +635,19 @@
                                             <constraint firstItem="mrD-bP-6Kb" firstAttribute="top" secondItem="NJc-8b-rxb" secondAttribute="top" constant="700" id="zf4-Ff-BXK"/>
                                         </constraints>
                                     </view>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="Z89-wj-KuN">
-                                        <rect key="frame" x="17" y="19" width="466" height="88"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="Z89-wj-KuN">
+                                        <rect key="frame" x="17" y="40" width="466" height="75"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="Z89-wj-KuN" firstAttribute="centerX" secondItem="bd0-r3-iZT" secondAttribute="centerX" id="0jd-r7-IM5"/>
+                                    <constraint firstItem="Z89-wj-KuN" firstAttribute="leading" secondItem="bd0-r3-iZT" secondAttribute="leading" constant="17" id="2oe-mE-Koy"/>
                                     <constraint firstAttribute="trailing" secondItem="NJc-8b-rxb" secondAttribute="trailing" priority="750" id="GnB-BW-bme"/>
+                                    <constraint firstItem="Z89-wj-KuN" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="40" id="PfH-KW-BnB"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="64" id="Uaf-nr-m3n"/>
                                     <constraint firstItem="v52-eU-5fR" firstAttribute="leading" secondItem="bd0-r3-iZT" secondAttribute="leading" constant="17" id="bKW-xT-SZu"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="centerX" secondItem="bd0-r3-iZT" secondAttribute="centerX" id="ojS-fr-2aP"/>
-                                    <constraint firstItem="v52-eU-5fR" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="110" id="sQN-cP-6vD"/>
+                                    <constraint firstItem="v52-eU-5fR" firstAttribute="top" secondItem="bd0-r3-iZT" secondAttribute="top" constant="130" id="sQN-cP-6vD"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="width" relation="lessThanOrEqual" secondItem="bd0-r3-iZT" secondAttribute="width" id="scM-uB-OqR"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="bottom" secondItem="bd0-r3-iZT" secondAttribute="bottomMargin" id="sr6-UR-f0o"/>
                                     <constraint firstItem="NJc-8b-rxb" firstAttribute="leading" secondItem="bd0-r3-iZT" secondAttribute="leading" priority="750" id="wfC-dD-gvZ"/>
@@ -660,12 +663,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Patient Onboarding" id="hQI-uM-Rxf">
-                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="ubu-nL-J63">
+                        <barButtonItem key="leftBarButtonItem" style="done" systemItem="cancel" id="Llq-T9-Ccp">
                             <connections>
-                                <action selector="cancelTapped:" destination="8rJ-Kc-sve" id="gde-DN-DgK"/>
+                                <action selector="cancelTapped:" destination="8rJ-Kc-sve" id="6pf-w3-5rL"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="save" id="AXq-J5-abl">
+                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="edit" id="AXq-J5-abl">
                             <connections>
                                 <action selector="saveTapped:" destination="8rJ-Kc-sve" id="Dkw-0k-tdu"/>
                             </connections>
@@ -677,6 +680,17 @@
                         <outlet property="containerView" destination="NJc-8b-rxb" id="m5f-9H-ALL"/>
                         <outlet property="scrollView" destination="bd0-r3-iZT" id="BKU-Pa-8WJ"/>
                         <outlet property="searchDisplayController" destination="OlN-bi-b96" id="0Ct-e8-V8k"/>
+                        <outletCollection property="textFields" destination="IH5-OL-YQa" collectionClass="NSMutableArray" id="9tr-kA-m2G"/>
+                        <outletCollection property="textFields" destination="PK7-3f-uzA" collectionClass="NSMutableArray" id="CdA-fS-F0X"/>
+                        <outletCollection property="textFields" destination="o5P-bb-dtM" collectionClass="NSMutableArray" id="goN-vY-Gfm"/>
+                        <outletCollection property="textFields" destination="jto-B0-7t1" collectionClass="NSMutableArray" id="eAn-c4-HeB"/>
+                        <outletCollection property="segmentedControls" destination="k4o-R6-lZ4" collectionClass="NSMutableArray" id="Tnz-is-3fz"/>
+                        <outletCollection property="segmentedControls" destination="5XO-FA-yug" collectionClass="NSMutableArray" id="dxW-2O-0QX"/>
+                        <outletCollection property="textViews" destination="jcs-Bl-Krm" collectionClass="NSMutableArray" id="7kp-aF-vpp"/>
+                        <outletCollection property="textViews" destination="jtl-IW-3EB" collectionClass="NSMutableArray" id="4Js-6B-hGS"/>
+                        <outletCollection property="textViews" destination="jSp-TH-L2N" collectionClass="NSMutableArray" id="6mx-OO-b7O"/>
+                        <outletCollection property="textViews" destination="13u-xQ-ykz" collectionClass="NSMutableArray" id="Msz-nh-bhI"/>
+                        <outletCollection property="textViews" destination="ixL-Z2-LJ9" collectionClass="NSMutableArray" id="vQI-NP-aTB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -689,7 +703,7 @@
                     </connections>
                 </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="1756.8" y="734.93253373313348"/>
+            <point key="canvasLocation" x="2160" y="705"/>
         </scene>
         <!--Search-->
         <scene sceneID="8An-Bj-6Jd">
@@ -776,7 +790,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tLg-68-0fd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="840.79999999999995" y="120.98950524737631"/>
+            <point key="canvasLocation" x="1188" y="23"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="ra5-6I-aC0">
@@ -877,6 +891,6 @@
         <image name="settings" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cwl-W2-vO7"/>
+        <segue reference="1oc-cb-uis"/>
     </inferredMetricsTieBreakers>
 </document>
