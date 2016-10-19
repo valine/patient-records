@@ -8,12 +8,8 @@
 
 import UIKit
 
-class CreatePatientViewController: UIViewController, UISplitViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate, UITextFieldDelegate {
-    @IBOutlet weak var SymptomSummary: UITextField!
-
-  //  @IBOutlet weak var scrollView: UIScrollView!
+class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
     
-    @IBOutlet weak var patientTableView: UITableView!
     
     let options = PatientAttributeSettings.getAttributeSettings()
     
@@ -27,7 +23,7 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     
         didSet {
             print("table reload")
-            patientTableView?.reloadData()
+            self.tableView?.reloadData()
         }
     }
     
@@ -43,10 +39,6 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // scrollView.contentSize = CGSize(width: 0, height: 14000)
-        patientTableView.delegate = self
-        patientTableView.dataSource = self
-
     }
 
     func configureView() {
@@ -63,13 +55,13 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         }
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
         let count = options?.count
         return count! + 1 // + 1 for the patient photo cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let photoHeight: CGFloat = 150
         if indexPath.item == 0 {
             return photoHeight
@@ -80,7 +72,7 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         }
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         if mode == .new {
         
@@ -200,9 +192,7 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
                                         
                     if let value = patientDictionary[columnName] as? Date {
                         print(value)
-                        let dateFormatter = DateFormatter()
                         cell.datePicker.date = value
-                        
                     }
                     
                     return cell
@@ -216,17 +206,11 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         }
     }
 
-    @IBAction func saveTapped(_ sender: Any) {
-        PatientRespository.addPatient(json: patientDictionaryToSave)
-         self.dismiss(animated: true, completion: nil)
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
+    
+    
     @IBOutlet weak var containerView: UIView!
 
     override func didReceiveMemoryWarning() {
@@ -234,9 +218,15 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func cancelTapped(_ sender: Any) {
+    @IBAction func rightNavButtonTapped(_ sender: Any) {
+        PatientRespository.addPatient(json: patientDictionaryToSave)
         self.dismiss(animated: true, completion: nil)
+
     }
+    @IBAction func cancelTapped(_ sender: Any) {
+            self.dismiss(animated: true, completion: nil)
+    }
+
 
     @IBAction func integerCellChanged(_ sender: Any) {
     let toggle = sender as! UISegmentedControl
@@ -244,30 +234,32 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         print(toggle.selectedSegmentIndex)
         
         let cell = toggle.superview?.superview
-        let index = patientTableView.indexPath(for: cell as! UITableViewCell)?.item
+        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = toggle.selectedSegmentIndex
 
     }
 
+
     @IBAction func textFieldEditingChanged(_ sender: Any) {
         let textField = sender as! UITextField
 
         let cell = textField.superview?.superview
-        let index = patientTableView.indexPath(for: cell as! UITableViewCell)?.item
+        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = textField.text
 
     }
+    
 
     @IBAction func dateValueChanged(_ sender: Any) {
         let dateView = sender as! UIDatePicker
         print(dateView.date)
         
         let cell = dateView.superview?.superview
-        let index = patientTableView.indexPath(for: cell as! UITableViewCell)?.item
+        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = String(describing: dateView.date)
@@ -278,7 +270,7 @@ class CreatePatientViewController: UIViewController, UISplitViewControllerDelega
         print(textView.text)
                 
         let cell = textView.superview?.superview
-        let index = patientTableView.indexPath(for: cell as! UITableViewCell)?.item
+        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = textView.text
