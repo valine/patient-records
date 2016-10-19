@@ -22,7 +22,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     let cellReuseIdentifier = "homeCell"
     var patients = [Patient]()
     
-    @IBOutlet weak var devLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,9 +95,12 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             controller.mode = .new
         }
     }
-
-    @IBAction func devRefreshPressed(_ sender: AnyObject) {
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let selectedRow = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedRow, animated: true)
+        }
+        
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
@@ -106,7 +108,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
         })
     }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
