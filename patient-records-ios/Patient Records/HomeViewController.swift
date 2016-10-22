@@ -9,6 +9,7 @@
 import UIKit
 import SpriteKit
 
+
 class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -86,7 +87,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     controller.patientDictionary = patient
 
                 }, debug: {(debug) in })
-           
+        
             }
         } else if segue.identifier == "newPatient" {
         
@@ -108,6 +109,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
         })
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

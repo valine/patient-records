@@ -48,6 +48,10 @@ db.serialize(function() {
         
         } else if (config.options[i].type == "dateCell") {
             createTable += "DATETIME"
+        } else if (config.options[i].type == "integerArrayCell") {
+            // TODO create table for integer array cell
+        } else if (config.options[i].type == "textArrayCell") {
+            // TODO create table for text array cell
         }
      }
      
