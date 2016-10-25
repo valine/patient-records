@@ -18,14 +18,14 @@ checklist for submision
 
 	features left:
 
-		p̶o̶s̶t̶ ̶p̶a̶t̶i̶e̶n̶t̶ ̶-̶ ̶!̶!̶!̶
+		p̶o̶s̶t̶ ̶p̶a̶t̶i̶e̶n̶t̶ ̶-̶ DONE
 		update patient - !!!
 		delete patient - !!!
 		weight table - !!
 		height table - !!
 		notes table - !
 		animated logo 
-		view single patient - !!!
+		view single patient - DONE
 		qr code - !! 
 		doctor name - !
 
@@ -34,6 +34,6 @@ checklist for submision
 		animated checkmarks and xs 
 		patient photo - !
 		push updates from server 		
-		i̶p̶a̶d̶ ̶l̶a̶y̶o̶u̶t̶
+		iPad layout -- DONE
 		metric or imperial option
 		
