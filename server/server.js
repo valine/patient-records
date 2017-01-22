@@ -181,10 +181,10 @@ app.get('/patient/id/:id', function (req, res) {
 
 // This responds a GET request
 app.get('/patient/recent/', function (req, res) {
-
+    // First name, lastname, dateAdded, and id hardcoded
     var db = new sqlite3.Database(file);
     db.serialize(function() {
-        var sql = "SELECT id, dateAdded, firstName FROM Patients ORDER BY dateAdded DESC LIMIT 15";
+        var sql = "SELECT id, dateAdded, firstName, lastName FROM Patients ORDER BY dateAdded DESC LIMIT 15";
         
         db.all(sql, function(err, rows) {
             var patients = {"patients" : rows}
