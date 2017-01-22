@@ -58,7 +58,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
         let count = options?.count
+        
         return count! + 1 // + 1 for the patient photo cell
+        
+       
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -74,6 +77,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
+        
+        //// New patient
         if mode == .new {
         
             if indexPath.item == 0 {
@@ -86,13 +91,20 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 let option = options?[indexPath.item - 1]
                 let type = option?["type"] as! String
                 let title = option?["title"] as! String
-            
-                if type == "textField" {
+
+                
+                if type == "textFieldCell" {
                     let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
                     
                     cell.textField.isHidden = false
                     cell.viewLabel.isHidden = true
                     cell.titleLabel.text = title
+                    
+                    let columnName = option?["columnName"] as! String
+                    let value = patientDictionaryToSave[columnName]
+
+                    cell.textField.text = value as! String?
+                   
                     
                     return cell
                 
@@ -106,11 +118,23 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     }
                     
                     cell.titleLabel.text = title
+                    let columnName = option?["columnName"] as! String
+                    let value = patientDictionaryToSave[columnName]
+                    
+                    cell.control.selectedSegmentIndex = (value as! Int?)!
+
+                    
                     return cell
                 } else if type == "textViewCell" {
                     let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
                     cell.textView.delegate = self
                     cell.titleLabel.text = title
+                   
+                    let columnName = option?["columnName"] as! String
+                    let value = patientDictionaryToSave[columnName]
+                    
+                    cell.textView.text = value as! String
+
                     return cell
                 } else if type == "dateCell" {
                     let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
@@ -118,13 +142,17 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     return cell
                 
                 } else {
-                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "none") as! TextFieldCell
                     cell.titleLabel.text = title
                     return cell
                 }
             
             }
-        } else {
+        }
+        
+        /// View Patient
+        else {
+        
 
             if indexPath.item == 0 {
                
@@ -153,6 +181,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     return cell
                 
                 } else if type == "integerCell" {
+                    
+                    
                     let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
                     let valueKeys = option?["valueKeys"] as! Array<String>
                     cell.control.removeAllSegments()
@@ -230,8 +260,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     @IBAction func integerCellChanged(_ sender: Any) {
     let toggle = sender as! UISegmentedControl
-        
-        print(toggle.selectedSegmentIndex)
+
         
         let cell = toggle.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
@@ -281,4 +310,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         case view
         case update
     }
+    
+
 }

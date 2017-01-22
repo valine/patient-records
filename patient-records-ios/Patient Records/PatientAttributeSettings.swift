@@ -3,7 +3,7 @@
 //  Patient Records
 //
 //  Created by Lukas Valine on 10/17/16.
-//  Copyright © 2016 Lukas Valinevaline. All rights reserved.
+//  Copyright © 2016 Lukas Valine. All rights reserved.
 //
 
 import Foundation

@@ -12,8 +12,8 @@
        
          {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"unknown"},
        
-         {"columnName": "weight", "columnHeight": 170, "title": "Weight", "type" : "integerArrayCell", "defaultValue":"unknown"},
-        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textArrayCell", "defaultValue":"unknown"}
+         {"columnName": "weight", "columnHeight": 170, "title": "Weight", "type" : "textFieldCell", "defaultValue":"unknown"},
+        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textFieldCell", "defaultValue":"unknown"}
     ]
     
 }
