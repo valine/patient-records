@@ -53,6 +53,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
            
         })
     }
+    @IBAction func searchTapped(_ sender: Any) {
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return patients.count
