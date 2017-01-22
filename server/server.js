@@ -1,6 +1,28 @@
 var express = require('express');
 var app = express();
 
+
+var multer  =   require('multer');
+var storage =   multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now());
+  }
+});
+var upload = multer({ storage : storage}).single('userPhoto');
+
+
+app.post('/api/photo',function(req,res){
+    upload(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        res.end("File is uploaded");
+    });
+});
+
 app.get('/', function (req, res) {
    res.send('Hello World');
    
@@ -59,7 +81,7 @@ db.serialize(function() {
      
     db.run(createTable);
     
-    for (j = 0; j < 10; j++) {
+  /*  for (j = 0; j < 10; j++) {
 
         var insertRow = "INSERT INTO Patients (id, dateAdded"
         
@@ -92,7 +114,7 @@ db.serialize(function() {
         insertRow += ")"
         
         db.run(insertRow)
-    }
+    } */
     
     db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
   }
