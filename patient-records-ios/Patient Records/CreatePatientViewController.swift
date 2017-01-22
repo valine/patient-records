@@ -41,20 +41,27 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         super.viewDidLoad()
     }
 
+    @IBOutlet weak var rightNavButton: UIBarButtonItem!
+    
     func configureView() {
         if mode == .new {
-        
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
         }
         
         else if mode == .update {
-        
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
         }
         
         else if mode == .view {
-        
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
         }
+        
+        self.tableView.reloadData()
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
         let count = options?.count
@@ -79,7 +86,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
         
         //// New patient
-        if mode == .new {
+        if mode == .new || mode == .update {
         
             if indexPath.item == 0 {
                
@@ -249,9 +256,17 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     @IBAction func rightNavButtonTapped(_ sender: Any) {
-        PatientRespository.addPatient(json: patientDictionaryToSave)
-        self.dismiss(animated: true, completion: nil)
-
+        
+        if (mode == .new) {
+            PatientRespository.addPatient(json: patientDictionaryToSave, completion: {
+                
+                self.dismiss(animated: true, completion: nil)
+            })
+        } else if mode == .view {
+            mode = .update
+        } else if mode == .update {
+            mode = .view
+        }
     }
     @IBAction func cancelTapped(_ sender: Any) {
             self.dismiss(animated: true, completion: nil)

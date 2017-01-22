@@ -510,14 +510,13 @@
                                 <action selector="cancelTapped:" destination="Z2r-X5-5Qf" id="TMc-zC-TFv"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="TEe-Gk-JGa">
-                            <connections>
-                                <action selector="rightNavButtonTapped:" destination="Z2r-X5-5Qf" id="j7P-br-P7j"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="TEe-Gk-JGa"/>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="700"/>
+                    <connections>
+                        <outlet property="rightNavButton" destination="TEe-Gk-JGa" id="Ycp-F1-5Ox"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRc-k6-04O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

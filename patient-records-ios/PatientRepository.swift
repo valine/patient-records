@@ -100,7 +100,7 @@ class PatientRespository {
             task.resume()
     }
     
-    static func addPatient(json: [String: Any]) {
+    static func addPatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
 
         do {
             
@@ -127,14 +127,9 @@ class PatientRespository {
                     print("Error -> \(error)")
                     return
                 }
-
-                do {
-                    let result = try JSONSerialization.jsonObject(with: data!, options: []) as? [String:AnyObject]
-
-                    print("Result -> \(result)")
-
-                } catch {
-                    print("Error -> \(error)")
+                
+                DispatchQueue.main.async {
+                    completion()
                 }
             }
 
@@ -252,6 +247,11 @@ struct Patient {
         if let firstname = json["firstName"] as? String {
             patient.firstName = firstname
             print(firstname)
+        }
+        
+        if let lastname = json["lastName"] as? String {
+            patient.lastName = lastname
+
         }
         
         if let id = json["id"] as? Int {
