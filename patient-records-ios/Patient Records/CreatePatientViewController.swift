@@ -10,7 +10,7 @@ import UIKit
 
 class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
     
-    
+    var delegate: CreatePatientViewContrllerDelegate?
     let options = PatientAttributeSettings.getAttributeSettings()
     
     var mode: Mode? = Mode.view {
@@ -260,7 +260,9 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if (mode == .new) {
             PatientRespository.addPatient(json: patientDictionaryToSave, completion: {
                 
-                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: true, completion: {})
+                self.delegate?.didFinishTask(sender: self.delegate!)
+
             })
         } else if mode == .view {
             mode = .update
@@ -320,6 +322,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         patientDictionaryToSave[columnName] = textView.text
         
     }
+    
+    
     enum Mode {
         case new
         case view
@@ -327,4 +331,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
 
+}
+
+protocol CreatePatientViewContrllerDelegate: class {
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate)
 }

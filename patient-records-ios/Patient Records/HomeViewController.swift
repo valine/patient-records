@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 
-class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
@@ -96,24 +96,35 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
             
             controller.mode = .new
+            controller.delegate = self
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if let selectedRow = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedRow, animated: true)
-        }
+//    override func viewWillAppear(_ animated: Bool) {
+//        if let selectedRow = tableView.indexPathForSelectedRow {
+//            tableView.deselectRow(at: selectedRow, animated: true)
+//        }
+//        
+//        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+//            self.patients = returnedPatients
+//            self.tableView.reloadData()
+//        }, debug: {(value) in
+//
+//        })
+//    }
+    
+    /// Called when createPatientViewController model view dismisses
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate) {
         
+        print("delegate!!!!")
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-
+            
         })
-    }
 
-    
-    
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
