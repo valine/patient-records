@@ -15,6 +15,7 @@
 		8018A1751DB5CB1600FEA993 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A1741DB5CB1600FEA993 /* DateCell.swift */; };
 		8018A1771DB6690400FEA993 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A1761DB6690400FEA993 /* PhotoCell.swift */; };
 		805539621E359EB300EDDAE0 /* heart.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 805539611E359EB300EDDAE0 /* heart.atlas */; };
+		805539641E35C1BE00EDDAE0 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805539631E35C1BE00EDDAE0 /* DeleteCell.swift */; };
 		807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326401DA1CC600082EC2E /* AppDelegate.swift */; };
 		807326481DA1CC600082EC2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 807326461DA1CC600082EC2E /* Main.storyboard */; };
 		8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */; };
@@ -86,6 +87,7 @@
 		8018A1741DB5CB1600FEA993 /* DateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		8018A1761DB6690400FEA993 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		805539611E359EB300EDDAE0 /* heart.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = heart.atlas; sourceTree = "<group>"; };
+		805539631E35C1BE00EDDAE0 /* DeleteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
 		8073263D1DA1CC600082EC2E /* Patient Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Patient Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		807326401DA1CC600082EC2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		807326471DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 				8018A1701DB5CA5D00FEA993 /* IntegerCell.swift */,
 				8018A1721DB5CAA900FEA993 /* TextViewCell.swift */,
 				8018A1741DB5CB1600FEA993 /* DateCell.swift */,
+				805539631E35C1BE00EDDAE0 /* DeleteCell.swift */,
 				8018A1761DB6690400FEA993 /* PhotoCell.swift */,
 				80E743531DA20DEF004898B8 /* NestableUIView.swift */,
 				80A36CD71DAE8445003F223E /* LogoView.swift */,
@@ -455,6 +458,7 @@
 				80EFC5B71DB7E5BA00A391A5 /* SocketLogger.swift in Sources */,
 				8018A1771DB6690400FEA993 /* PhotoCell.swift in Sources */,
 				8091A1511DA4536B00D0A541 /* ServerSettings.swift in Sources */,
+				805539641E35C1BE00EDDAE0 /* DeleteCell.swift in Sources */,
 				807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */,
 				80EFC5B41DB7E5BA00A391A5 /* SocketIOClientOption.swift in Sources */,
 				80EFC5A81DB7E5BA00A391A5 /* SocketAnyEvent.swift in Sources */,

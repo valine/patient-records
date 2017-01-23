@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
         //UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]\
         UITabBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
-        
+        application.setStatusBarHidden(true, with: .none)
+        application.setStatusBarHidden(false, with: .none)
         let splitViewController = self.window!.rootViewController as! UISplitViewController
         splitViewController.delegate = self
         splitViewController.preferredDisplayMode = .allVisible
@@ -118,9 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             }
         }
     }
-
-    
-    
 
 
 }

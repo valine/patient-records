@@ -47,16 +47,44 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if mode == .new {
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
+            UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+
         }
         
         else if mode == .update {
+            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+
+            
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            
+            navigationItem.leftBarButtonItem = cancelButton
+            
+            self.navigationItem.setHidesBackButton(true, animated:true);
+            
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
+            
+
         }
         
         else if mode == .view {
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
+            
+            self.navigationItem.setHidesBackButton(false, animated:true);
+            
+            navigationItem.leftBarButtonItem = nil
+            
+            self.navigationController?.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            
+
         }
         
         self.tableView.reloadData()
@@ -262,8 +290,9 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 
                 self.dismiss(animated: true, completion: {})
                 self.delegate?.didFinishTask(sender: self.delegate!)
-
             })
+            
+            
         } else if mode == .view {
             mode = .update
         } else if mode == .update {
@@ -271,7 +300,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
     }
     @IBAction func cancelTapped(_ sender: Any) {
-            self.dismiss(animated: true, completion: nil)
+        mode = .view
+        self.dismiss(animated: true, completion: nil)
     }
 
 
@@ -322,6 +352,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         patientDictionaryToSave[columnName] = textView.text
         
     }
+    
     
     
     enum Mode {

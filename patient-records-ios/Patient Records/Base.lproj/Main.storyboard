@@ -23,14 +23,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="51" sectionHeaderHeight="100" sectionFooterHeight="68" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-sX-Jfn">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Hjq-sX-Jfn">
+                                <rect key="frame" x="0.0" y="69" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.94624623549999998" green="0.96029466389999996" blue="0.96029466389999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="sectionIndexBackgroundColor" red="0.94624623553553489" green="0.96029466390609741" blue="0.96029466390609741" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="homeCell" rowHeight="51" id="L06-DB-dVd" customClass="HomeTableViewCell" customModule="Patient_Records" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="100" width="375" height="51"/>
+                                        <rect key="frame" x="0.0" y="1" width="375" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L06-DB-dVd" id="TlT-0V-fZ4">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="51"/>
@@ -78,15 +78,19 @@
                                 </prototypes>
                                 <sections/>
                             </tableView>
-                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIO-qE-1YL">
-                                <rect key="frame" x="-1" y="64" width="376" height="100"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" id="HqF-TL-y6p">
-                                    <rect key="frame" x="0.0" y="0.0" width="376" height="100"/>
+                            <visualEffectView opaque="NO" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIO-qE-1YL">
+                                <rect key="frame" x="-1" y="64" width="376" height="70"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="HqF-TL-y6p">
+                                    <rect key="frame" x="0.0" y="0.0" width="376" height="70"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-sB-2At" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
+                                            <rect key="frame" x="21" y="6" width="59" height="59"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="0.9540371192893401" green="0.9540371192893401" blue="0.9540371192893401" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </view>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Here are your most recent patients" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Tlz-KO-EGq">
-                                            <rect key="frame" x="95" y="62" width="251" height="17"/>
+                                            <rect key="frame" x="95" y="40" width="251" height="17"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="16"/>
@@ -94,29 +98,30 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Welcome Back" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                            <rect key="frame" x="91" y="28" width="220" height="30"/>
+                                            <rect key="frame" x="95" y="13" width="220" height="30"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="28"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="21"/>
                                             <color key="textColor" red="0.18425755428095844" green="0.18472041218186613" blue="0.20293102825583764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-sB-2At" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
-                                            <rect key="frame" x="15" y="20" width="59" height="59"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" red="0.9540371192893401" green="0.9540371192893401" blue="0.9540371192893401" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </view>
                                     </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="cJd-Bs-mmV"/>
+                                </constraints>
                                 <blurEffect style="light"/>
                             </visualEffectView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Hjq-sX-Jfn" secondAttribute="trailing" id="6s5-Ep-eWL"/>
-                            <constraint firstItem="Hjq-sX-Jfn" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="-64" id="O97-TB-DFK"/>
-                            <constraint firstItem="Hjq-sX-Jfn" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="OUP-US-o74"/>
-                            <constraint firstAttribute="bottom" secondItem="Hjq-sX-Jfn" secondAttribute="bottom" id="W0s-9X-JAu"/>
+                            <constraint firstItem="hIO-qE-1YL" firstAttribute="centerX" secondItem="Hjq-sX-Jfn" secondAttribute="centerX" id="DZC-Of-Mo9"/>
+                            <constraint firstItem="Hjq-sX-Jfn" firstAttribute="width" secondItem="tsR-hK-woN" secondAttribute="width" id="Jz4-JX-ktc"/>
+                            <constraint firstItem="Hjq-sX-Jfn" firstAttribute="centerX" secondItem="tsR-hK-woN" secondAttribute="centerX" id="MJ5-ka-ggw"/>
+                            <constraint firstItem="hIO-qE-1YL" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="a0C-P6-l95"/>
+                            <constraint firstItem="hIO-qE-1YL" firstAttribute="width" secondItem="tsR-hK-woN" secondAttribute="width" id="ao3-Wh-uBS"/>
+                            <constraint firstItem="Hjq-sX-Jfn" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" constant="5" id="mYZ-Wc-Vc3"/>
+                            <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="Hjq-sX-Jfn" secondAttribute="bottom" id="tSN-Fz-Bx6"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -153,7 +158,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="732" y="-729.08545727136436"/>
+            <point key="canvasLocation" x="730.39999999999998" y="-729.98500749625191"/>
         </scene>
         <!--Options-->
         <scene sceneID="4Pg-Qg-SIZ">
@@ -252,7 +257,7 @@
             <objects>
                 <tableViewController id="Z2r-X5-5Qf" customClass="CreatePatientViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="w1i-sp-oB4">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="700"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -260,7 +265,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rmv-nh-8Ni" id="ah5-eD-OuV">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="Textfield Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvc-sj-t6W">
@@ -322,7 +327,7 @@
                                 <rect key="frame" x="0.0" y="119" width="375" height="157"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XtC-zS-w4R" id="BaJ-q3-nvM">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="157"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Patient Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5P-am-2FF">
@@ -349,7 +354,7 @@
                                 <rect key="frame" x="0.0" y="276" width="375" height="149"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wOG-z1-w2J" id="526-CN-Aud">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="149"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="148"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xDC-rE-eeH">
@@ -395,7 +400,7 @@
                                 <rect key="frame" x="0.0" y="425" width="375" height="91"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XHo-jZ-gzN" id="4E7-M3-cUx">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Integer Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LaZ-bs-vE5">
@@ -456,7 +461,7 @@
                                 <rect key="frame" x="0.0" y="516" width="375" height="157"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iH4-wM-WsA" id="gXU-dZ-tFt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="157"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nBm-BM-M3A">
@@ -498,6 +503,26 @@
                                     <outlet property="titlelabel" destination="nBm-BM-M3A" id="DcS-qB-S11"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="deleteCell" rowHeight="157" id="Zkv-gH-3Xr" customClass="DeleteCell" customModule="Patient_Records" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="673" width="375" height="157"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zkv-gH-3Xr" id="4wQ-B0-Ji7">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gZ-7n-HzI">
+                                            <rect key="frame" x="24" y="67" width="327" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Delete Patient">
+                                                <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="delete" destination="6gZ-7n-HzI" id="6nF-5n-5gS"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Z2r-X5-5Qf" id="g40-5s-r73"/>
@@ -513,14 +538,14 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="TEe-Gk-JGa"/>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="700"/>
+                    <size key="freeformSize" width="375" height="1000"/>
                     <connections>
                         <outlet property="rightNavButton" destination="TEe-Gk-JGa" id="Ycp-F1-5Ox"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRc-k6-04O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2127" y="631"/>
+            <point key="canvasLocation" x="2125.5999999999999" y="630.58470764617698"/>
         </scene>
         <!--Search-->
         <scene sceneID="8An-Bj-6Jd">

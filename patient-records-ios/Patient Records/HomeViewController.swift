@@ -37,8 +37,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        let welcomeHeaderHeight: CGFloat = 100
-        tableView.contentInset = UIEdgeInsetsMake(welcomeHeaderHeight + self.topLayoutGuide.length, 0, 0, 0)
+        let welcomeHeaderHeight: CGFloat = 70
+        //tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0)
         
         logoScene = SKScene(fileNamed: "LogoScene")!
         let skLogoView = logoContainerView as! SKView
@@ -146,6 +146,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         })
 
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
