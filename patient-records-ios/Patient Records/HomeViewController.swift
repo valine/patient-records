@@ -18,6 +18,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var logoContainerView: UIView!
     
+    var logoScene: SKScene?
     //var detailViewController: CreatePatientViewController!
     
     let cellReuseIdentifier = "homeCell"
@@ -39,12 +40,17 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         let welcomeHeaderHeight: CGFloat = 100
         tableView.contentInset = UIEdgeInsetsMake(welcomeHeaderHeight + self.topLayoutGuide.length, 0, 0, 0)
         
-        let logoScene = SKScene(fileNamed: "LogoScene")
+        logoScene = SKScene(fileNamed: "LogoScene")!
         let skLogoView = logoContainerView as! SKView
         skLogoView.allowsTransparency = true
         logoScene?.backgroundColor = .clear
         skLogoView.backgroundColor = UIColor.clear
         skLogoView.presentScene(logoScene)
+        
+        animateHeart()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action:  #selector (self.touchGestureIcon(_:)))
+        skLogoView.addGestureRecognizer(tapGesture)
         
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
@@ -54,6 +60,21 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         })
     }
     @IBAction func searchTapped(_ sender: Any) {
+    }
+    
+    
+    func touchGestureIcon(_ sender:UITapGestureRecognizer){
+        animateHeart()
+    }
+    
+    func animateHeart() {
+        if #available(iOS 9.0, *) {
+            let logoSprite = logoScene?.childNode(withName: "logo")
+            logoSprite?.run(SKAction(named: "heart-beat")!)
+            
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

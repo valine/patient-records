@@ -14,6 +14,7 @@
 		8018A1731DB5CAA900FEA993 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A1721DB5CAA900FEA993 /* TextViewCell.swift */; };
 		8018A1751DB5CB1600FEA993 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A1741DB5CB1600FEA993 /* DateCell.swift */; };
 		8018A1771DB6690400FEA993 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8018A1761DB6690400FEA993 /* PhotoCell.swift */; };
+		805539621E359EB300EDDAE0 /* heart.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 805539611E359EB300EDDAE0 /* heart.atlas */; };
 		807326411DA1CC600082EC2E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326401DA1CC600082EC2E /* AppDelegate.swift */; };
 		807326481DA1CC600082EC2E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 807326461DA1CC600082EC2E /* Main.storyboard */; };
 		8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8073264B1DA1CC600082EC2E /* LaunchScreen.storyboard */; };
@@ -22,6 +23,7 @@
 		807326711DA1CD970082EC2E /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326701DA1CD970082EC2E /* SearchViewController.swift */; };
 		807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326721DA1CDC00082EC2E /* HomeViewController.swift */; };
 		807326751DA1CDD70082EC2E /* CreatePatientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */; };
+		80761B1E1E35996D006D6D8B /* heart-actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 80761B1D1E35996D006D6D8B /* heart-actions.sks */; };
 		808D122E1DB180090017E17D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 808D122D1DB180090017E17D /* Assets.xcassets */; };
 		8091A14A1DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */; };
 		8091A14D1DA32E9E00D0A541 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8091A14C1DA32E9E00D0A541 /* MessageUI.framework */; };
@@ -83,6 +85,7 @@
 		8018A1721DB5CAA900FEA993 /* TextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		8018A1741DB5CB1600FEA993 /* DateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		8018A1761DB6690400FEA993 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		805539611E359EB300EDDAE0 /* heart.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = heart.atlas; sourceTree = "<group>"; };
 		8073263D1DA1CC600082EC2E /* Patient Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Patient Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		807326401DA1CC600082EC2E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		807326471DA1CC600082EC2E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 		807326701DA1CD970082EC2E /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		807326721DA1CDC00082EC2E /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePatientViewController.swift; sourceTree = "<group>"; };
+		80761B1D1E35996D006D6D8B /* heart-actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = "heart-actions.sks"; path = "../heart-actions.sks"; sourceTree = "<group>"; };
 		808D122D1DB180090017E17D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8091A1491DA2ED9A00D0A541 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		8091A14C1DA32E9E00D0A541 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -184,6 +188,7 @@
 		8073263F1DA1CC600082EC2E /* Patient Records */ = {
 			isa = PBXGroup;
 			children = (
+				805539611E359EB300EDDAE0 /* heart.atlas */,
 				8018A16E1DB5C9B300FEA993 /* TextFieldCell.swift */,
 				807326401DA1CC600082EC2E /* AppDelegate.swift */,
 				8091A1481DA2ED9A00D0A541 /* CoreDataModel.xcdatamodeld */,
@@ -232,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				80A36CD51DAE7EFB003F223E /* LogoScene.sks */,
+				80761B1D1E35996D006D6D8B /* heart-actions.sks */,
 				80A36CD31DAD6B05003F223E /* HomeTableViewCell.swift */,
 				8018A1701DB5CA5D00FEA993 /* IntegerCell.swift */,
 				8018A1721DB5CAA900FEA993 /* TextViewCell.swift */,
@@ -404,7 +410,9 @@
 			files = (
 				8073264D1DA1CC600082EC2E /* LaunchScreen.storyboard in Resources */,
 				80A36CD61DAE7EFB003F223E /* LogoScene.sks in Resources */,
+				80761B1E1E35996D006D6D8B /* heart-actions.sks in Resources */,
 				808D122E1DB180090017E17D /* Assets.xcassets in Resources */,
+				805539621E359EB300EDDAE0 /* heart.atlas in Resources */,
 				807326481DA1CC600082EC2E /* Main.storyboard in Resources */,
 				8018A16D1DB5B03300FEA993 /* patient-attributes.json in Resources */,
 			);
