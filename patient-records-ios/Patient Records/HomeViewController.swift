@@ -27,6 +27,10 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive(notification:)), name: Notification.Name("didBecomeActive"), object: nil)
+        
+        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(HomeViewController.updateTable), userInfo: nil, repeats: true)
+        
         let userDefaults = UserDefaults()
         
         if !userDefaults.bool(forKey: "isNotFirstLaunch") {
@@ -37,9 +41,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        let welcomeHeaderHeight: CGFloat = 70
-        //tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0)
-        
+
         logoScene = SKScene(fileNamed: "LogoScene")!
         let skLogoView = logoContainerView as! SKView
         skLogoView.allowsTransparency = true
@@ -47,10 +49,11 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         skLogoView.backgroundColor = UIColor.clear
         skLogoView.presentScene(logoScene)
         
-        animateHeart()
+        animateHeartWithDelay()
         
         let tapGesture = UITapGestureRecognizer(target: self, action:  #selector (self.touchGestureIcon(_:)))
         skLogoView.addGestureRecognizer(tapGesture)
+        
         
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
@@ -59,18 +62,47 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
            
         })
     }
+    
+    func updateTable() {
+        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+        }, debug: {(value) in
+            
+        })
+    }
+    
+    func didBecomeActive(notification: Notification){
+        updateTable()
+    }
+    
     @IBAction func searchTapped(_ sender: Any) {
     }
     
     
     func touchGestureIcon(_ sender:UITapGestureRecognizer){
         animateHeart()
+        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+        }, debug: {(value) in
+            
+        })
     }
     
     func animateHeart() {
         if #available(iOS 9.0, *) {
             let logoSprite = logoScene?.childNode(withName: "logo")
             logoSprite?.run(SKAction(named: "heart-beat")!)
+            
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    func animateHeartWithDelay() {
+        if #available(iOS 9.0, *) {
+            let logoSprite = logoScene?.childNode(withName: "logo")
+            logoSprite?.run(SKAction(named: "heart-beat-delay")!)
             
         } else {
             // Fallback on earlier versions

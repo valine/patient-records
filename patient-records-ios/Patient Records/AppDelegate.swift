@@ -23,10 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         UITabBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
         application.setStatusBarHidden(true, with: .none)
         application.setStatusBarHidden(false, with: .none)
-        let splitViewController = self.window!.rootViewController as! UISplitViewController
-        splitViewController.delegate = self
-        splitViewController.preferredDisplayMode = .allVisible
-        
+//        let splitViewController = self.window!.rootViewController as! UISplitViewController
+//        splitViewController.delegate = self
+//        splitViewController.preferredDisplayMode = .allVisible
         return true
     }
     
@@ -52,6 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
+        NotificationCenter.default.post(name: Notification.Name("didBecomeActive"), object: nil)
+
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
