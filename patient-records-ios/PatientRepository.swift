@@ -175,24 +175,24 @@ struct Patient {
             dateAdded: Date(),
             lastSeen: Date(),
             
-            firstName: "unknown",
-            middleName: "unknown",
-            lastName: "unknown",
+            firstName: "",
+            middleName: "",
+            lastName: "",
             
             sex: 0,
             birthDate: Date(),
-            phoneNumber: "unknown",
-            emailAddress: "unknown",
+            phoneNumber: "",
+            emailAddress: "",
             weight: [PatientWeight](),
             height: [PatientHeight](),
             
             familyStatus: 0,
             
-            medicalIssues: "unknown",
-            currentMedications: "unknown",
-            previouslMedicalProblems: "unknown",
-            previousSurgery: "unknown",
-            allergies: "unknwon",
+            medicalIssues: "",
+            currentMedications: "",
+            previouslMedicalProblems: "",
+            previousSurgery: "",
+            allergies: "",
             
             medicalRecomedations: [MedicalRecomendations](),
             updates: [Updates]()

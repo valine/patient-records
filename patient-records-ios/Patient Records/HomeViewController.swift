@@ -102,7 +102,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     func animateHeartWithDelay() {
         if #available(iOS 9.0, *) {
             let logoSprite = logoScene?.childNode(withName: "logo")
-            logoSprite?.run(SKAction(named: "heart-beat-delay")!)
+            logoSprite?.run(SKAction(named: "app-load")!)
             
         } else {
             // Fallback on earlier versions
@@ -134,10 +134,12 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 let id = Int(cell.id.text!)
                 
                 let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+               
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
                 controller.mode = .view
-
+                controller.patientDictionary = Patient.defaultPatientDictionary()
+                
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
                     controller.patientDictionary = patient
 
@@ -168,8 +170,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     /// Called when createPatientViewController model view dismisses
     func didFinishTask(sender: CreatePatientViewContrllerDelegate) {
-        
-        print("delegate!!!!")
+
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()

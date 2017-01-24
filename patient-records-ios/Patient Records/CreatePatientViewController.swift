@@ -22,7 +22,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     var patientDictionary: [String: Any] = Patient.defaultPatientDictionary() {
     
         didSet {
-            print("table reload")
             self.tableView?.reloadData()
         }
     }
