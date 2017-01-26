@@ -385,7 +385,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="xDC-rE-eeH">
-                                            <rect key="frame" x="24" y="49" width="327" height="73"/>
+                                            <rect key="frame" x="24" y="43" width="327" height="79"/>
                                             <color key="backgroundColor" red="0.95958033590000003" green="0.96908113129999995" blue="0.96908113129999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="650" id="Mmy-Ff-dcI"/>
@@ -410,7 +410,7 @@
                                         <constraint firstItem="OKy-Ls-pqe" firstAttribute="leading" secondItem="526-CN-Aud" secondAttribute="leadingMargin" priority="750" constant="16" id="AFS-BI-G4D"/>
                                         <constraint firstItem="xDC-rE-eeH" firstAttribute="width" relation="lessThanOrEqual" secondItem="526-CN-Aud" secondAttribute="width" id="TYW-nM-1tc"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="xDC-rE-eeH" secondAttribute="bottom" constant="18" id="Xlx-Wm-bcF"/>
-                                        <constraint firstItem="xDC-rE-eeH" firstAttribute="top" secondItem="526-CN-Aud" secondAttribute="topMargin" constant="41" id="dv3-sp-V1o"/>
+                                        <constraint firstItem="xDC-rE-eeH" firstAttribute="top" secondItem="526-CN-Aud" secondAttribute="topMargin" constant="35" id="dv3-sp-V1o"/>
                                         <constraint firstItem="xDC-rE-eeH" firstAttribute="leading" secondItem="526-CN-Aud" secondAttribute="leadingMargin" priority="750" constant="16" id="gLF-az-szl"/>
                                         <constraint firstItem="OKy-Ls-pqe" firstAttribute="centerX" secondItem="526-CN-Aud" secondAttribute="centerX" id="hkS-eB-w86"/>
                                         <constraint firstAttribute="topMargin" secondItem="OKy-Ls-pqe" secondAttribute="top" id="oZ9-bE-69G"/>
@@ -500,26 +500,39 @@
                                             <color key="textColor" red="0.27458569150000001" green="0.27961809199999998" blue="0.274406229" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" useCurrentDate="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PlQ-Kn-Vpc">
-                                            <rect key="frame" x="24" y="46" width="328" height="84"/>
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="PlQ-Kn-Vpc">
+                                            <rect key="frame" x="24" y="46" width="327" height="84"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="lessThanOrEqual" constant="650" id="Xx5-Bk-dam"/>
                                             </constraints>
-                                            <date key="date" timeIntervalSinceReferenceDate="-662673497.30209494">
-                                                <!--1980-01-02 04:01:42 +0000-->
+                                            <date key="date" timeIntervalSinceReferenceDate="-3026923095.3020935">
+                                                <!--1905-01-31 04:01:44 +0000-->
                                             </date>
                                             <connections>
                                                 <action selector="dateValueChanged:" destination="Z2r-X5-5Qf" eventType="valueChanged" id="cTO-Ym-2zg"/>
                                             </connections>
                                         </datePicker>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3Q-y4-nmP">
+                                            <rect key="frame" x="25" y="48" width="325" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="650" id="XEc-Ph-vP0"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottomMargin" secondItem="PlQ-Kn-Vpc" secondAttribute="bottom" constant="18" id="E5F-dY-m0j"/>
                                         <constraint firstItem="nBm-BM-M3A" firstAttribute="centerX" secondItem="gXU-dZ-tFt" secondAttribute="centerX" id="E7b-tX-IKQ"/>
                                         <constraint firstItem="PlQ-Kn-Vpc" firstAttribute="centerX" secondItem="gXU-dZ-tFt" secondAttribute="centerX" id="GUr-cG-1m3"/>
+                                        <constraint firstItem="b3Q-y4-nmP" firstAttribute="width" relation="lessThanOrEqual" secondItem="gXU-dZ-tFt" secondAttribute="width" id="GiU-Ev-99g"/>
+                                        <constraint firstItem="b3Q-y4-nmP" firstAttribute="leading" secondItem="gXU-dZ-tFt" secondAttribute="leadingMargin" constant="17" id="GuQ-xa-sgu"/>
                                         <constraint firstItem="PlQ-Kn-Vpc" firstAttribute="top" secondItem="gXU-dZ-tFt" secondAttribute="topMargin" constant="38" id="MAB-ft-8lN"/>
                                         <constraint firstItem="PlQ-Kn-Vpc" firstAttribute="leading" secondItem="gXU-dZ-tFt" secondAttribute="leadingMargin" priority="750" constant="16" id="NAn-9u-LsU"/>
                                         <constraint firstAttribute="topMargin" secondItem="nBm-BM-M3A" secondAttribute="top" id="d11-Au-ndJ"/>
+                                        <constraint firstItem="b3Q-y4-nmP" firstAttribute="centerX" secondItem="gXU-dZ-tFt" secondAttribute="centerX" id="ffv-gT-7C5"/>
+                                        <constraint firstItem="b3Q-y4-nmP" firstAttribute="top" secondItem="gXU-dZ-tFt" secondAttribute="topMargin" constant="40" id="gcK-V9-bWR"/>
                                         <constraint firstItem="nBm-BM-M3A" firstAttribute="width" relation="lessThanOrEqual" secondItem="gXU-dZ-tFt" secondAttribute="width" id="k99-d6-xXT"/>
                                         <constraint firstItem="PlQ-Kn-Vpc" firstAttribute="width" relation="lessThanOrEqual" secondItem="gXU-dZ-tFt" secondAttribute="width" id="qJF-fq-oCK"/>
                                         <constraint firstItem="nBm-BM-M3A" firstAttribute="leading" secondItem="gXU-dZ-tFt" secondAttribute="leadingMargin" priority="750" constant="16" id="tog-XE-6nj"/>
@@ -528,6 +541,7 @@
                                 <connections>
                                     <outlet property="datePicker" destination="PlQ-Kn-Vpc" id="VgS-Is-VCk"/>
                                     <outlet property="titlelabel" destination="nBm-BM-M3A" id="DcS-qB-S11"/>
+                                    <outlet property="viewLabel" destination="b3Q-y4-nmP" id="FSI-gt-I4X"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="deleteCell" rowHeight="157" id="Zkv-gH-3Xr" customClass="DeleteCell" customModule="Patient_Records" customModuleProvider="target">

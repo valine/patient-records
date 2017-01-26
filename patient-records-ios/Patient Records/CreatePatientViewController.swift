@@ -191,7 +191,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.titleLabel.text = title
                         let columnName = option?["columnName"] as! String
                         let value = patientDictionary[columnName]
-                        
                         cell.control.selectedSegmentIndex = (value as! Int?)!
 
                         
@@ -200,7 +199,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
                         cell.textView.delegate = self
                         cell.titleLabel.text = title
-                       
+                        cell.textView.backgroundColor = #colorLiteral(red: 0.9595803359, green: 0.9690811313, blue: 0.9690811313, alpha: 1)
+                        cell.textView.layer.cornerRadius = 5
+                        cell.textView.layer.borderWidth = 0.9
+                        cell.textView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
+                        cell.textView.isEditable = true
+                        
+
                         let columnName = option?["columnName"] as! String
                         let value = patientDictionary[columnName]
                         
@@ -210,6 +215,21 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     } else if type == "dateCell" {
                         let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
                         cell.titlelabel.text = title
+                        
+                        let columnName = option?["columnName"] as! String
+                        let value = patientDictionary[columnName] as! String
+                       
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                        
+                        
+                        if let date = formatter.date(from: value) {
+                            cell.datePicker.setDate(date, animated: false)
+                        }
+                        
+                        cell.viewLabel.isHidden = true;
+                        cell.datePicker.isHidden = false;
+
                         return cell
                     
                     } else {
@@ -288,6 +308,12 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
                     cell.textView.delegate = self
                     cell.titleLabel.text = title
+                    cell.textView.backgroundColor = .white
+                    cell.textView.isEditable = false
+                    
+                    cell.textView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                    cell.textView.layer.borderWidth = 0
+
                     
                     if let value = patientDictionary[columnName] as? String {
                         
@@ -299,10 +325,23 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 } else if type == "dateCell" {
                     let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
                     cell.titlelabel.text = title
+                    cell.viewLabel.isHidden = false;
+                    cell.datePicker.isHidden = true;
                     
-                                        
-                    if let value = patientDictionary[columnName] as? Date {
-                        cell.datePicker.date = value
+                    if let value = patientDictionary[columnName] as? String {
+                       // cell.datePicker.date = value
+                        
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                        
+                        if let date = formatter.date(from: value) {
+                            let formatterToString = DateFormatter()
+                            formatterToString.dateStyle = DateFormatter.Style.full
+                            cell.viewLabel.text = formatterToString.string(from: date)
+                        } else {
+                            cell.viewLabel.text = "Unknown"
+                        }
+        
                     }
                     
                     return cell
@@ -424,13 +463,37 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     func deletePressed(_ sender: Any) {
-        self.mode = .empty
-        PatientRespository.deletePatientById(id: patientDictionary["id"] as! Int, completion: {
-            
-            _ = self.navigationController?.navigationController?.popToRootViewController(animated: true)
-            self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
-        })
+        let firstName = patientDictionary["firstName"] as! String
+        let lastName = patientDictionary["lastName"] as! String
+        let name = firstName + " " +  lastName
+        let message = "Are you sure you want to delete " + name + "?  This cannot be easily undone."
+        // Create the alert controller
+        let alertController = UIAlertController(title: "Warning", message: message, preferredStyle: .alert)
+        
+        // Create the actions
+        let okAction = UIAlertAction(title: "Delete Patient", style: UIAlertActionStyle.default) {
+            UIAlertAction in
+            self.mode = .empty
+            PatientRespository.deletePatientById(id: self.patientDictionary["id"] as! Int, completion: {
+                
+                _ = self.navigationController?.navigationController?.popToRootViewController(animated: true)
+                self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
+            })
 
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
+            UIAlertAction in
+
+        }
+        
+        // Add the actions
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        
+        // Present the controller
+        self.present(alertController, animated: true, completion: nil)
+        
+        
     }
 
     enum Mode {

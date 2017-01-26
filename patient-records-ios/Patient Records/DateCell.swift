@@ -14,6 +14,7 @@ class DateCell: UITableViewCell {
     @IBOutlet weak var titlelabel: UILabel!
     @IBOutlet weak var datePicker: UIDatePicker!
 
+    @IBOutlet weak var viewLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
     }
