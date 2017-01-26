@@ -257,7 +257,7 @@ app.delete('/patient/id/:id', function (req, res) {
 
 
 app.post('/patient/add', function(request, response){
-         
+         try {
          var db = new sqlite3.Database(file);
          db.serialize(function() {
                       
@@ -304,7 +304,14 @@ app.post('/patient/add', function(request, response){
          db.close();
          
          
-         response.send("success");
+         response.send("success"); }
+         
+         
+         catch(err) {
+         
+         response.send("error");
+         
+         }
          
          });
 
