@@ -223,7 +223,13 @@ app.post('/patient/update', function(request, response, body) {
                       insertRow += request.body["id"]
                       insertRow += ";"
                       
+                      try {
                       db.run(insertRow)
+                      } catch (err) {
+                      
+                      response.send("error");
+                      
+                      }
                       
         });
          db.close();
