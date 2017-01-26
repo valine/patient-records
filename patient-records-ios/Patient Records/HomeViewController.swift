@@ -10,13 +10,30 @@ import UIKit
 import SpriteKit
 
 
-class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate {
+class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var logoContainerView: UIView!
+    
+    @IBOutlet weak var headerView: UIView!
+    
+    var searching: Bool = false {
+        
+        didSet {
+            
+            if searching {
+                beginSearch()
+                
+            } else {
+                
+                endSearch()
+            }
+            
+        }
+    }
     
     var logoScene: SKScene?
     //var detailViewController: CreatePatientViewController!
@@ -26,7 +43,9 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.searchBarView.alpha  = 0
+
+        searchBar.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive(notification:)), name: Notification.Name("didBecomeActive"), object: nil)
         
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(HomeViewController.updateTable), userInfo: nil, repeats: true)
@@ -64,12 +83,14 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func updateTable() {
-        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
-            self.patients = returnedPatients
-            self.tableView.reloadData()
-        }, debug: {(value) in
-            
-        })
+        if !searching {
+            PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+                self.patients = returnedPatients
+                self.tableView.reloadData()
+            }, debug: {(value) in
+                
+            })
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,10 +102,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         updateTable()
     }
     
-    @IBAction func searchTapped(_ sender: Any) {
-    }
-    
-    
+
     func touchGestureIcon(_ sender:UITapGestureRecognizer){
         animateHeart()
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
@@ -93,6 +111,91 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }, debug: {(value) in
             
         })
+    }
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    @IBAction func searchTapped(_ sender: Any) {
+        searching = !searching
+        
+    }
+    
+    func searchBarCancelButtonClicked(_ notSearchBar: UISearchBar) {
+        searching = false
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        print(searchBar.text!)
+        PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+            
+        }, debug: {_ in 
+            
+            
+        })
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        print(searchBar.text!)
+        PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+            
+        }, debug: {_ in
+            
+            
+        })
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchBar.text!)
+        PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+            
+        }, debug: {_ in
+            
+            
+        })
+    }
+    @IBOutlet weak var searchBarView: UIView!
+    
+    func endSearch() {
+        
+        if !searching {
+            self.searchBar.resignFirstResponder()
+            self.searchBar.endEditing(true)
+            let animationDuration: TimeInterval = 0.2;
+            
+            UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
+                
+                self.headerView.center.y  -=  self.headerView.bounds.height
+                self.searchBarView.alpha  = 0
+                
+            }, completion: nil)
+            updateTable()
+        }
+    }
+    
+    
+    func beginSearch() {
+        
+        if searching {
+            let animationDuration: TimeInterval = 0.2;
+            searchBar.isHidden = false;
+            UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
+                
+                self.headerView.center.y  +=  self.headerView.bounds.height
+                self.searchBar.becomeFirstResponder()
+                self.searchBarView.alpha  = 1
+                
+            }, completion: nil)
+        }
+        
     }
     
     func animateHeart() {
@@ -143,12 +246,14 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
                 controller.mode = .view
-                controller.patientDictionary = Patient.defaultPatientDictionary()
+                //controller.patientDictionary = Patient.defaultPatientDictionary()
                 
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
                     controller.patientDictionary = patient
-
+                    
+                    controller.tableView.reloadData();
                 }, debug: {(debug) in })
+                
         
             }
         } else if segue.identifier == "newPatient" {
@@ -160,31 +265,18 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         }
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        if let selectedRow = tableView.indexPathForSelectedRow {
-//            tableView.deselectRow(at: selectedRow, animated: true)
-//        }
-//        
-//        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
-//            self.patients = returnedPatients
-//            self.tableView.reloadData()
-//        }, debug: {(value) in
-//
-//        })
-//    }
-    
     /// Called when createPatientViewController model view dismisses
     func didFinishTask(sender: CreatePatientViewContrllerDelegate, selectId: Int) {
 
-        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
-            self.patients = returnedPatients
-            self.tableView.reloadData()
-            let path = IndexPath(row: selectId, section: 0)
-            self.tableView.selectRow(at: path, animated: true, scrollPosition: UITableViewScrollPosition(rawValue: 0 )!)
-        }, debug: {(value) in
-            
-        })
-
+       updateTable()
+        
+    }
+    
+    enum SearchMode {
+        
+        case enabled
+        case disabled
+        
     }
     
 

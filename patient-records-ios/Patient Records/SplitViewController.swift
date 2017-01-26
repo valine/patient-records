@@ -15,6 +15,7 @@ class SplitViewController: UISplitViewController, UISplitViewControllerDelegate 
 
         self.preferredDisplayMode = .allVisible
         self.delegate = self
+        self.hidesBottomBarWhenPushed = false
         // Do any additional setup after loading the view.
     }
 
