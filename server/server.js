@@ -189,12 +189,102 @@ app.get('/patient/recent/', function (req, res) {
         db.all(sql, function(err, rows) {
             var patients = {"patients" : rows}
             res.send(JSON.stringify(patients));
-            console.log(JSON.stringify(rows));
+//            console.log(JSON.stringify(rows));
         });
     });
     db.close();
 
 })
+
+app.post('/patient/update', function(request, response, body) {
+         
+         var db = new sqlite3.Database(file);
+         db.serialize(function() {
+                      
+                      console.log(request.body.firstName)
+                      console.log(request.body.lastName)
+                      
+                      var date = new Date();
+                      
+                      var insertRow = "UPDATE Patients set "
+                      
+                      insertRow += config.options[0].columnName + " = \""
+                      insertRow += request.body[config.options[0].columnName]
+
+                      
+                      for (i = 1; i < config.options.length; i++) {
+                      console.log(insertRow);
+                      insertRow += "\", "
+                      insertRow += config.options[i].columnName + " = \""
+                      insertRow += request.body[config.options[i].columnName]
+                      }
+                      
+                      insertRow += "\" WHERE id = "
+                      insertRow += request.body["id"]
+                      insertRow += ";"
+                      
+                      db.run(insertRow)
+                      
+        });
+         db.close();
+        response.send("success");
+
+
+        
+});
+
+
+app.post('/patient/add', function(request, response){
+         
+         var db = new sqlite3.Database(file);
+         db.serialize(function() {
+                      
+                      console.log(request.body.firstName)
+                      console.log(request.body.lastName)
+                      
+                      var date = new Date();
+                      
+                      var insertRow = "INSERT INTO Patients (id, dateAdded"
+                      
+                      for (i = 0; i < config.options.length; i++) {
+                      insertRow += ", "
+                      insertRow += config.options[i].columnName + " "
+                      }
+                      
+                      insertRow += ") VALUES (NULL, \"" + getDateTime() + "\""
+                      
+                      for (i = 0; i < config.options.length; i++) {
+                      insertRow += ", "
+                      
+                      if (config.options[i].type == "textFieldCell") {
+                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      
+                      } else if (config.options[i].type == "textViewCell") {
+                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      
+                      } else if (config.options[i].type == "integerCell") {
+                      insertRow += request.body[config.options[i].columnName]
+                      
+                      } else if (config.options[i].type == "dateCell") {
+                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      } else {
+                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      }
+                      }
+                      
+                      insertRow += ")"
+                      
+                      db.run(insertRow)
+                      
+         });
+         
+         
+         db.close();
+         
+         
+         response.send("success");
+         
+         });
 
 //     _____                     _     
 //    /  ___|                   | |    
@@ -222,76 +312,6 @@ app.get('/patient_server', function (req, res) {
 })
 
 
-app.post('/patient/add', function(request, response){
-
-	var db = new sqlite3.Database(file);
-	db.serialize(function() {
-    
-    console.log(request.body.firstName)
-    console.log(request.body.lastName)
-    
-    var date = new Date();
-        
-    var insertRow = "INSERT INTO Patients (id, dateAdded"
-    
-    for (i = 0; i < config.options.length; i++) {
-        insertRow += ", "
-        insertRow += config.options[i].columnName + " "
-    }
-    
-    insertRow += ") VALUES (NULL, \"" + getDateTime() + "\""
-    
-    for (i = 0; i < config.options.length; i++) {
-        insertRow += ", "
-        
-        if (config.options[i].type == "textFieldCell") {
-            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
-        
-        } else if (config.options[i].type == "textViewCell") {
-            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
-        
-        } else if (config.options[i].type == "integerCell") {
-            insertRow += request.body[config.options[i].columnName]
-        
-        } else if (config.options[i].type == "dateCell") {
-            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
-        } else {
-            insertRow += "\"" + request.body[config.options[i].columnName] + "\""
-        }
-    }
-    
-    insertRow += ")"
-    
-    db.run(insertRow)
-        
-//        stmt.run(
-//            request.body.dateAdded, // dateAdded
-//            request.body.lastSeen, // last seen
-//            request.body.firstName, // first name
-//            request.body.middleName,
-//            request.body.lastName,
-//            request.body.sex,
-//            request.body.birthDate,
-//            request.body.phoneNumber,
-//            request.body.emailAddress,
-//            request.body.familyStatus,
-//            request.body.medicalIssues,
-//            request.body.currentMedications,
-//            request.body.previousMedicalProblems,
-//            request.body.previousSurgery,
-//            request.body.allergies
-//        );
-//        
-//        stmt.finalize();
-	});
-
-    
-	db.close();
-
-    
-    response.send("success");
-
-});
 
 function getDateTime() {
 
