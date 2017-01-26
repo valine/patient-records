@@ -238,10 +238,9 @@ app.delete('/patient/id/:id', function (req, res) {
            var db = new sqlite3.Database(file);
            db.serialize(function() {
                         
-                        var deletePatient = "SELECT id, dateAdded"
                         
                         var id = req.params.id
-                        selectPatient +=  "DELETE FROM Patients WHERE id=" + id
+                        var deletePatient =  "DELETE FROM Patients WHERE id=" + id
                         
                         console.log(deletePatient)
                         db.all(deletePatient, function(err, rows) {
