@@ -79,21 +79,21 @@
                                 <sections/>
                             </tableView>
                             <visualEffectView opaque="NO" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIO-qE-1YL">
-                                <rect key="frame" x="-1" y="64" width="376" height="70"/>
+                                <rect key="frame" x="-0.5" y="64" width="375" height="70"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="HqF-TL-y6p">
-                                    <rect key="frame" x="0.0" y="0.0" width="376" height="70"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Here are your most recent patients" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Tlz-KO-EGq">
-                                            <rect key="frame" x="89" y="42" width="251" height="17"/>
+                                            <rect key="frame" x="89" y="42" width="250" height="17"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="14"/>
                                             <color key="textColor" red="0.58605896470931396" green="0.58790485439796958" blue="0.58261542396679555" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Welcome Back" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
-                                            <rect key="frame" x="89" y="13" width="220" height="30"/>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Patient Records" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="KQZ-1w-vlD">
+                                            <rect key="frame" x="89" y="13" width="219" height="30"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="21"/>
@@ -139,7 +139,7 @@
                                     <segue destination="tQb-5P-A09" kind="presentation" identifier="newPatient" modalPresentationStyle="pageSheet" id="cwl-W2-vO7"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem image="search" id="jAF-0y-wB1">
+                            <barButtonItem image="qrcodeicon" id="jAF-0y-wB1">
                                 <connections>
                                     <action selector="searchTapped:" destination="9pv-A4-QxB" id="GxZ-yM-iMg"/>
                                     <segue destination="Cek-hV-hG6" kind="popoverPresentation" popoverAnchorBarButtonItem="jAF-0y-wB1" id="del-Ju-d5c">
@@ -147,6 +147,7 @@
                                     </segue>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem image="search" id="Evt-bY-kzb"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -588,7 +589,7 @@
             </objects>
             <point key="canvasLocation" x="2125.5999999999999" y="630.58470764617698"/>
         </scene>
-        <!--Search-->
+        <!--Code Scan-->
         <scene sceneID="8An-Bj-6Jd">
             <objects>
                 <viewController id="tOn-Gh-bsr" customClass="SearchViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
@@ -658,7 +659,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Search" id="S8L-9L-EWb">
+                    <navigationItem key="navigationItem" title="Code Scan" id="S8L-9L-EWb">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="opt-mh-pxs">
                             <connections>
                                 <action selector="cancelTapped:" destination="tOn-Gh-bsr" id="1jK-YQ-TGg"/>
@@ -697,7 +698,7 @@
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SiJ-zp-UqV" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
                                 <rect key="frame" x="138" y="28" width="100" height="100"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.95403711930000001" green="0.95403711930000001" blue="0.95403711930000001" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Welcome to Patient Records" textAlignment="center" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="pHG-I7-S8W">
@@ -763,7 +764,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Fc-8d-82d">
-                                <rect key="frame" x="119" y="453" width="136" height="47"/>
+                                <rect key="frame" x="16" y="453" width="345" height="47"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Start Using the App">
                                     <color key="titleColor" red="0.5568627451" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -1,20 +1,20 @@
 {"options" : [
         
         
-         {"columnName": "firstName", "columnHeight" : 95, "title": "First Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+         {"columnName": "firstName", "columnHeight" : 95, "title": "First Name", "type" : "textFieldCell", "defaultValue":"Unknown"},
          
-         {"columnName": "middleName", "columnHeight": 95, "title": "Middle Name", "type" : "textFieldCell", "defaultValue":"unknown"},
-         {"columnName": "lastName", "columnHeight": 95, "title": "Last Name", "type" : "textFieldCell", "defaultValue":"unknown"},
+         {"columnName": "middleName", "columnHeight": 95, "title": "Middle Name", "type" : "textFieldCell", "defaultValue":"Unknown"},
+         {"columnName": "lastName", "columnHeight": 95, "title": "Last Name", "type" : "textFieldCell", "defaultValue":"Unknown"},
        
          {"columnName": "sex", "columnHeight": 95, "title": "Gender", "type" : "integerCell", "defaultValue":2, "valueKeys": ["Male", "Female", "Unknown"]},
-         {"columnName": "notes", "columnHeight": 170, "title": "Notes", "type" : "textViewCell", "defaultValue":"unknown"},
+         {"columnName": "notes", "columnHeight": 170, "title": "Notes", "type" : "textViewCell", "defaultValue":"None"},
        
-         {"columnName": "birthDate", "columnHeight": 170, "title": "Birth Date", "type" : "dateCell", "defaultValue":"unknown"},
+         {"columnName": "birthDate", "columnHeight": 170, "title": "Birth Date", "type" : "dateCell", "defaultValue":"Unknown"},
        
-         {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"unknown"},
+         {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"Unknown"},
        
-         {"columnName": "weight", "columnHeight": 170, "title": "Weight", "type" : "textFieldCell", "defaultValue":"unknown"},
-        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textFieldCell", "defaultValue":"unknown"}
+         {"columnName": "weight", "columnHeight": 95, "title": "Weight", "type" : "textFieldCell", "defaultValue":"Unknown"},
+        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textFieldCell", "defaultValue":"None"}
     ]
     
 }

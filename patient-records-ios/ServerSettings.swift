@@ -12,7 +12,7 @@ class ServerSettings {
     var serverAddress: NSURL?
     static let port: NSNumber = 8081
     
-    let defaultUrl = URL(fileURLWithPath: "https://localhost")
+    let defaultUrl = URL(fileURLWithPath: "https://1uk45.com")
     //MARK: Shared Instance
     static let sharedInstance : ServerSettings = {
         let instance = ServerSettings()
