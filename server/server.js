@@ -197,7 +197,7 @@ app.get('/patient/recent/', function (req, res) {
 })
 
 app.post('/patient/update', function(request, response, body) {
-         
+         try {
          var db = new sqlite3.Database(file);
          db.serialize(function() {
                       
@@ -228,6 +228,11 @@ app.post('/patient/update', function(request, response, body) {
         });
          db.close();
         response.send("success");
+         } catch (err) {
+         
+         
+         response.send("error");
+         }
 
 
         
