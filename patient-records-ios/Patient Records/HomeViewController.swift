@@ -72,6 +72,11 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateTable()
+    }
+    
     func didBecomeActive(notification: Notification){
         updateTable()
     }
@@ -169,11 +174,13 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 //    }
     
     /// Called when createPatientViewController model view dismisses
-    func didFinishTask(sender: CreatePatientViewContrllerDelegate) {
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate, selectId: Int) {
 
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
+            let path = IndexPath(row: selectId, section: 0)
+            self.tableView.selectRow(at: path, animated: true, scrollPosition: UITableViewScrollPosition(rawValue: 0 )!)
         }, debug: {(value) in
             
         })

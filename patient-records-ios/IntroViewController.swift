@@ -20,6 +20,7 @@ class IntroViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        
         logoScene = SKScene(fileNamed: "LargeLogoScene")!
         let skLogoView = logoContainerView as SKView
         skLogoView.allowsTransparency = true
@@ -33,6 +34,26 @@ class IntroViewController: UIViewController {
         skLogoView.addGestureRecognizer(tapGesture)
         
 
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore  {
+            print("Not first launch.")
+            
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            
+            let svc: SplitViewController = storyboard.instantiateViewController(withIdentifier: "split") as! SplitViewController
+            present(svc, animated: false, completion: {})
+            
+            
+            
+        } else {
+            print("First launch, setting UserDefault.")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+        }
         
     }
 

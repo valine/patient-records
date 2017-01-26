@@ -43,7 +43,19 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     @IBOutlet weak var rightNavButton: UIBarButtonItem!
     
     func configureView() {
-        if mode == .new {
+        if mode == .empty {
+            
+            self.navigationItem.setHidesBackButton(false, animated:true);
+            navigationItem.leftBarButtonItem = nil
+            
+            self.navigationController?.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            
+        }
+        
+        else if mode == .new {
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
             UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
@@ -57,8 +69,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
 
-            
-            let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            patientDictionaryToSave = patientDictionary;
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.cancelTapped(_:)))
             
             navigationItem.leftBarButtonItem = cancelButton
             
@@ -123,6 +135,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
+        if mode == .empty {
+            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+            cell.titleLabel.text = "";
+            cell.textField.isHidden = true
+            cell.viewLabel.isHidden = true
+            return cell
+        }
         
         //// New patient
         if mode == .new || mode == .update {
@@ -151,10 +170,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.titleLabel.text = title
                         
                         let columnName = option?["columnName"] as! String
-                        let value = patientDictionaryToSave[columnName]
+                        let value = patientDictionary[columnName]
 
                         cell.textField.text = value as! String?
-                       
+                        cell.viewLabel.text = value as! String?
                         
                         return cell
                     
@@ -163,13 +182,15 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         let valueKeys = option?["valueKeys"] as! Array<String>
                         cell.control.removeAllSegments()
                         
+                        cell.control.isHidden = false
+                        cell.viewLabel.isHidden = true
                         for key in valueKeys {
                            cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
                         }
                         
                         cell.titleLabel.text = title
                         let columnName = option?["columnName"] as! String
-                        let value = patientDictionaryToSave[columnName]
+                        let value = patientDictionary[columnName]
                         
                         cell.control.selectedSegmentIndex = (value as! Int?)!
 
@@ -181,7 +202,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.titleLabel.text = title
                        
                         let columnName = option?["columnName"] as! String
-                        let value = patientDictionaryToSave[columnName]
+                        let value = patientDictionary[columnName]
                         
                         cell.textView.text = value as! String
 
@@ -313,19 +334,46 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             PatientRespository.addPatient(json: patientDictionaryToSave, completion: {
                 
                 self.dismiss(animated: true, completion: {})
-                self.delegate?.didFinishTask(sender: self.delegate!)
+                self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
             })
             
             
         } else if mode == .view {
             mode = .update
+
+            
         } else if mode == .update {
             mode = .view
+            
+            patientDictionaryToSave["id"] = patientDictionary["id"]
+            
+            PatientRespository.updatePatient(json: patientDictionaryToSave, completion: {
+                
+                PatientRespository.getPatientById(id: self.patientDictionary["id"] as! Int, completion: {(patient) in
+                    self.patientDictionary = patient
+                    
+                }, debug: {(debug) in })
+                
+                self.delegate?.didFinishTask(sender: self.delegate!, selectId: self.patientDictionary["id"] as! Int)
+            })
+            
         }
     }
     @IBAction func cancelTapped(_ sender: Any) {
-        mode = .view
-        self.dismiss(animated: true, completion: nil)
+        
+        if mode == .update {
+            mode = .view
+            
+        } else if mode == .new {
+            
+            self.dismiss(animated: true, completion: {
+            
+            
+            
+            })
+            
+        }
+        
     }
 
 
@@ -376,19 +424,24 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     func deletePressed(_ sender: Any) {
-    
-        print(patientDictionary["id"]!)
+        self.mode = .empty
+        PatientRespository.deletePatientById(id: patientDictionary["id"] as! Int, completion: {
+            
+            _ = self.navigationController?.navigationController?.popToRootViewController(animated: true)
+            self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
+        })
+
     }
 
     enum Mode {
         case new
         case view
         case update
+        case empty
     }
-    
 
 }
 
 protocol CreatePatientViewContrllerDelegate: class {
-    func didFinishTask(sender: CreatePatientViewContrllerDelegate)
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate, selectId: Int)
 }
