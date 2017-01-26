@@ -292,7 +292,7 @@ app.post('/patient/add', function(request, response){
                       insertRow += "\"" + request.body[config.options[i].columnName] + "\""
                       
                       } else if (config.options[i].type == "textViewCell") {
-                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      insertRow += "\"" + request.body[config.options[i].columnName].replaceAll("\"", "\"\"")  + "\""
                       
                       } else if (config.options[i].type == "integerCell") {
                       insertRow += request.body[config.options[i].columnName]
@@ -350,7 +350,10 @@ app.get('/patient_server', function (req, res) {
     db.close();
 })
 
-
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
 
 function getDateTime() {
 
