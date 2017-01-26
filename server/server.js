@@ -233,6 +233,28 @@ app.post('/patient/update', function(request, response, body) {
         
 });
 
+app.delete('/patient/id/:id', function (req, res) {
+           
+           var db = new sqlite3.Database(file);
+           db.serialize(function() {
+                        
+                        var deletePatient = "SELECT id, dateAdded"
+                        
+                        var id = req.params.id
+                        selectPatient +=  "DELETE FROM Patients WHERE id=" + id
+                        
+                        console.log(deletePatient)
+                        db.all(deletePatient, function(err, rows) {
+                               console.log(JSON.stringify(rows));
+                               });
+                        });
+           db.close();
+
+           
+           
+           res.send('success')
+    })
+
 
 app.post('/patient/add', function(request, response){
          
