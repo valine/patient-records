@@ -336,9 +336,10 @@ app.get('/search/:input', function(req, res) {
 	var searchInput = req.params.input;
 	var db = new sqlite3.Database(file);
 	db.serialize(function() {
-		var query = "SELECT id, firstName FROM patients WHERE firstName LIKE \"%" + searchInput + "%\"";
+		var query = "SELECT id, dateAdded, firstName, lastName FROM Patients WHERE firstName LIKE \"%" + searchInput + "%\"";
 		db.all(query, function(err, rows){
-			res.send(JSON.stringify(rows));
+			var patients = {"patients" : rows}
+            		res.send(JSON.stringify(patients));
 		})
 	});
 	db.close();
