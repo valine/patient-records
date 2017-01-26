@@ -10,7 +10,7 @@ import UIKit
 
 class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
     
-    
+    var delegate: CreatePatientViewContrllerDelegate?
     let options = PatientAttributeSettings.getAttributeSettings()
     
     var mode: Mode? = Mode.view {
@@ -22,7 +22,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     var patientDictionary: [String: Any] = Patient.defaultPatientDictionary() {
     
         didSet {
-            print("table reload")
             self.tableView?.reloadData()
         }
     }
@@ -41,25 +40,67 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         super.viewDidLoad()
     }
 
+    @IBOutlet weak var rightNavButton: UIBarButtonItem!
+    
     func configureView() {
         if mode == .new {
-        
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
+            UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+
         }
         
         else if mode == .update {
-        
+            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+
+            
+            let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            
+            navigationItem.leftBarButtonItem = cancelButton
+            
+            self.navigationItem.setHidesBackButton(true, animated:true);
+            
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
+            
+
         }
         
         else if mode == .view {
-        
+            let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
+            navigationItem.rightBarButtonItem = refreshButton
+            
+            self.navigationItem.setHidesBackButton(false, animated:true);
+            
+            navigationItem.leftBarButtonItem = nil
+            
+            self.navigationController?.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            
+
         }
+        
+        self.tableView.reloadData()
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     
         let count = options?.count
         
-        return count! + 1 // + 1 for the patient photo cell
+        if mode == .update {
+            return count! + 2 // extra one for the delete cell
+            
+            
+        } else {
+        
+            return count! + 1 // + 1 for the patient photo cell
+        }
         
        
     }
@@ -69,9 +110,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if indexPath.item == 0 {
             return photoHeight
         } else {
-            let option = options?[indexPath.item - 1]
-            let height = option?["columnHeight"] as! Int
+            if indexPath.item < (options?.count)! + 1{
+
+                let option = options?[indexPath.item - 1]
+                let height = option?["columnHeight"] as! Int
             return CGFloat(height)
+                } else { /// for delete button
+                return photoHeight
+            }
         }
     }
 
@@ -79,7 +125,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
         
         //// New patient
-        if mode == .new {
+        if mode == .new || mode == .update {
         
             if indexPath.item == 0 {
                
@@ -88,65 +134,78 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
              
             } else {
                 
-                let option = options?[indexPath.item - 1]
-                let type = option?["type"] as! String
-                let title = option?["title"] as! String
+                
+                if indexPath.item < (options?.count)! + 1 {
+                
+                    let option = options?[indexPath.item - 1]
+                
+                    let type = option?["type"] as! String
+                    let title = option?["title"] as! String
 
                 
-                if type == "textFieldCell" {
-                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
-                    
-                    cell.textField.isHidden = false
-                    cell.viewLabel.isHidden = true
-                    cell.titleLabel.text = title
-                    
-                    let columnName = option?["columnName"] as! String
-                    let value = patientDictionaryToSave[columnName]
+                    if type == "textFieldCell" {
+                        let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
+                        
+                        cell.textField.isHidden = false
+                        cell.viewLabel.isHidden = true
+                        cell.titleLabel.text = title
+                        
+                        let columnName = option?["columnName"] as! String
+                        let value = patientDictionaryToSave[columnName]
 
-                    cell.textField.text = value as! String?
-                   
+                        cell.textField.text = value as! String?
+                       
+                        
+                        return cell
                     
-                    return cell
-                
-                } else if type == "integerCell" {
-                    let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
-                    let valueKeys = option?["valueKeys"] as! Array<String>
-                    cell.control.removeAllSegments()
+                    } else if type == "integerCell" {
+                        let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
+                        let valueKeys = option?["valueKeys"] as! Array<String>
+                        cell.control.removeAllSegments()
+                        
+                        for key in valueKeys {
+                           cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
+                        }
+                        
+                        cell.titleLabel.text = title
+                        let columnName = option?["columnName"] as! String
+                        let value = patientDictionaryToSave[columnName]
+                        
+                        cell.control.selectedSegmentIndex = (value as! Int?)!
+
+                        
+                        return cell
+                    } else if type == "textViewCell" {
+                        let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
+                        cell.textView.delegate = self
+                        cell.titleLabel.text = title
+                       
+                        let columnName = option?["columnName"] as! String
+                        let value = patientDictionaryToSave[columnName]
+                        
+                        cell.textView.text = value as! String
+
+                        return cell
+                    } else if type == "dateCell" {
+                        let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
+                        cell.titlelabel.text = title
+                        return cell
                     
-                    for key in valueKeys {
-                       cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
+                    } else {
+                        
+                            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "none") as! TextFieldCell
+                            cell.titleLabel.text = title
+                            return cell
+                        
                     }
                     
-                    cell.titleLabel.text = title
-                    let columnName = option?["columnName"] as! String
-                    let value = patientDictionaryToSave[columnName]
-                    
-                    cell.control.selectedSegmentIndex = (value as! Int?)!
-
-                    
-                    return cell
-                } else if type == "textViewCell" {
-                    let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
-                    cell.textView.delegate = self
-                    cell.titleLabel.text = title
-                   
-                    let columnName = option?["columnName"] as! String
-                    let value = patientDictionaryToSave[columnName]
-                    
-                    cell.textView.text = value as! String
-
-                    return cell
-                } else if type == "dateCell" {
-                    let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
-                    cell.titlelabel.text = title
-                    return cell
-                
                 } else {
-                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "none") as! TextFieldCell
-                    cell.titleLabel.text = title
-                    return cell
+                    
+                        let cell:DeleteCell = tableView.dequeueReusableCell(withIdentifier: "deleteCell") as! DeleteCell
+                    cell.delete.addTarget(self, action: #selector(CreatePatientViewController.deletePressed(_:)), for: UIControlEvents.touchUpInside)
+
+                        return cell
                 }
-            
             }
         }
         
@@ -154,7 +213,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         else {
         
 
-            if indexPath.item == 0 {
+            if
+                indexPath.item == 0 {
                
                  let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 return cell
@@ -221,7 +281,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                     
                                         
                     if let value = patientDictionary[columnName] as? Date {
-                        print(value)
                         cell.datePicker.date = value
                     }
                     
@@ -249,12 +308,24 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     @IBAction func rightNavButtonTapped(_ sender: Any) {
-        PatientRespository.addPatient(json: patientDictionaryToSave)
-        self.dismiss(animated: true, completion: nil)
-
+        
+        if (mode == .new) {
+            PatientRespository.addPatient(json: patientDictionaryToSave, completion: {
+                
+                self.dismiss(animated: true, completion: {})
+                self.delegate?.didFinishTask(sender: self.delegate!)
+            })
+            
+            
+        } else if mode == .view {
+            mode = .update
+        } else if mode == .update {
+            mode = .view
+        }
     }
     @IBAction func cancelTapped(_ sender: Any) {
-            self.dismiss(animated: true, completion: nil)
+        mode = .view
+        self.dismiss(animated: true, completion: nil)
     }
 
 
@@ -285,7 +356,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     @IBAction func dateValueChanged(_ sender: Any) {
         let dateView = sender as! UIDatePicker
-        print(dateView.date)
         
         let cell = dateView.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
@@ -296,8 +366,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        print(textView.text)
-                
+
         let cell = textView.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
         let columnName = options?[index! - 1]["columnName"] as! String
@@ -305,6 +374,12 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         patientDictionaryToSave[columnName] = textView.text
         
     }
+    
+    func deletePressed(_ sender: Any) {
+    
+        print(patientDictionary["id"]!)
+    }
+
     enum Mode {
         case new
         case view
@@ -312,4 +387,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
 
+}
+
+protocol CreatePatientViewContrllerDelegate: class {
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate)
 }

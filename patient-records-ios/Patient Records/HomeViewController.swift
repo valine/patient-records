@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 
-class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource {
+class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate {
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
@@ -18,6 +18,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
 
     @IBOutlet weak var logoContainerView: UIView!
     
+    var logoScene: SKScene?
     //var detailViewController: CreatePatientViewController!
     
     let cellReuseIdentifier = "homeCell"
@@ -25,6 +26,10 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive(notification:)), name: Notification.Name("didBecomeActive"), object: nil)
+        
+        Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(HomeViewController.updateTable), userInfo: nil, repeats: true)
         
         let userDefaults = UserDefaults()
         
@@ -36,15 +41,19 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-        let welcomeHeaderHeight: CGFloat = 100
-        tableView.contentInset = UIEdgeInsetsMake(welcomeHeaderHeight + self.topLayoutGuide.length, 0, 0, 0)
-        
-        let logoScene = SKScene(fileNamed: "LogoScene")
+
+        logoScene = SKScene(fileNamed: "LogoScene")!
         let skLogoView = logoContainerView as! SKView
         skLogoView.allowsTransparency = true
         logoScene?.backgroundColor = .clear
         skLogoView.backgroundColor = UIColor.clear
         skLogoView.presentScene(logoScene)
+        
+        animateHeartWithDelay()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action:  #selector (self.touchGestureIcon(_:)))
+        skLogoView.addGestureRecognizer(tapGesture)
+        
         
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
@@ -53,7 +62,51 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
            
         })
     }
+    
+    func updateTable() {
+        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+        }, debug: {(value) in
+            
+        })
+    }
+    
+    func didBecomeActive(notification: Notification){
+        updateTable()
+    }
+    
     @IBAction func searchTapped(_ sender: Any) {
+    }
+    
+    
+    func touchGestureIcon(_ sender:UITapGestureRecognizer){
+        animateHeart()
+        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+            self.patients = returnedPatients
+            self.tableView.reloadData()
+        }, debug: {(value) in
+            
+        })
+    }
+    
+    func animateHeart() {
+        if #available(iOS 9.0, *) {
+            let logoSprite = logoScene?.childNode(withName: "logo")
+            logoSprite?.run(SKAction(named: "heart-beat")!)
+            
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    func animateHeartWithDelay() {
+        if #available(iOS 9.0, *) {
+            let logoSprite = logoScene?.childNode(withName: "logo")
+            logoSprite?.run(SKAction(named: "app-load")!)
+            
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,10 +134,12 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 let id = Int(cell.id.text!)
                 
                 let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
+               
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
                 controller.mode = .view
-
+                controller.patientDictionary = Patient.defaultPatientDictionary()
+                
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
                     controller.patientDictionary = patient
 
@@ -96,22 +151,34 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
             
             controller.mode = .new
+            controller.delegate = self
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if let selectedRow = tableView.indexPathForSelectedRow {
-            tableView.deselectRow(at: selectedRow, animated: true)
-        }
-        
+//    override func viewWillAppear(_ animated: Bool) {
+//        if let selectedRow = tableView.indexPathForSelectedRow {
+//            tableView.deselectRow(at: selectedRow, animated: true)
+//        }
+//        
+//        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+//            self.patients = returnedPatients
+//            self.tableView.reloadData()
+//        }, debug: {(value) in
+//
+//        })
+//    }
+    
+    /// Called when createPatientViewController model view dismisses
+    func didFinishTask(sender: CreatePatientViewContrllerDelegate) {
+
         PatientRespository.getRecentPatients(completion: {(returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
         }, debug: {(value) in
-
+            
         })
+
     }
-    
     
 
     override func didReceiveMemoryWarning() {

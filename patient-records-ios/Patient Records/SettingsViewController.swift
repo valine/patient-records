@@ -15,7 +15,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     @IBOutlet weak var standAloneSwitch: UISwitch!
     @IBOutlet weak var dismissButton: UIBarButtonItem!
     
-    let emailAddress = "support@valine.io"
+    let emailAddress = "records@valine.io"
     
     override func viewDidLoad() {
         super.viewDidLoad()
