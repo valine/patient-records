@@ -39,6 +39,37 @@ class PatientRespository {
 
     }
     
+    static func deletePatientById(id: Int, completion: @escaping (_:Void)->Void) {
+        
+        do {
+
+            // create post request
+            let listPatientsRequest = "patient/id/" + String(id)
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+            let request = NSMutableURLRequest(url: url as URL)
+            request.httpMethod = "DELETE"
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                if error != nil{
+                    print("Error -> \(error)")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+            
+            task.resume()
+            
+        } catch {
+            print(error)
+        }
+        
+    }
+    
+    
     static func getPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
         let listPatientsRequest = "patient"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -139,6 +170,47 @@ class PatientRespository {
             print(error)
         }
     
+    }
+    
+    static func updatePatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
+        
+        do {
+            
+            let jsonData = try JSONSerialization.data(withJSONObject: json)
+            
+            print(jsonData)
+            // create post request
+            let listPatientsRequest = "patient/update"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+            let request = NSMutableURLRequest(url: url as URL)
+            request.httpMethod = "POST"
+            
+            // insert json data to the request
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
+            
+            print(theJSONText!)
+            request.httpBody = jsonData
+            
+            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                if error != nil{
+                    print("Error -> \(error)")
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+            
+            task.resume()
+            
+        } catch {
+            print(error)
+        }
+        
     }
 }
 

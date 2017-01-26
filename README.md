@@ -19,21 +19,22 @@ checklist for submision
 	features left:
 
 		p̶o̶s̶t̶ ̶p̶a̶t̶i̶e̶n̶t̶ ̶-̶ DONE
-		update patient - !!!
-		delete patient - !!!
-		weight table - !!
-		height table - !!
-		notes table - !
-		animated logo 
+		update patient - DONE
+		delete patient - DONE
+		weight table - 
+		height table - 
+		notes table - 
+		animated logo  DONE
 		view single patient - DONE
 		qr code - !! 
-		doctor name - !
-
-		auto detect server
-		3d touch to view patients
-		animated checkmarks and xs 
+		text search = !!!
+		doctor name - 
+		fix dates - DONE
 		patient photo - !
-		push updates from server 		
+		auto detect server
+		3d touch to view patients -- maybe v2
+		animated checkmarks and xs -- maybe v2
+		push updates from server -- DONE		
 		iPad layout -- DONE
 		metric or imperial option
 		
