@@ -27,8 +27,9 @@ checklist for submision
 		animated logo  DONE
 		view single patient - DONE
 		qr code - !! 
+		text search = !!!
 		doctor name - 
-		fix dates - !!!
+		fix dates - DONE
 		patient photo - !
 		auto detect server
 		3d touch to view patients -- maybe v2
