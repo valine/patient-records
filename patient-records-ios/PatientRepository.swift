@@ -110,8 +110,10 @@ class PatientRespository {
     }
     
     static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
-        let listPatientsRequest = "patient/search/" + input
+        let listPatientsRequest = "search/" + input
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+        print(url.absoluteString)
             
         let urlWithPort = NSURLComponents(string: url.absoluteString)
         urlWithPort?.port = ServerSettings.port;

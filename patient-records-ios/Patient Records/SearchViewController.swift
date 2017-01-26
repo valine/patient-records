@@ -11,7 +11,7 @@ import UIKit
 import AVFoundation
 
 class SearchViewController: UIViewController,
-AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
+AVCaptureMetadataOutputObjectsDelegate {
 
     var captureSession:AVCaptureSession?
     var videoPreviewLayer:AVCaptureVideoPreviewLayer?
@@ -20,7 +20,6 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
     @IBOutlet weak var scanParentView: UIView!
     let videoRadius: CGFloat = 7
 
-    @IBOutlet weak var searchField: UITextField!
        // Added to support different barcodes
     let supportedBarCodes = [AVMetadataObjectTypeQRCode, AVMetadataObjectTypeCode128Code, AVMetadataObjectTypeCode39Code, AVMetadataObjectTypeCode93Code, AVMetadataObjectTypeUPCECode, AVMetadataObjectTypePDF417Code, AVMetadataObjectTypeEAN13Code, AVMetadataObjectTypeAztecCode]
 
@@ -84,9 +83,7 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
             print(error)
             return
         }
-        
-        //Start search field
-        searchField.delegate = self
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -96,30 +93,6 @@ AVCaptureMetadataOutputObjectsDelegate, UITextFieldDelegate{
    
     @IBOutlet weak var scanAnimationContainer: NestableUIView!
     
-    @IBAction func searchEditingBegan(_ sender: AnyObject) {
-    
-        /*
-            Animate the scan view sliding downward.  
-            This makes room for search results to appear.
-        */
-        let animationDuration: TimeInterval = 0.3
-        
-        UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
-            self.scanAnimationContainer.center.y += self.view.bounds.height
-        }, completion: nil)
-    }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-      
-        textField.resignFirstResponder()
-        
-        let animationDuration: TimeInterval = 0.3
-        
-        UIView.animate(withDuration: animationDuration, delay: 0, options: [.curveEaseOut], animations: {
-            self.scanAnimationContainer.center.y -= self.view.bounds.height
-        }, completion: nil)
-
-        return true;
-    }
     
     @IBAction func cancelTapped(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)

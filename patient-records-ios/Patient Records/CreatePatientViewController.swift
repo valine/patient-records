@@ -19,15 +19,9 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
     }
     
-    var patientDictionary: [String: Any] = Patient.defaultPatientDictionary() {
+    var patientDictionary: [String: Any] = Patient.defaultPatientDictionary()
     
-        didSet {
-            self.tableView?.reloadData()
-        }
-    }
-    
-     var patientDictionaryToSave: [String: Any] = Patient.defaultPatientDictionary()
-
+    var patientDictionaryToSave: [String: Any] = Patient.defaultPatientDictionary()
 
     @IBOutlet var textFields: [UITextField]!
     @IBOutlet var segmentedControls: [UISegmentedControl]!
@@ -38,6 +32,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.tableView.allowsSelection = false
+        
+        self.hidesBottomBarWhenPushed = false;
     }
 
     @IBOutlet weak var rightNavButton: UIBarButtonItem!
@@ -53,6 +51,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             
+            navigationItem.rightBarButtonItem = nil
         }
         
         else if mode == .new {
@@ -149,6 +148,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             if indexPath.item == 0 {
                
                  let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
+                
+                cell.titleLabel.text = "Edit Patient Photo"
+
+
                 return cell
              
             } else {
@@ -257,7 +260,9 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             if
                 indexPath.item == 0 {
                
-                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
+                let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
+                
+                cell.titleLabel.text = "Patient Photo"
                 return cell
              
             } else {
@@ -425,11 +430,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = toggle.selectedSegmentIndex
+        patientDictionary = patientDictionaryToSave
 
     }
 
 
     @IBAction func textFieldEditingChanged(_ sender: Any) {
+        
         let textField = sender as! UITextField
 
         let cell = textField.superview?.superview
@@ -437,6 +444,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = textField.text
+        patientDictionary = patientDictionaryToSave
 
     }
     
@@ -449,6 +457,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = String(describing: dateView.date)
+        patientDictionary = patientDictionaryToSave
         
     }
     
@@ -459,6 +468,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         let columnName = options?[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = textView.text
+        patientDictionary = patientDictionaryToSave
         
     }
     
