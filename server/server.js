@@ -289,7 +289,7 @@ app.post('/patient/add', function(request, response){
                       insertRow += ", "
                       
                       if (config.options[i].type == "textFieldCell") {
-                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      insertRow += "\"" + request.body[config.options[i].columnName].replaceAll("\"", "\"\"") + "\""
                       
                       } else if (config.options[i].type == "textViewCell") {
                       insertRow += "\"" + request.body[config.options[i].columnName].replaceAll("\"", "\"\"")  + "\""
@@ -300,7 +300,7 @@ app.post('/patient/add', function(request, response){
                       } else if (config.options[i].type == "dateCell") {
                       insertRow += "\"" + request.body[config.options[i].columnName] + "\""
                       } else {
-                      insertRow += "\"" + request.body[config.options[i].columnName] + "\""
+                      insertRow += "\"" + request.body[config.options[i].columnName].replaceAll("\"", "\"\"") + "\""
                       }
                       }
                       
