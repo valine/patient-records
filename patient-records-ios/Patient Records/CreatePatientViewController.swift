@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate {
+class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var delegate: CreatePatientViewContrllerDelegate?
     let options = PatientAttributeSettings.getAttributeSettings()
@@ -149,8 +149,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                
                  let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
-                cell.titleLabel.text = "Edit Patient Photo"
+                cell.titleLabel.text = "Update Patient Photo"
 
+                let imageView = cell.patientPhoto
+                let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(selectPicture(_:)))
+                imageView?.isUserInteractionEnabled = true
+                imageView?.addGestureRecognizer(tapGestureRecognizer)
+                
 
                 return cell
              
@@ -472,6 +477,27 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
     }
     
+    func selectPicture(_ sender: AnyObject) {
+        
+        let ImagePicker = UIImagePickerController()
+        ImagePicker.delegate = self
+        ImagePicker.sourceType = UIImagePickerControllerSourceType.camera
+        
+        self.present(ImagePicker, animated: true, completion: nil)
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let uiimage = info[UIImagePickerControllerOriginalImage] as? UIImage
+        PatientRespository.postImage(image: uiimage!, completion: {})
+        
+        
+        // image.image = info[UIImagePickerControllerOriginalImage] as? UIImage
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
     func deletePressed(_ sender: Any) {
         let firstName = patientDictionary["firstName"] as! String
         let lastName = patientDictionary["lastName"] as! String
@@ -505,6 +531,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
         
     }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        if mode == .update {
+            mode = .view;
+        }
+    }
+
 
     enum Mode {
         case new

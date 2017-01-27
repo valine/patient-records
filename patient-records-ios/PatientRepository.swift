@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class PatientRespository {
 
@@ -63,8 +64,6 @@ class PatientRespository {
             
             task.resume()
             
-        } catch {
-            print(error)
         }
         
     }
@@ -214,6 +213,145 @@ class PatientRespository {
         }
         
     }
+    
+
+    
+    static func postImage(image: UIImage, completion: @escaping (_:Void)->Void)
+    {
+        let listPatientsRequest = "photo/"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let boundary = generateBoundaryString()
+        
+        
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+    
+        let image_data = UIImagePNGRepresentation(image)
+        
+        
+        if(image_data == nil)
+        {
+            return
+        }
+        
+        
+        let body = NSMutableData()
+        
+        let fname = "file"
+        let mimetype = "image/png"
+        
+        
+        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition:form-data; name=\"test\"\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append("hi\r\n".data(using: String.Encoding.utf8)!)
+        
+        
+        
+        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Disposition:form-data; name=\"file\"; filename=\"\(fname)\"\r\n".data(using: String.Encoding.utf8)!)
+        body.append("Content-Type: \(mimetype)\r\n\r\n".data(using: String.Encoding.utf8)!)
+        body.append(image_data!)
+        body.append("\r\n".data(using: String.Encoding.utf8)!)
+        
+        
+        body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
+        
+        
+        request.httpBody = body as Data
+        
+        
+        
+        let session = URLSession.shared
+        
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {
+            (
+            data, response, error) in
+            
+            guard ((data) != nil), let _:URLResponse = response, error == nil else {
+                print("error")
+                return
+            }
+            
+            if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            {
+                print(dataString)
+            }
+            
+        })
+        
+        task.resume()
+        
+        
+    }
+    
+    
+    static func generateBoundaryString() -> String
+    {
+        return "Boundary-\(UUID().uuidString)"
+    }
+    
+
+//    static func postImage(image: UIImage, completion: @escaping (_:Void)->Void) {
+//
+//        let listPatientsRequest = "photo/"
+//        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+//        let request = NSMutableURLRequest(url: url as URL)
+//        request.httpMethod = "POST"
+//        let imageData = UIImagePNGRepresentation(image)
+//
+//        if(imageData == nil)
+//        {
+//            return
+//        }
+//        let boundary: String = genString(PatientRespository())()
+//   
+//        // Set Content-Type in HTTP header.
+//        let boundaryConstant = boundary // This should be auto-generated.
+//        let contentType = "multipart/form-data; boundary=" + boundaryConstant
+//        
+//        let fileName = "image"
+//        let mimeType = "image/png"
+//        let fieldName = "uploadFile"
+//        
+//        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+//        
+//        // Set data
+//        let strBase64:String = (imageData?.base64EncodedString())!
+//
+//        var dataString = "--\(boundaryConstant)\r\n"
+//        dataString += "Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n"
+//        dataString += "Content-Type: \(mimeType)\r\n\r\n"
+//        dataString += strBase64
+//       
+//        dataString += "\r\n"
+//        dataString += "--\(boundaryConstant)--\r\n"
+//        
+//        //print(dataString) // This would allow you to see what the dataString looks like.
+//        
+//        // Set the HTTPBody we'd like to submit
+//        let requestBodyData = (dataString as NSString).data(using: String.Encoding.utf8.rawValue)
+//        request.httpBody = requestBodyData
+//        
+//        
+//        let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+//            if error != nil{
+//                print("Error -> \(error)")
+//                return
+//            }
+//            
+//            DispatchQueue.main.async {
+//                completion()
+//            }
+//        }
+//        
+//        task.resume()
+//        
+//    }
 }
 
 struct Patient {

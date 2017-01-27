@@ -404,6 +404,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="patientPhoto" destination="33T-VR-4b7" id="8rE-ox-JeD"/>
                                     <outlet property="titleLabel" destination="K5P-am-2FF" id="of7-hQ-WCH"/>
                                 </connections>
                             </tableViewCell>
