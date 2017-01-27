@@ -1,27 +1,73 @@
 var express = require('express');
 var app = express();
 
+var multer  = require('multer')
+//var upload = multer({ dest: 'uploads/' })
 
-var multer  =   require('multer');
-var storage =   multer.diskStorage({
-  destination: function (req, file, callback) {
-    callback(null, './uploads');
-  },
-  filename: function (req, file, callback) {
-    callback(null, file.fieldname + '-' + Date.now());
-  }
-});
-var upload = multer({ storage : storage}).single('userPhoto');
+const crypto = require('crypto');
+var mime = require('mime');
+var app = express()
 
+var storage = multer.diskStorage({
+                                 destination: function (req, file, cb) {
+                                 cb(null, 'uploads/')
+                                 },
+                                 filename: function (req, file, cb) {
+                                 crypto.pseudoRandomBytes(16, function (err, raw) {
+                                                          cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
+                                                          });
+                                 }
+                                 });
+var upload = multer({ storage: storage });
 
-app.post('/api/photo',function(req,res){
-    upload(req,res,function(err) {
-        if(err) {
-            return res.end("Error uploading file.");
-        }
-        res.end("File is uploaded");
-    });
-});
+app.post('/photo', upload.single('file'), function (req, res, next) {
+         // req.file is the `avatar` file
+         // req.body will hold the text fields, if there were any
+         console.log("phoooootototototototototot")
+         })
+
+app.post('/photos/upload', upload.array('photos', 12), function (req, res, next) {
+         // req.files is array of `photos` files
+         // req.body will contain the text fields, if there were any
+         })
+
+var cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
+app.post('/cool-profile', cpUpload, function (req, res, next) {
+         // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
+         //
+         // e.g.
+         //  req.files['avatar'][0] -> File
+         //  req.files['gallery'] -> Array
+         // 
+         // req.body will contain the text fields, if there were any 
+         })
+//
+//var multer  = require('multer');
+//var upload = multer({ dest: 'upload/'});
+//var fs = require('fs');
+//
+///** Permissible loading a single file,
+// the value of the attribute "name" in the form of "recfile". **/
+//var type = upload.single('recfile');
+//
+//app.post('/upload', type, function (req,res) {
+//         
+//         /** When using the "single"
+//          data come in "req.file" regardless of the attribute "name". **/
+//         var tmp_path = req.file.path;
+//         
+//         /** The original name of the uploaded file
+//          stored in the variable "originalname". **/
+//         var target_path = 'uploads/' + req.file.originalname;
+//         
+//         /** A better way to copy the uploaded file. **/
+//         var src = fs.createReadStream(tmp_path);
+//         var dest = fs.createWriteStream(target_path);
+//         src.pipe(dest);
+//         src.on('end', function() { res.render('complete'); });
+//         src.on('error', function(err) { res.render('error'); });
+//         
+//         });
 
 app.get('/', function (req, res) {
    res.send('Hello World');
