@@ -150,6 +150,17 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                  let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
                 cell.titleLabel.text = "Update Patient Photo"
+                
+                if let value = patientDictionary["id"] as? Int {
+                    PatientRespository.getPatientPhoto(id: String(value), completion: {image in
+                        cell.patientPhoto.image = image
+                        cell.patientPhoto.contentScaleFactor = 2
+                        cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                        cell.patientPhoto.layer.borderWidth = 4
+                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                        
+                    })
+                }
 
                 let imageView = cell.patientPhoto
                 let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(selectPicture(_:)))
@@ -268,6 +279,17 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
                 cell.titleLabel.text = "Patient Photo"
+                
+                if let value = patientDictionary["id"] as? Int {
+                    PatientRespository.getPatientPhoto(id: String(value), completion: {image in
+                        cell.patientPhoto.image = image
+                        cell.patientPhoto.contentScaleFactor = 2
+                        cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                        cell.patientPhoto.layer.borderWidth = 4
+                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                    })
+                }
+                
                 return cell
              
             } else {
@@ -489,8 +511,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let uiimage = info[UIImagePickerControllerOriginalImage] as? UIImage
-        PatientRespository.postImage(image: uiimage!, completion: {})
         
+
+        PatientRespository.postImage(id: String(patientDictionaryToSave["id"] as! Int), image: uiimage!, completion: {
+            print("imageSaved") 
+            self.configureView()
+        
+        
+        })
         
         // image.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismiss(animated: true, completion: nil)

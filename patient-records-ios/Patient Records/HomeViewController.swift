@@ -227,6 +227,17 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         let patient = patients[indexPath.item]
         cell.name.text = patient.firstName + " " + patient.lastName
         cell.id.text = String(patient.id)
+        PatientRespository.getPatientPhotoSmall(id: String(patient.id
+        ), completion: { image in
+            
+            cell.photo.image = image
+            cell.photo.contentScaleFactor = 2
+            cell.photo.layer.cornerRadius = cell.photo.frame.height / 2
+            cell.photo.layer.borderWidth = 1
+            cell.photo.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+
+            
+        })
         return cell
     }
 

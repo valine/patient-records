@@ -8,22 +8,42 @@ const crypto = require('crypto');
 var mime = require('mime');
 var app = express()
 
+
+var sharp = require('sharp');
+
+
 var storage = multer.diskStorage({
                                  destination: function (req, file, cb) {
                                  cb(null, 'uploads/')
                                  },
                                  filename: function (req, file, cb) {
-                                 crypto.pseudoRandomBytes(16, function (err, raw) {
-                                                          cb(null, raw.toString('hex') + Date.now() + '.' + mime.extension(file.mimetype));
-                                                          });
+
+                                    cb(null, req.body.id + '.' + mime.extension(file.mimetype));
+
                                  }
                                  });
+
 var upload = multer({ storage: storage });
 
 app.post('/photo', upload.single('file'), function (req, res, next) {
          // req.file is the `avatar` file
          // req.body will hold the text fields, if there were any
-         console.log("phoooootototototototototot")
+         console.log("photo uploaded")
+         console.log(req.body.id + " for id")
+         
+         
+         sharp('./uploads/' + req.body.id + '.png')
+         .resize(150, 150)
+         .rotate(90)
+         .toFile('./uploads/' + req.body.id + '-small@2x.png' );
+         
+         sharp('./uploads/' + req.body.id + '.png')
+         .resize(45, 45)
+         .rotate()
+         .toFile('./uploads/' + req.body.id + '-verysmall@2x.png' );
+         
+          res.send("sucess")
+         
          })
 
 app.post('/photos/upload', upload.array('photos', 12), function (req, res, next) {
@@ -41,33 +61,7 @@ app.post('/cool-profile', cpUpload, function (req, res, next) {
          // 
          // req.body will contain the text fields, if there were any 
          })
-//
-//var multer  = require('multer');
-//var upload = multer({ dest: 'upload/'});
-//var fs = require('fs');
-//
-///** Permissible loading a single file,
-// the value of the attribute "name" in the form of "recfile". **/
-//var type = upload.single('recfile');
-//
-//app.post('/upload', type, function (req,res) {
-//         
-//         /** When using the "single"
-//          data come in "req.file" regardless of the attribute "name". **/
-//         var tmp_path = req.file.path;
-//         
-//         /** The original name of the uploaded file
-//          stored in the variable "originalname". **/
-//         var target_path = 'uploads/' + req.file.originalname;
-//         
-//         /** A better way to copy the uploaded file. **/
-//         var src = fs.createReadStream(tmp_path);
-//         var dest = fs.createWriteStream(target_path);
-//         src.pipe(dest);
-//         src.on('end', function() { res.render('complete'); });
-//         src.on('error', function(err) { res.render('error'); });
-//         
-//         });
+
 
 app.get('/', function (req, res) {
    res.send('Hello World');
@@ -199,6 +193,14 @@ app.get('/patient', function (req, res) {
     db.close();
 
 })
+
+app.get('/patient/photo/:id', function (req, res) {
+        res.sendFile('uploads/' + req.params.id + '-small@2x.png', { root: __dirname });
+});
+
+app.get('/patient/photosmall/:id', function (req, res) {
+        res.sendFile('uploads/' + req.params.id + '-verysmall@2x.png', { root: __dirname });
+        });
 
 // This responds a GET request
 app.get('/patient/id/:id', function (req, res) {

@@ -37,7 +37,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patient Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="boV-tH-T7M">
-                                                    <rect key="frame" x="90" y="15" width="263" height="21"/>
+                                                    <rect key="frame" x="90" y="14" width="263" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.18427660632393295" green="0.19611574020627331" blue="0.21700939120000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -46,6 +46,7 @@
                                                     <rect key="frame" x="28" y="14" width="22" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="22" id="VW3-LA-APd"/>
+                                                        <constraint firstAttribute="height" constant="22" id="tkB-Ue-bAW"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" #23" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BlO-Ny-XVO">
@@ -60,18 +61,23 @@
                                             </subviews>
                                             <color key="backgroundColor" red="0.93713601528422219" green="0.93860250618306962" blue="0.93940044111675691" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Kes-d1-Zlq" secondAttribute="bottom" constant="7" id="D2Z-g2-GbY"/>
                                                 <constraint firstItem="Kes-d1-Zlq" firstAttribute="bottom" secondItem="boV-tH-T7M" secondAttribute="bottom" id="PFq-89-U1L"/>
                                                 <constraint firstItem="Kes-d1-Zlq" firstAttribute="top" secondItem="BlO-Ny-XVO" secondAttribute="top" id="S3P-fX-Gpb"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="boV-tH-T7M" secondAttribute="trailing" constant="53" id="VM6-Cy-qhv"/>
                                                 <constraint firstItem="Kes-d1-Zlq" firstAttribute="leading" secondItem="TlT-0V-fZ4" secondAttribute="leadingMargin" constant="20" id="hNL-Mi-87U"/>
                                                 <constraint firstItem="boV-tH-T7M" firstAttribute="leading" secondItem="Kes-d1-Zlq" secondAttribute="trailing" constant="40" id="kGS-YK-GY8"/>
+                                                <constraint firstItem="Kes-d1-Zlq" firstAttribute="top" secondItem="TlT-0V-fZ4" secondAttribute="topMargin" constant="6" id="kLN-RG-O26"/>
+                                                <constraint firstItem="Kes-d1-Zlq" firstAttribute="top" secondItem="boV-tH-T7M" secondAttribute="top" id="kk1-6d-mOx"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="BlO-Ny-XVO" secondAttribute="trailing" constant="20" id="ln9-nY-2rx"/>
                                                 <constraint firstItem="Kes-d1-Zlq" firstAttribute="centerY" secondItem="TlT-0V-fZ4" secondAttribute="centerY" id="nFy-hf-GT3"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Kes-d1-Zlq" secondAttribute="trailing" constant="356" id="qiP-a4-Fkl"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="id" destination="BlO-Ny-XVO" id="rDS-88-OlB"/>
                                             <outlet property="name" destination="boV-tH-T7M" id="BvA-2H-E8z"/>
+                                            <outlet property="photo" destination="Kes-d1-Zlq" id="I73-Z1-O7w"/>
                                             <segue destination="tQb-5P-A09" kind="showDetail" identifier="showDetail" id="1oc-cb-uis"/>
                                         </connections>
                                     </tableViewCell>
@@ -395,12 +401,17 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="33T-VR-4b7">
-                                            <rect key="frame" x="150" y="26" width="75" height="75"/>
+                                            <rect key="frame" x="150" y="26.000000000000007" width="75" height="82.666666666666686"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="75" id="UxM-mm-EIL"/>
+                                            </constraints>
                                         </imageView>
                                     </subviews>
+                                    <color key="tintColor" red="0.92391407489776611" green="0.92389416694641113" blue="0.92389810085296631" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
                                         <constraint firstItem="33T-VR-4b7" firstAttribute="centerX" secondItem="BaJ-q3-nvM" secondAttribute="centerX" id="CKT-CD-UqZ"/>
                                         <constraint firstItem="33T-VR-4b7" firstAttribute="top" secondItem="BaJ-q3-nvM" secondAttribute="topMargin" constant="18" id="hT9-pW-IxN"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="33T-VR-4b7" secondAttribute="bottom" constant="40" id="kHD-AF-3zJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -602,8 +613,13 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Generate Wristband" id="Jf3-C9-PHk">
+                        <barButtonItem title="Wristband" style="done" id="Jf3-C9-PHk">
                             <color key="tintColor" red="0.5568627451" green="0.098039215690000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <segue destination="h4F-bW-ZPb" kind="popoverPresentation" popoverAnchorBarButtonItem="Jf3-C9-PHk" id="Y2C-zR-NR1">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" id="pxm-Bs-dnJ">
@@ -624,6 +640,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JRc-k6-04O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2125.5999999999999" y="630.58470764617698"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="o5c-9V-jWk">
+            <objects>
+                <viewController id="v1I-Yz-qFK" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ydb-xx-NuQ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Yna-lA-LSJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2rJ-uL-xpH" customClass="U">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="tfJ-gx-ydg"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BOT-3j-VFQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3844.9275362318845" y="707.60869565217399"/>
         </scene>
         <!--Code Scan-->
         <scene sceneID="8An-Bj-6Jd">
@@ -884,7 +919,7 @@
         <!--Onboarding-->
         <scene sceneID="itr-k5-Lrk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tQb-5P-A09" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="tQb-5P-A09" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Onboarding" image="new-patient" id="cPa-gy-q4n"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zc7-yE-gwi">
@@ -892,6 +927,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="y0u-pw-0jP">
+                        <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Z2r-X5-5Qf" kind="relationship" relationship="rootViewController" id="NLS-bj-shn"/>
                     </connections>
@@ -917,6 +956,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jDF-ig-Xmw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1497" y="-729"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Aco-V9-hcF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="h4F-bW-ZPb" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hH7-Oy-BVS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="v1I-Yz-qFK" kind="relationship" relationship="rootViewController" id="Gx8-Lr-lxl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7FI-jI-2ix" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2937.68115942029" y="707.60869565217399"/>
         </scene>
     </scenes>
     <resources>

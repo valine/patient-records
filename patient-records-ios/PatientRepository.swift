@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import MobileCoreServices
 
 class PatientRespository {
 
@@ -214,200 +215,178 @@ class PatientRespository {
         
     }
     
-
-    
-    static func postImage(image: UIImage, completion: @escaping (_:Void)->Void)
-    {
-        let listPatientsRequest = "photo/"
+    static func getPatientPhoto(id: String, completion: @escaping (_:UIImage)->Void) {
+        
+        let listPatientsRequest = "patient/photo/\(id)"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+        
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if data != nil {
+                DispatchQueue.main.async {
+                    if let image = UIImage(data: data!) {
+                        completion(image)
+                    }
+                    
+                }
+            }
+        }
+        task.resume()
+    }
+    
+    static func getPatientPhotoSmall(id: String, completion: @escaping (_:UIImage)->Void) {
+        
+        let listPatientsRequest = "patient/photosmall/\(id)"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+        
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if data != nil {
+                DispatchQueue.main.async {
+                    if let image = UIImage(data: data!) {
+                        completion(image)
+                    }
+                    
+                }
+            }
+        }
+        task.resume()
+    }
+    
 
-        let request = NSMutableURLRequest(url: url)
-        request.httpMethod = "POST"
+    /// Create request
+    ///
+    /// - parameter userid:   The userid to be passed to web service
+    /// - parameter password: The password to be passed to web service
+    /// - parameter email:    The email address to be passed to web service
+    ///
+    /// - returns:            The NSURLRequest that was created
+    
+    static func postImage(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
+        let parameters = [
+            "id"  : id]  // build your dictionary however appropriate
         
         let boundary = generateBoundaryString()
         
+        let listPatientsRequest = "photo/"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
         
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
 
-    
-        let image_data = UIImagePNGRepresentation(image)
+
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [image], boundary: boundary)
         
         
-        if(image_data == nil)
-        {
-            return
-        }
-        
-        
-        let body = NSMutableData()
-        
-        let fname = "file"
-        let mimetype = "image/png"
-        
-        
-        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition:form-data; name=\"test\"\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append("hi\r\n".data(using: String.Encoding.utf8)!)
-        
-        
-        
-        body.append("--\(boundary)\r\n".data(using: String.Encoding.utf8)!)
-        body.append("Content-Disposition:form-data; name=\"file\"; filename=\"\(fname)\"\r\n".data(using: String.Encoding.utf8)!)
-        body.append("Content-Type: \(mimetype)\r\n\r\n".data(using: String.Encoding.utf8)!)
-        body.append(image_data!)
-        body.append("\r\n".data(using: String.Encoding.utf8)!)
-        
-        
-        body.append("--\(boundary)--\r\n".data(using: String.Encoding.utf8)!)
-        
-        
-        request.httpBody = body as Data
-        
-        
-        
+
         let session = URLSession.shared
-        
-        
+
+
         let task = session.dataTask(with: request as URLRequest, completionHandler: {
-            (
-            data, response, error) in
+            ( data, response, error) in
             
+            completion()
+
             guard ((data) != nil), let _:URLResponse = response, error == nil else {
                 print("error")
                 return
             }
-            
+
             if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             {
+                
                 print(dataString)
             }
             
         })
         
         task.resume()
-        
-        
     }
     
+    /// Create body of the multipart/form-data request
+    ///
+    /// - parameter parameters:   The optional dictionary containing keys and values to be passed to web service
+    /// - parameter filePathKey:  The optional field name to be used when uploading files. If you supply paths, you must supply filePathKey, too.
+    /// - parameter paths:        The optional array of file paths of the files to be uploaded
+    /// - parameter boundary:     The multipart/form-data boundary
+    ///
+    /// - returns:                The NSData of the body of the request
     
-    static func generateBoundaryString() -> String
-    {
-        return "Boundary-\(UUID().uuidString)"
+    static func createBody(with parameters: [String: String]?, filePathKey: String, images: [UIImage], boundary: String) -> Data {
+        var body = Data()
+        
+        if parameters != nil {
+            for (key, value) in parameters! {
+                body.append("--\(boundary)\r\n")
+                body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                body.append("\(value)\r\n")
+            }
+        }
+        
+        for image in images {
+            let data = UIImagePNGRepresentation(image)
+            let mimetype = "image/png"
+                
+                //mimeType(for: path)
+            let filename = "file"
+            body.append("--\(boundary)\r\n")
+            body.append("Content-Disposition: form-data; name=\"\(filePathKey)\"; filename=\"\(filename)\"\r\n")
+            body.append("Content-Type: \(mimetype)\r\n\r\n")
+            body.append(data!)
+            body.append("\r\n")
+        }
+        
+        body.append("--\(boundary)--\r\n")
+        return body
     }
     
+    /// Create boundary string for multipart/form-data request
+    ///
+    /// - returns:            The boundary string that consists of "Boundary-" followed by a UUID string.
+    
+    static func generateBoundaryString() -> String {
+        return "Boundary-\(NSUUID().uuidString)"
+    }
+    
+    /// Determine mime type on the basis of extension of a file.
+    ///
+    /// This requires MobileCoreServices framework.
+    ///
+    /// - parameter path:         The path of the file for which we are going to determine the mime type.
+    ///
+    /// - returns:                Returns the mime type if successful. Returns application/octet-stream if unable to determine mime type.
+    
+    static func mimeType(for path: String) -> String {
+        let url = NSURL(fileURLWithPath: path)
+        let pathExtension = url.pathExtension
+        
+        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension! as NSString, nil)?.takeRetainedValue() {
+            if let mimetype = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType)?.takeRetainedValue() {
+                return mimetype as String
+            }
+        }
+        return "application/octet-stream";
+    }
+    
+  
 
-//    static func postImage(image: UIImage, completion: @escaping (_:Void)->Void) {
-//
-//        let listPatientsRequest = "photo/"
-//        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-//        let request = NSMutableURLRequest(url: url as URL)
-//        request.httpMethod = "POST"
-//        let imageData = UIImagePNGRepresentation(image)
-//
-//        if(imageData == nil)
-//        {
-//            return
-//        }
-//        let boundary: String = genString(PatientRespository())()
-//   
-//        // Set Content-Type in HTTP header.
-//        let boundaryConstant = boundary // This should be auto-generated.
-//        let contentType = "multipart/form-data; boundary=" + boundaryConstant
-//        
-//        let fileName = "image"
-//        let mimeType = "image/png"
-//        let fieldName = "uploadFile"
-//        
-//        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-//        
-//        // Set data
-//        let strBase64:String = (imageData?.base64EncodedString())!
-//
-//        var dataString = "--\(boundaryConstant)\r\n"
-//        dataString += "Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(fileName)\"\r\n"
-//        dataString += "Content-Type: \(mimeType)\r\n\r\n"
-//        dataString += strBase64
-//       
-//        dataString += "\r\n"
-//        dataString += "--\(boundaryConstant)--\r\n"
-//        
-//        //print(dataString) // This would allow you to see what the dataString looks like.
-//        
-//        // Set the HTTPBody we'd like to submit
-//        let requestBodyData = (dataString as NSString).data(using: String.Encoding.utf8.rawValue)
-//        request.httpBody = requestBodyData
-//        
-//        
-//        let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
-//            if error != nil{
-//                print("Error -> \(error)")
-//                return
-//            }
-//            
-//            DispatchQueue.main.async {
-//                completion()
-//            }
-//        }
-//        
-//        task.resume()
-//        
-//    }
 }
 
 struct Patient {
     var id: Int
     var dateAdded: Date
-    var lastSeen: Date
-    
     var firstName: String
-    var middleName: String
     var lastName: String
-    var sex: UInt8 // 0 unknown, 1 male, 2 female, 9 not applicable
-    var birthDate: Date
-    
-    var phoneNumber: String
-    var emailAddress: String
-    var weight: [PatientWeight] // in kilograms
-    var height: [PatientHeight]
-    
-    var familyStatus: UInt8 // 0 unknown, 1 known, 2 mother only, 3 father only, 4 other
-    
-    var medicalIssues: String
-    var currentMedications: String
-    var previouslMedicalProblems: String
-    var previousSurgery: String
-    var allergies: String
-    
-    var medicalRecomedations: [MedicalRecomendations]
-    var updates: [Updates]
+
     
     static func defaultPatient() -> Patient{
         return Patient(
             id: 0,
             dateAdded: Date(),
-            lastSeen: Date(),
-            
             firstName: "",
-            middleName: "",
-            lastName: "",
-            
-            sex: 0,
-            birthDate: Date(),
-            phoneNumber: "",
-            emailAddress: "",
-            weight: [PatientWeight](),
-            height: [PatientHeight](),
-            
-            familyStatus: 0,
-            
-            medicalIssues: "",
-            currentMedications: "",
-            previouslMedicalProblems: "",
-            previousSurgery: "",
-            allergies: "",
-            
-            medicalRecomedations: [MedicalRecomendations](),
-            updates: [Updates]()
+            lastName: ""
         )
     }
     
@@ -431,26 +410,7 @@ struct Patient {
         
         return patient
     }
-    
-    func toDictionary() -> [String: Any] {
-        return [
-            "id": self.id,
-            "dateAdded":  String(describing: self.dateAdded),
-            "lastSeen":  String(describing: self.lastSeen),
-            "firstName": self.firstName,
-            "middleName": self.middleName,
-            "lastName": self.lastName,
-            "sex": self.sex,
-            "birthDate": String(describing: self.birthDate),
-            "phoneNumber": self.phoneNumber,
-            "emailAddres": self.emailAddress,
-            "medicalIssues": self.medicalIssues,
-            "currentMedications": self.currentMedications,
-            "previousMedicalProblems": self.previouslMedicalProblems,
-            "previousSurgery": self.previousSurgery,
-            "allergies": self.allergies
-        ]
-    }
+
     
     static func newFromJSON(json: [String: Any]) -> Patient {
 
@@ -497,6 +457,21 @@ struct Patient {
         }
         
         return patientObjects
+    }
+}
+
+extension Data {
+    
+    /// Append string to NSMutableData
+    ///
+    /// Rather than littering my code with calls to `dataUsingEncoding` to convert strings to NSData, and then add that data to the NSMutableData, this wraps it in a nice convenient little extension to NSMutableData. This converts using UTF-8.
+    ///
+    /// - parameter string:       The string to be added to the `NSMutableData`.
+    
+    mutating func append(_ string: String) {
+        if let data = string.data(using: .utf8) {
+            append(data)
+        }
     }
 }
 
