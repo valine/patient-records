@@ -209,6 +209,23 @@ app.get('/patient/recent/', function (req, res) {
 
 })
 
+// This responds a GET request
+app.get('/patient/mostrecent/', function (req, res) {
+        // First name, lastname, dateAdded, and id hardcoded
+        var db = new sqlite3.Database(file);
+        db.serialize(function() {
+                     var sql = "SELECT id, dateAdded, firstName, lastName FROM Patients ORDER BY dateAdded DESC LIMIT 1";
+                     
+                     db.all(sql, function(err, rows) {
+                            var patients = {"patients" : rows}
+                            res.send(JSON.stringify(patients));
+                            //            console.log(JSON.stringify(rows));
+                            });
+                     });
+        db.close();
+        
+        })
+
 app.post('/patient/update', function(request, response, body) {
          try {
          var db = new sqlite3.Database(file);
