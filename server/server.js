@@ -16,53 +16,51 @@ var storage = multer.diskStorage({
                                  cb(null, 'uploads/')
                                  },
                                  filename: function (req, file, cb) {
-
-                                    cb(null, req.body.id + '.' + mime.extension(file.mimetype));
-
+                                 
+                                 cb(null, req.body.id + '.' + mime.extension(file.mimetype));
+                                 
                                  }
                                  });
-
 var upload = multer({ storage: storage });
 
 app.post('/photo', upload.single('file'), function (req, res, next) {
-         // req.file is the `avatar` file
-         // req.body will hold the text fields, if there were any
+         
+         
+  
          console.log("photo uploaded")
          console.log(req.body.id + " for id")
-        
          
-         var sharp = require('sharp');
-         sharp('./uploads/' + req.body.id + '.png')
-         .resize(150, 150)
-         .rotate()
-         .toFile('./uploads/' + req.body.id + '-small@2x.png' );
-         
-         sharp('./uploads/' + req.body.id + '.png')
-         .resize(45, 45)
 
-         .rotate()
-         .toFile('./uploads/' + req.body.id + '-verysmall@2x.png' );
-         
-          sharp('./uploads/dummy.png')
           res.send("sucess")
          
          })
 
-app.post('/photos/upload', upload.array('photos', 12), function (req, res, next) {
-         // req.files is array of `photos` files
-         // req.body will contain the text fields, if there were any
+var storageSmall = multer.diskStorage({
+                                 destination: function (req, file, cb) {
+                                 cb(null, 'uploads/')
+                                 },
+                                 filename: function (req, file, cb) {
+                                 
+                                 cb(null, req.body.id + '-small.' + mime.extension(file.mimetype));
+                                 
+                                 }
+                                 });
+
+var uploadSmall = multer({ storage: storageSmall });
+
+app.post('/photosmall', uploadSmall.single('file'), function (req, res, next) {
+         
+
+         
+         
+         console.log("photo uploaded")
+         console.log(req.body.id + " for id")
+         
+         
+         res.send("sucess")
+         
          })
 
-var cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'gallery', maxCount: 8 }])
-app.post('/cool-profile', cpUpload, function (req, res, next) {
-         // req.files is an object (String -> Array) where fieldname is the key, and the value is array of files
-         //
-         // e.g.
-         //  req.files['avatar'][0] -> File
-         //  req.files['gallery'] -> Array
-         // 
-         // req.body will contain the text fields, if there were any 
-         })
 
 
 app.get('/', function (req, res) {
@@ -123,41 +121,6 @@ db.serialize(function() {
      
     db.run(createTable);
     
-  /*  for (j = 0; j < 10; j++) {
-
-        var insertRow = "INSERT INTO Patients (id, dateAdded"
-        
-        for (i = 0; i < config.options.length; i++) {
-            insertRow += ", "
-            insertRow += config.options[i].columnName + " "
-        }
-        
-        insertRow += ") VALUES (NULL, \"" + getDateTime() + "\""
-        
-        for (i = 0; i < config.options.length; i++) {
-            insertRow += ", "
-            
-            if (config.options[i].type == "textFieldCell") {
-                insertRow += "\"" + config.options[i].defaultValue + "\""
-            
-            } else if (config.options[i].type == "textViewCell") {
-                insertRow += "\"" + config.options[i].defaultValue + "\""
-            
-            } else if (config.options[i].type == "integerCell") {
-                insertRow += config.options[i].defaultValue
-            
-            } else if (config.options[i].type == "dateCell") {
-                insertRow += "\"" + config.options[i].defaultValue + "\""
-            } else {
-                insertRow += "\"" + config.options[i].defaultValue + "\""
-            }
-        }
-        
-        insertRow += ")"
-        
-        db.run(insertRow)
-    } */
-    
     db.run("CREATE TABLE PatientWeights (id INTEGER PRIMARY KEY AUTOINCREMENT, weight INTEGER, patientid INTEGER)");
   }
   
@@ -197,11 +160,11 @@ app.get('/patient', function (req, res) {
 })
 
 app.get('/patient/photo/:id', function (req, res) {
-        res.sendFile('uploads/' + req.params.id + '-small@2x.png', { root: __dirname });
+        res.sendFile('uploads/' + req.params.id + '.png', { root: __dirname });
 });
 
 app.get('/patient/photosmall/:id', function (req, res) {
-        res.sendFile('uploads/' + req.params.id + '-verysmall@2x.png', { root: __dirname });
+        res.sendFile('uploads/' + req.params.id + '-small.png', { root: __dirname });
         });
 
 // This responds a GET request
