@@ -27,9 +27,12 @@ checklist for submision
 		view single patient - DONE
 		text search = - DONE
 		fix dates - DONE
-
-		qr code - !! 
-		patient photo - !
+		patient photo - DONE
+		
+		
+		qr code - !!!
+		offline mode !!
+		
 		doctor name - 
 		auto detect server
 		
