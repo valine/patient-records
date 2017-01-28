@@ -7,9 +7,8 @@ var multer  = require('multer')
 const crypto = require('crypto');
 var mime = require('mime');
 var app = express()
-
-
-var sharp = require('sharp');
+var fs = require('fs');
+var path = require('path')
 
 
 var storage = multer.diskStorage({
@@ -30,18 +29,21 @@ app.post('/photo', upload.single('file'), function (req, res, next) {
          // req.body will hold the text fields, if there were any
          console.log("photo uploaded")
          console.log(req.body.id + " for id")
+        
          
-         
+         var sharp = require('sharp');
          sharp('./uploads/' + req.body.id + '.png')
          .resize(150, 150)
-         .rotate(90)
+         .rotate()
          .toFile('./uploads/' + req.body.id + '-small@2x.png' );
          
          sharp('./uploads/' + req.body.id + '.png')
          .resize(45, 45)
+
          .rotate()
          .toFile('./uploads/' + req.body.id + '-verysmall@2x.png' );
          
+          sharp('./uploads/dummy.png')
           res.send("sucess")
          
          })
