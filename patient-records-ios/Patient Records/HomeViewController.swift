@@ -83,10 +83,16 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func updateTable() {
+        
+        let ipath = tableView.indexPathForSelectedRow;
+  
+        
         if !searching {
             PatientRespository.getRecentPatients(completion: {(returnedPatients) in
                 self.patients = returnedPatients
                 self.tableView.reloadData()
+                
+                self.tableView.selectRow(at: ipath, animated: false, scrollPosition: .none)
             }, debug: {(value) in
                 
             })
@@ -95,22 +101,26 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         updateTable()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let ipath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: ipath, animated: false)
+        }
     }
     
     func didBecomeActive(notification: Notification){
         updateTable()
+        
+
     }
     
 
     func touchGestureIcon(_ sender:UITapGestureRecognizer){
         animateHeart()
-        PatientRespository.getRecentPatients(completion: {(returnedPatients) in
-            self.patients = returnedPatients
-            self.tableView.reloadData()
-        }, debug: {(value) in
-            
-        })
+        updateTable()
     }
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -232,8 +242,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             cell.photo.image = image
             cell.photo.contentScaleFactor = 2
             cell.photo.layer.cornerRadius = cell.photo.frame.height / 2
-            cell.photo.layer.borderWidth = 1
-            cell.photo.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+            cell.photo.layer.borderWidth = 2
+            cell.photo.layer.borderColor = #colorLiteral(red: 0.7323010564, green: 0.7356925607, blue: 0.7439760566, alpha: 1).cgColor
 
             
         }, noImage: {

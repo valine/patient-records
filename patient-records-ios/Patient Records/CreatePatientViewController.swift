@@ -86,10 +86,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
         
         else if mode == .update {
-            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
-            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.1608188152, green: 0.174718082, blue: 0.1933558881, alpha: 1)
-            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.3279487009, green: 0.3410818713, blue: 0.349202474, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.3279487009, green: 0.3410818713, blue: 0.349202474, alpha: 1)
+            self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
 
             patientDictionaryToSave = patientDictionary;
             let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.cancelTapped(_:)))
@@ -172,7 +172,11 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                
                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
-                cell.titleLabel.text = "Update Patient Photo"
+                if mode == .new {
+                cell.titleLabel.text = "New Patient Photo"
+                } else {
+                    cell.titleLabel.text = "Update Patient Photo";
+                }
                 
                 if mode == .update {
                     if let value = patientDictionary["id"] as? Int {
@@ -181,7 +185,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                             cell.patientPhoto.contentScaleFactor = 2
                             cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
                             cell.patientPhoto.layer.borderWidth = 4
-                            cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                            cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
                             
                         })
                     }
@@ -192,7 +196,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.patientPhoto.contentScaleFactor = 2
                         cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
                         cell.patientPhoto.layer.borderWidth = 4
-                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
 
                     }
                     
@@ -323,7 +327,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.patientPhoto.contentScaleFactor = 2
                         cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
                         cell.patientPhoto.layer.borderWidth = 4
-                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
                     })
                 }
                 
