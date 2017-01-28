@@ -229,7 +229,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         cell.id.text = String(patient.id)
         PatientRespository.getPatientPhotoSmall(id: String(patient.id
         ), completion: { image in
-            
             cell.photo.image = image
             cell.photo.contentScaleFactor = 2
             cell.photo.layer.cornerRadius = cell.photo.frame.height / 2
@@ -237,6 +236,9 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             cell.photo.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
 
             
+        }, noImage: {
+        
+            cell.photo.image = #imageLiteral(resourceName: "empty-profile-image-thumbnail")
         })
         return cell
     }
@@ -257,11 +259,13 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
                 controller.mode = .view
+                
+                controller.obscure = true
                 //controller.patientDictionary = Patient.defaultPatientDictionary()
                 
                 PatientRespository.getPatientById(id: id!, completion: {(patient) in
                     controller.patientDictionary = patient
-                    
+                    controller.obscure = false
                     controller.tableView.reloadData();
                 }, debug: {(debug) in })
                 

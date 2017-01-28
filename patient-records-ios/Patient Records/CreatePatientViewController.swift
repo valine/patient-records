@@ -29,12 +29,35 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     var sender: HomeTableViewCell?
     
+    var obscureView: UIView?
+    
+    var obscure: Bool = false {
+        
+        didSet {
+            if obscure {
+                self.obscureView?.alpha = 1
+                
+            } else {
+                
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                    
+                    self.obscureView?.alpha = 0
+                    
+                }, completion: nil)
+                
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationController?.setNavigationBarHidden(false, animated: true)
         self.tableView.allowsSelection = false
         
+        obscureView = UIView(frame: self.tableView.frame)
+        obscureView?.backgroundColor = .white
+        obscureView?.alpha = 0
+        self.tableView.addSubview(obscureView!)
         self.hidesBottomBarWhenPushed = false;
     }
 
@@ -147,19 +170,33 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
             if indexPath.item == 0 {
                
-                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
+                let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
                 cell.titleLabel.text = "Update Patient Photo"
                 
-                if let value = patientDictionary["id"] as? Int {
-                    PatientRespository.getPatientPhoto(id: String(value), completion: {image in
-                        cell.patientPhoto.image = image
+                if mode == .update {
+                    if let value = patientDictionary["id"] as? Int {
+                        PatientRespository.getPatientPhoto(id: String(value), completion: {image in
+                            cell.patientPhoto.image = image
+                            cell.patientPhoto.contentScaleFactor = 2
+                            cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                            cell.patientPhoto.layer.borderWidth = 4
+                            cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
+                            
+                        })
+                    }
+                } else {
+                    if let imageLocal = imageHold {
+                        
+                        cell.patientPhoto.image = imageLocal
                         cell.patientPhoto.contentScaleFactor = 2
                         cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
                         cell.patientPhoto.layer.borderWidth = 4
                         cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.8009086847, green: 0.8010219336, blue: 0.8008728623, alpha: 1).cgColor
-                        
-                    })
+
+                    }
+                    
+                    
                 }
 
                 let imageView = cell.patientPhoto
@@ -404,10 +441,31 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if (mode == .new) {
             PatientRespository.addPatient(json: patientDictionaryToSave, completion: {
                 
+                if let imageLocal = self.imageHold {
+                    PatientRespository.getRecentPatients(completion: { patients in
+                        print(patients[0].id)
+                        
+                        let resizeSmall = PatientRespository.resizeImage(image: imageLocal, targetSize: CGSize(width: 75, height: 75))
+                        PatientRespository.postImageSmall(id: String(describing: patients[0].id), image: resizeSmall, completion: {})
+                        
+                        let resize = PatientRespository.resizeImage(image: imageLocal, targetSize: CGSize(width: 200, height: 200))
+                        PatientRespository.postImage(id: String(describing: patients[0].id), image: resize, completion: {
+                            print("imageSaved")
+                            self.tableView.reloadData()
+                            
+                        })
+                        
+                        
+                        print("   id   id")
+                        
+                    }, debug: {_ in })
+                    
+                }
+                
                 self.dismiss(animated: true, completion: {})
                 self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
             })
-            
+     
             
         } else if mode == .view {
             mode = .update
@@ -512,19 +570,26 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let uiimage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
+        if mode == .update {
 
-        PatientRespository.postImage(id: String(patientDictionaryToSave["id"] as! Int), image: uiimage!, completion: {
-            print("imageSaved") 
-            self.configureView()
+            PatientRespository.postImage(id: String(patientDictionaryToSave["id"] as! Int), image: uiimage!, completion: {
+                print("imageSaved") 
+                self.tableView.reloadData()
+            })
+            
+            PatientRespository.postImageSmall(id: String(self.patientDictionaryToSave["id"] as! Int), image: uiimage!, completion: {})
+        } else if mode == .new {
+            let resize = PatientRespository.resizeImage(image: uiimage!, targetSize: CGSize(width: 200, height: 200))
+            imageHold = resize
+            tableView.reloadData()
+        }
         
-        
-        })
         
         // image.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismiss(animated: true, completion: nil)
     }
     
-    
+    var imageHold: UIImage?
     
     func deletePressed(_ sender: Any) {
         let firstName = patientDictionary["firstName"] as! String

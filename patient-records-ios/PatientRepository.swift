@@ -109,6 +109,35 @@ class PatientRespository {
             task.resume()
     }
     
+    
+    static func getMostRecentPatient(completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
+        let listPatientsRequest = "patient/mostrecent"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if let unwrappedData = data {
+                DispatchQueue.main.async {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+                        
+                        let returnedPatient = Patient.newFromJSON(json: json)
+                        
+                        completion(json)
+                        debug("sent patient with name: " + String(returnedPatient.firstName))
+                    } catch {
+                        print("error serializing JSON: \(error)")
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    debug("Error")
+                }
+            }
+        }
+        task.resume()
+
+    }
+    
     static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
         let listPatientsRequest = "search/" + input
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -234,7 +263,7 @@ class PatientRespository {
         task.resume()
     }
     
-    static func getPatientPhotoSmall(id: String, completion: @escaping (_:UIImage)->Void) {
+    static func getPatientPhotoSmall(id: String, completion: @escaping (_:UIImage)->Void, noImage: @escaping (_:Void)->Void) {
         
         let listPatientsRequest = "patient/photosmall/\(id)"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -245,6 +274,9 @@ class PatientRespository {
                 DispatchQueue.main.async {
                     if let image = UIImage(data: data!) {
                         completion(image)
+                    } else {
+                        
+                        noImage()
                     }
                     
                 }
@@ -274,10 +306,10 @@ class PatientRespository {
         let request = NSMutableURLRequest(url: url)
         request.httpMethod = "POST"
 
-
+        let resize = resizeImage(image: image, targetSize: CGSize(width: 200, height: 200))
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
-        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [image], boundary: boundary)
+        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
         
         
 
@@ -294,6 +326,48 @@ class PatientRespository {
                 return
             }
 
+            if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+            {
+                
+                print(dataString)
+            }
+            
+        })
+        
+        task.resume()
+    }
+    
+    
+    static func postImageSmall(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
+        let parameters = [
+            "id"  : id]  // build your dictionary however appropriate
+        
+        let boundary = generateBoundaryString()
+        
+        let listPatientsRequest = "photosmall/"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        
+        let request = NSMutableURLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        let resize = resizeImage(image: image, targetSize: CGSize(width: 75, height: 75))
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        
+        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
+    
+        let session = URLSession.shared
+        
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {
+            ( data, response, error) in
+            
+            completion()
+            
+            guard ((data) != nil), let _:URLResponse = response, error == nil else {
+                print("error")
+                return
+            }
+            
             if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             {
                 
@@ -326,6 +400,8 @@ class PatientRespository {
         }
         
         for image in images {
+            
+            
             let data = UIImagePNGRepresentation(image)
             let mimetype = "image/png"
                 
@@ -368,6 +444,32 @@ class PatientRespository {
             }
         }
         return "application/octet-stream";
+    }
+    
+    static func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+        } else {
+            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.draw(in: rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
     
   
