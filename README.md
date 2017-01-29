@@ -37,7 +37,6 @@ checklist for submision
 		
 		3d touch to view patients -- maybe v2
 		animated checkmarks and xs -- maybe v2
-		weight table - maybe v2
-		height table - maybe v2
+		numeral table
 		metric or imperial option
 		
