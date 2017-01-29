@@ -86,9 +86,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
         
         else if mode == .update {
-            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.3279487009, green: 0.3410818713, blue: 0.349202474, alpha: 1)
+            self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.354016006, green: 0.37027812, blue: 0.4115960598, alpha: 1)
             self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
-            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.3279487009, green: 0.3410818713, blue: 0.349202474, alpha: 1)
+            self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.354016006, green: 0.37027812, blue: 0.4115960598, alpha: 1)
+
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
 
             patientDictionaryToSave = patientDictionary;
@@ -157,7 +158,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 }
                 
             return CGFloat(height)
-                } else { /// for delete button
+            } else { /// for delete button
                 return photoHeight
             }
         }

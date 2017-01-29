@@ -105,7 +105,7 @@
                                             <size key="shadowOffset" width="1" height="-1"/>
                                         </label>
                                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JSx-sB-2At" customClass="LogoView" customModule="Patient_Records" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="74" height="75"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="75" height="75"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.76513720839999999" green="0.79577821189999998" blue="0.81472439240000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
@@ -594,14 +594,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="157"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gZ-7n-HzI">
-                                            <rect key="frame" x="24" y="67" width="327" height="22"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6gZ-7n-HzI">
+                                            <rect key="frame" x="139" y="63" width="97" height="30"/>
                                             <state key="normal" title="Delete Patient">
                                                 <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="6gZ-7n-HzI" firstAttribute="centerY" secondItem="4wQ-B0-Ji7" secondAttribute="centerY" id="sQa-wI-6cL"/>
+                                        <constraint firstItem="6gZ-7n-HzI" firstAttribute="centerX" secondItem="4wQ-B0-Ji7" secondAttribute="centerX" id="wQV-wE-50g"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="delete" destination="6gZ-7n-HzI" id="6nF-5n-5gS"/>
