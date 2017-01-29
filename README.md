@@ -28,11 +28,10 @@ checklist for submision
 		text search = - DONE
 		fix dates - DONE
 		patient photo - DONE
+		qr code - DONE
 		
-		
-		qr code - !!!
+		notes table -  !!
 		offline mode !!
-		
 		doctor name - 
 		auto detect server
 		
@@ -40,6 +39,5 @@ checklist for submision
 		animated checkmarks and xs -- maybe v2
 		weight table - maybe v2
 		height table - maybe v2
-		notes table -  maybe v2
 		metric or imperial option
 		
