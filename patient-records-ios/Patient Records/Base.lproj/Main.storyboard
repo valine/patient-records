@@ -627,20 +627,7 @@
                     <view key="view" contentMode="scaleToFill" id="2rJ-uL-xpH" customClass="U">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jRR-rs-oT2">
-                                <rect key="frame" x="87" y="248" width="240" height="240"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="240" id="C5e-Zs-yw5"/>
-                                    <constraint firstAttribute="height" constant="240" id="tFe-8M-Aod"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="jRR-rs-oT2" firstAttribute="centerY" secondItem="2rJ-uL-xpH" secondAttribute="centerY" id="LR4-Ct-UDM"/>
-                            <constraint firstItem="jRR-rs-oT2" firstAttribute="centerX" secondItem="2rJ-uL-xpH" secondAttribute="centerX" id="wec-at-s8i"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Code Scan" id="tfJ-gx-ydg">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="bck-Xg-GOg">
@@ -650,9 +637,6 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="imageView" destination="jRR-rs-oT2" id="qiy-qt-VFC"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BOT-3j-VFQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

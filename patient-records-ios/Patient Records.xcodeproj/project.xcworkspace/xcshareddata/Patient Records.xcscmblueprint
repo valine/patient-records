@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "9AA983A3923F9436F5E1852FE9EF5E01D61AA1DB",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "9AA983A3923F9436F5E1852FE9EF5E01D61AA1DB" : 9223372036854775807,
+    "3AE8ED2E684071AF4FB151FA51BF266B82FF45BD" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9D13D2DF-30A4-4584-B5C7-E5A835B2008C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "9AA983A3923F9436F5E1852FE9EF5E01D61AA1DB" : "patient-records\/",
+    "3AE8ED2E684071AF4FB151FA51BF266B82FF45BD" : "SQLite.swift\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Patient Records",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "patient-records-ios\/Patient Records.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/stephencelis\/SQLite.swift.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3AE8ED2E684071AF4FB151FA51BF266B82FF45BD"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/valine\/patient-records",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "9AA983A3923F9436F5E1852FE9EF5E01D61AA1DB"
+    }
+  ]
+}

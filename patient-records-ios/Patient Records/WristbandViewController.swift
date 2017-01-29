@@ -33,14 +33,49 @@ class WristbandViewController: UIViewController {
         filter?.setValue("Q", forKey: "inputCorrectionLevel")
         
         qrcode = filter?.outputImage
+       
+        let wristBandView = WristbandView()
         
+        let scaleX = wristBandView.imageView.frame.size.width / (qrcode?.extent.size.width)!
+        let scaleY = wristBandView.imageView.frame.size.height / (qrcode?.extent.size.height)!
         
-        let scaleX = imageView.frame.size.width / (qrcode?.extent.size.width)!
-        let scaleY = imageView.frame.size.height / (qrcode?.extent.size.height)!
+        let transformedImage = qrcode?.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
+
         
-         let transformedImage = qrcode?.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
+        wristBandView.imageView.image = UIImage(ciImage: transformedImage!)
+
+        let printController = UIPrintInteractionController.shared
+        let printInfo = UIPrintInfo(dictionary:nil)
         
-        imageView.image = UIImage(ciImage: transformedImage!)
+        printInfo.outputType = UIPrintInfoOutputType.general
+        printInfo.jobName = "print Job"
+        printController.printInfo = printInfo
+        printController.printingItem = toPDF(views: [imageView])
+ 
+        printController.present(animated: true, completionHandler: nil)
+    
+    
+    }
+    
+    private func toPDF(views: [UIView]) -> NSData? {
+        
+        if views.isEmpty {
+            return nil
+        }
+        
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 612, height: 792), nil)
+        
+        let context = UIGraphicsGetCurrentContext()
+        
+        for view in views {
+            UIGraphicsBeginPDFPage()
+            view.layer.render(in: context!)
+        }
+        
+        UIGraphicsEndPDFContext()
+        
+        return pdfData
     }
 
     override func didReceiveMemoryWarning() {

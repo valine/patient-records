@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreImage
 
 class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -646,18 +647,71 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     @IBAction func wristbandPressed(_ sender: Any) {
         
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        // It is instance of  `NewViewController` from storyboard
+        let idValue = self.patientDictionary["id"] as! Int;
+
+        let firstName = self.patientDictionary["firstName"] as! String;
+        let lastName = self.patientDictionary["lastName"] as! String;
+        let fullName = "\(firstName) \(lastName)"
+
+        
+        let listPatientsRequest = "patient/id/" + String(idValue)
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+
+        let data = url.absoluteString.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
+        
+        let filter = CIFilter(name: "CIQRCodeGenerator")
+        
+        filter?.setValue(data, forKey: "inputMessage")
+        filter?.setValue("Q", forKey: "inputCorrectionLevel")
+        
        
-        let nc = storyboard.instantiateViewController(withIdentifier: "wristband-nav") as! UINavigationController
+        let holderView = UIView(frame: CGRect(x: 0, y:0, width: 200, height: 10000))
+        let wristBandView = WristbandView(frame: CGRect(x:30, y:30, width: 100, height: 1000))
+        holderView.addSubview(wristBandView)
         
-        let vc = nc.topViewController as! WristbandViewController
+        let qrcode = filter?.outputImage
         
-        vc.idValue = self.patientDictionary["id"] as! Int;
-        print("hello")
-        print(self.patientDictionary["id"] as! Int)
-        vc.modalTransitionStyle = UIModalTransitionStyle.coverVertical
-        self.present(nc, animated: true, completion: nil)
+        let scaleX = wristBandView.imageView.frame.size.width / (qrcode?.extent.size.width)!
+        let scaleY = wristBandView.imageView.frame.size.height / (qrcode?.extent.size.height)!
+        
+        let transformedImage = qrcode?.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
+        
+        wristBandView.imageView.image = UIImage(ciImage: transformedImage!)
+        wristBandView.nameView.text = fullName
+        wristBandView.idView.text = "#" + String(idValue)
+        
+        
+        let printController = UIPrintInteractionController.shared
+        let printInfo = UIPrintInfo(dictionary:nil)
+        
+        printInfo.outputType = UIPrintInfoOutputType.general
+        printInfo.jobName = "print Job"
+        printController.printInfo = printInfo
+        printController.printingItem = toPDF(views: [holderView])
+        
+        printController.present(animated: true, completionHandler: nil)
+    }
+    
+    private func toPDF(views: [UIView]) -> NSData? {
+        
+        if views.isEmpty {
+            return nil
+        }
+        
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, CGRect(x: 0, y: 0, width: 612, height: 792), nil)
+        
+        let context = UIGraphicsGetCurrentContext()
+        
+        for view in views {
+            UIGraphicsBeginPDFPage()
+            view.layer.render(in: context!)
+        }
+        
+        UIGraphicsEndPDFContext()
+        
+        return pdfData
     }
 
     enum Mode {
