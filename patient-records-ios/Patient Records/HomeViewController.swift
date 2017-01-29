@@ -101,7 +101,9 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        if let ipath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: ipath, animated: false)
+        }
         updateTable()
     }
     
