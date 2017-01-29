@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8004CBBC1E3A947E00124DF6 /* CustomSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004CBBB1E3A947E00124DF6 /* CustomSearch.swift */; };
+		8004CBBE1E3D81A000124DF6 /* WristbandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8004CBBD1E3D81A000124DF6 /* WristbandViewController.swift */; };
 		800960CB1E36C07A0095B16D /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800960CA1E36C07A0095B16D /* IntroViewController.swift */; };
 		800960CD1E36C6D10095B16D /* SplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800960CC1E36C6D10095B16D /* SplitViewController.swift */; };
 		800960CF1E36D0830095B16D /* LargeLogoScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 800960CE1E36D0830095B16D /* LargeLogoScene.sks */; };
@@ -84,6 +85,7 @@
 
 /* Begin PBXFileReference section */
 		8004CBBB1E3A947E00124DF6 /* CustomSearch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSearch.swift; sourceTree = "<group>"; };
+		8004CBBD1E3D81A000124DF6 /* WristbandViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WristbandViewController.swift; sourceTree = "<group>"; };
 		800960CA1E36C07A0095B16D /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IntroViewController.swift; path = ../IntroViewController.swift; sourceTree = "<group>"; };
 		800960CC1E36C6D10095B16D /* SplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitViewController.swift; sourceTree = "<group>"; };
 		800960CE1E36D0830095B16D /* LargeLogoScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LargeLogoScene.sks; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 				8004CBBB1E3A947E00124DF6 /* CustomSearch.swift */,
 				807326741DA1CDD70082EC2E /* CreatePatientViewController.swift */,
 				807326701DA1CD970082EC2E /* SearchViewController.swift */,
+				8004CBBD1E3D81A000124DF6 /* WristbandViewController.swift */,
 				80E743551DA29F76004898B8 /* SettingsViewController.swift */,
 			);
 			name = viewControllers;
@@ -460,6 +463,7 @@
 				80EFC5AD1DB7E5BA00A391A5 /* SocketEnginePollable.swift in Sources */,
 				80EFC5A91DB7E5BA00A391A5 /* SocketClientManager.swift in Sources */,
 				80EFC5B01DB7E5BA00A391A5 /* SocketEventHandler.swift in Sources */,
+				8004CBBE1E3D81A000124DF6 /* WristbandViewController.swift in Sources */,
 				80EFC5A71DB7E5BA00A391A5 /* SocketAckManager.swift in Sources */,
 				80EFC5BC1DB7E5BA00A391A5 /* SSLSecurity.swift in Sources */,
 				807326731DA1CDC00082EC2E /* HomeViewController.swift in Sources */,

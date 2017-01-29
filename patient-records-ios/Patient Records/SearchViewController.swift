@@ -37,6 +37,7 @@ AVCaptureMetadataOutputObjectsDelegate {
 
             // Initialize the captureSession object.
             captureSession = AVCaptureSession()
+        
             // Set the input device on the capture session.
             captureSession?.addInput(input)
 
@@ -54,13 +55,13 @@ AVCaptureMetadataOutputObjectsDelegate {
             videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
             videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
             
-            
             let viewBounds = scanParentView.layer.bounds
-            
             videoPreviewLayer?.frame = viewBounds
-            videoPreviewLayer?.cornerRadius = videoRadius
 
+            videoPreviewLayer?.cornerRadius = videoRadius
+            videoPreviewLayer?.videoGravity = AVLayerVideoGravityResizeAspectFill
             scanParentView.layer.addSublayer(videoPreviewLayer!)
+            updateVideoOrientation()
             
             // Start video capture
             captureSession?.startRunning()
@@ -84,6 +85,122 @@ AVCaptureMetadataOutputObjectsDelegate {
             return
         }
 
+    }
+    
+    func updateVideoOrientation() {
+        
+        
+        let orientation: UIDeviceOrientation = UIDevice.current.orientation
+        
+        if orientation == .portrait {
+
+            let rotate = CGAffineTransform(rotationAngle: 0.0 * 3.14/180.0)
+            videoPreviewLayer?.setAffineTransform(rotate)
+            
+            let viewBounds = scanParentView.layer.bounds
+            videoPreviewLayer?.frame = viewBounds
+            
+        } else if orientation == .landscapeLeft {
+
+            let rotate = CGAffineTransform(rotationAngle: -90.0 * 3.14/180.0)
+            videoPreviewLayer?.setAffineTransform(rotate)
+            
+            let viewBounds = scanParentView.layer.bounds
+            videoPreviewLayer?.frame = viewBounds
+            
+            
+        } else if orientation == .landscapeRight {
+
+            let rotate = CGAffineTransform(rotationAngle: 90.0 * 3.14/180.0)
+            videoPreviewLayer?.setAffineTransform(rotate)
+            
+            let viewBounds = scanParentView.layer.bounds
+            videoPreviewLayer?.frame = viewBounds
+            
+        }
+    }
+    
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+        
+        // Check if the metadataObjects array is not nil and it contains at least one object.
+        if metadataObjects == nil || metadataObjects.count == 0 {
+            qrCodeFrameView?.frame = CGRect.zero
+//            messageLabel.text = "No QR code is detected"
+            print("no qrcode detected")
+            return
+        }
+        
+        // Get the metadata object.
+        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        
+        if metadataObj.type == AVMetadataObjectTypeQRCode {
+            // If the found metadata is equal to the QR code metadata then update the status label's text and set the bounds
+            let barCodeObject = videoPreviewLayer?.transformedMetadataObject(for: metadataObj as AVMetadataMachineReadableCodeObject) as! AVMetadataMachineReadableCodeObject
+            qrCodeFrameView?.frame = barCodeObject.bounds;
+            
+            if metadataObj.stringValue != nil {
+                
+                print(metadataObj.stringValue)
+               
+                let url = URL(string: metadataObj.stringValue)
+                let id = url?.lastPathComponent
+                
+                presentPatient(idString: id!)
+                captureSession?.stopRunning()
+                qrCodeFrameView?.frame = CGRect.zero
+               // print(id!)
+                //messageLabel.text = metadataObj.stringValue
+            }
+        }
+    }
+    
+    func presentPatient(idString: String ) {
+        
+
+            let id = Int(idString)
+                
+        
+        
+        print(id!)
+            PatientRespository.getPatientById(id: id!, completion: {(patient) in
+                
+                let controller = CreatePatientViewController()
+                
+                //            controller.navigationItem.leftBarButtonItem = self.splitViewController?.displayModeButtonItem
+                controller.navigationItem.leftItemsSupplementBackButton = true
+                
+                let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                // It is instance of  `NewViewController` from storyboard
+                let nc: UINavigationController = storyboard.instantiateViewController(withIdentifier: "create-nav") as! UINavigationController
+                let pvc = nc.topViewController as! CreatePatientViewController
+              
+                pvc.patientDictionary = patient
+                //pvc.patientDictionaryToSave = patient
+                pvc.obscure = true
+                
+                self.navigationController?.pushViewController(pvc, animated: true)
+                //self.present(nc, animated: true, completion: {})
+                pvc.mode = .view
+                //nc.navigationItem.setHidesBackButton(true, animated:true);
+                
+               // controller.obscure = false
+               // controller.tableView.reloadData();
+            }, debug: {(debug) in })
+        
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if captureSession != nil {
+            
+            captureSession?.startRunning()
+        }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        updateVideoOrientation()
+        
     }
 
     override func didReceiveMemoryWarning() {

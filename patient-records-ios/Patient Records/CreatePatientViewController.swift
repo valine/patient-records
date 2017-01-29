@@ -644,6 +644,21 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
     }
 
+    @IBAction func wristbandPressed(_ sender: Any) {
+        
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        // It is instance of  `NewViewController` from storyboard
+       
+        let nc = storyboard.instantiateViewController(withIdentifier: "wristband-nav") as! UINavigationController
+        
+        let vc = nc.topViewController as! WristbandViewController
+        
+        vc.idValue = self.patientDictionary["id"] as! Int;
+        print("hello")
+        print(self.patientDictionary["id"] as! Int)
+        vc.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+        self.present(nc, animated: true, completion: nil)
+    }
 
     enum Mode {
         case new
