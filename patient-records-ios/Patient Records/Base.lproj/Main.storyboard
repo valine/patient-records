@@ -977,8 +977,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="empty-profile-image" width="75" height="75"/>
-        <image name="empty-profile-image-thumbnail" width="22" height="22"/>
+        <image name="empty-profile-image" width="100" height="100"/>
+        <image name="empty-profile-image-thumbnail" width="37" height="37"/>
         <image name="home" width="20" height="20"/>
         <image name="new-patient" width="20" height="20"/>
         <image name="qrcodeicon" width="20" height="20"/>
