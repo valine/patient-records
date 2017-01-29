@@ -84,7 +84,7 @@
                             <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hIO-qE-1YL">
                                 <rect key="frame" x="-0.66666666666665719" y="64" width="414.33333333333337" height="75"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="HqF-TL-y6p">
-                                    <rect key="frame" x="0.0" y="0.0" width="415" height="75"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414.33333333333337" height="75"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" text="Here are your most recent patients" lineBreakMode="tailTruncation" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Tlz-KO-EGq">
@@ -393,25 +393,26 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="157"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Patient Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5P-am-2FF">
-                                            <rect key="frame" x="25" y="109" width="323" height="21"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="33T-VR-4b7">
+                                            <rect key="frame" x="150" y="13" width="75" height="75"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="75" id="6Xo-hI-Tpb"/>
+                                                <constraint firstAttribute="width" constant="75" id="UxM-mm-EIL"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Patient Photo" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5P-am-2FF">
+                                            <rect key="frame" x="149" y="98" width="77" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="textColor" red="0.357083869" green="0.3698116327" blue="0.40799492389999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="empty-profile-image" translatesAutoresizingMaskIntoConstraints="NO" id="33T-VR-4b7">
-                                            <rect key="frame" x="150" y="26.000000000000007" width="75" height="82.666666666666686"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="75" id="UxM-mm-EIL"/>
-                                            </constraints>
-                                        </imageView>
                                     </subviews>
                                     <color key="tintColor" red="0.92391407489776611" green="0.92389416694641113" blue="0.92389810085296631" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                     <constraints>
+                                        <constraint firstItem="K5P-am-2FF" firstAttribute="top" secondItem="33T-VR-4b7" secondAttribute="top" constant="85" id="BxM-du-pww"/>
                                         <constraint firstItem="33T-VR-4b7" firstAttribute="centerX" secondItem="BaJ-q3-nvM" secondAttribute="centerX" id="CKT-CD-UqZ"/>
-                                        <constraint firstItem="33T-VR-4b7" firstAttribute="top" secondItem="BaJ-q3-nvM" secondAttribute="topMargin" constant="18" id="hT9-pW-IxN"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="33T-VR-4b7" secondAttribute="bottom" constant="40" id="kHD-AF-3zJ"/>
+                                        <constraint firstItem="33T-VR-4b7" firstAttribute="top" secondItem="BaJ-q3-nvM" secondAttribute="topMargin" constant="5" id="Hi0-y3-2YP"/>
+                                        <constraint firstItem="K5P-am-2FF" firstAttribute="centerX" secondItem="33T-VR-4b7" secondAttribute="centerX" id="JOR-HU-gdd"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -977,8 +978,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="empty-profile-image" width="100" height="100"/>
-        <image name="empty-profile-image-thumbnail" width="37" height="37"/>
+        <image name="empty-profile-image" width="75" height="75"/>
+        <image name="empty-profile-image-thumbnail" width="30" height="30"/>
         <image name="home" width="20" height="20"/>
         <image name="new-patient" width="20" height="20"/>
         <image name="qrcodeicon" width="20" height="20"/>

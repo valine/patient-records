@@ -245,7 +245,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             cell.photo.contentScaleFactor = 2
             cell.photo.layer.cornerRadius = cell.photo.frame.height / 2
             cell.photo.layer.borderWidth = 2
-            cell.photo.layer.borderColor = #colorLiteral(red: 0.7323010564, green: 0.7356925607, blue: 0.7439760566, alpha: 1).cgColor
+            cell.photo.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
 
             
         }, noImage: {

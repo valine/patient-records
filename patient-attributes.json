@@ -14,7 +14,7 @@
          {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"Unknown"},
        
          {"columnName": "weight", "columnHeight": 95, "title": "Weight", "type" : "textFieldCell", "defaultValue":"Unknown"},
-        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textFieldCell", "defaultValue":"None"}
+        {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textViewCell", "defaultValue":"None"}
     ]
     
 }

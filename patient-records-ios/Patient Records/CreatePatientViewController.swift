@@ -140,14 +140,22 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photoHeight: CGFloat = 150
+        let photoHeight: CGFloat = 120
         if indexPath.item == 0 {
             return photoHeight
         } else {
             if indexPath.item < (options?.count)! + 1{
 
                 let option = options?[indexPath.item - 1]
-                let height = option?["columnHeight"] as! Int
+                var height = option?["columnHeight"] as! Int
+                
+                let textFieldHeight = 95
+                
+                if mode == .view && option?["type"] as! String == "dateCell" {
+                    
+                    height = textFieldHeight;
+                }
+                
             return CGFloat(height)
                 } else { /// for delete button
                 return photoHeight
