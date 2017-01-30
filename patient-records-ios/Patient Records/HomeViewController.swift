@@ -238,7 +238,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         let cell:HomeTableViewCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! HomeTableViewCell!
         let patient = patients[indexPath.item]
         cell.name.text = patient.firstName + " " + patient.lastName
-        cell.id.text = String(patient.id)
+        cell.id.text = "#" + String(patient.id)
         PatientRespository.getPatientPhotoSmall(id: String(patient.id
         ), completion: { image in
             cell.photo.image = image
@@ -264,7 +264,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             if let indexPath = self.tableView.indexPathForSelectedRow {
             
                 let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
-                let id = Int(cell.id.text!)
+                let id = patients[indexPath.item].id
                 
                 let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
                
@@ -275,7 +275,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 controller.obscure = true
                 //controller.patientDictionary = Patient.defaultPatientDictionary()
                 
-                PatientRespository.getPatientById(id: id!, completion: {(patient) in
+                PatientRespository.getPatientById(id: id, completion: {(patient) in
                     controller.patientDictionary = patient
                     controller.obscure = false
                     controller.tableView.reloadData();
