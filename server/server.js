@@ -161,6 +161,12 @@ app.get('/patient', function (req, res) {
 
 })
 
+// This responds a GET request for the /list_user page.
+app.get('/patientrecords', function (req, res) {
+        
+        res.send("working")
+        
+    })
 
 
 // This responds a GET request for the /list_user page.

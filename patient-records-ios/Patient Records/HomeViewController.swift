@@ -94,6 +94,20 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 
                 self.tableView.selectRow(at: ipath, animated: false, scrollPosition: .none)
             }, debug: {(value) in
+                self.patients = [Patient]()
+                
+                self.tableView.reloadData()
+                
+                let alertController = UIAlertController(title: "Unable To Connect", message: "Could not connect remote server", preferredStyle: .alert)
+                
+                // Create the actions
+                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
+                
+                // Add the actions
+                alertController.addAction(okAction)
+                
+                // Present the controller
+                self.present(alertController, animated: true, completion: nil)
                 
             })
         }

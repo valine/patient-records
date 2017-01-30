@@ -57,6 +57,38 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     
         let userDefaults = UserDefaults()
         userDefaults.set(standAloneSwitch.isOn, forKey: "standalone")
+        
+        PatientAttributeSettings.updateRemoteRecords()
+        
+    
+    
+    
+        let listPatientsRequest = "patientrecords"
+        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+            if let unwrappedData = data {
+                DispatchQueue.main.async {
+                    let s1 = String(data: unwrappedData, encoding: String.Encoding.ascii)!
+                    
+                }
+            } else {
+                
+                let alertController = UIAlertController(title: "Unable To Connect", message: "Could not connect to \(url.absoluteString), reverting to standalone mode", preferredStyle: .alert)
+                
+                // Create the actions
+                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
+                
+                // Add the actions
+                alertController.addAction(okAction)
+                
+                // Present the controller
+                self.present(alertController, animated: true, completion: nil)
+                
+            }
+        }
+        task.resume()
+        
     }
     
     @IBAction func textEntered(_ sender: AnyObject) {

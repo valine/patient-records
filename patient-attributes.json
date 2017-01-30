@@ -12,8 +12,12 @@
          {"columnName": "birthDate", "columnHeight": 170, "title": "Birth Date", "type" : "dateCell", "defaultValue":"Unknown"},
        
          {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"Unknown"},
+              
+         {"columnName": "phoneNumber", "columnHeight": 95, "title": "Phone Number", "type" : "textFieldCell", "defaultValue":"Unknown"},
+         {"columnName": "email", "columnHeight": 95, "title": "Email", "type" : "textFieldCell", "defaultValue":"Unknown"},
+              
        
-         {"columnName": "weight", "columnHeight": 95, "title": "Weight", "type" : "textFieldCell", "defaultValue":"Unknown"},
+        {"columnName": "weight", "columnHeight": 95, "title": "Weight", "type" : "textFieldCell", "defaultValue":"Unknown"},
         {"columnName": "otherNotes", "columnHeight": 250, "title": "Other Notes", "type" : "textViewCell", "defaultValue":"None"}
     ]
     

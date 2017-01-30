@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         }
 
         PatientRespositoryLocal.createDatabase()
+        PatientAttributeSettings.updateRemoteRecords()
+        
         return true
     }
     

@@ -113,7 +113,6 @@ class PatientRespository {
         if !UserDefaults().bool(forKey: "standalone") {
             let listPatientsRequest = "patient/recent"
             let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-            
                 let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
                     if let unwrappedData = data {
                         DispatchQueue.main.async {
@@ -122,7 +121,7 @@ class PatientRespository {
                         }
                     } else {
                         DispatchQueue.main.async {
-                            debug("Error")
+                            debug("Unable to connect to patient server")
                         }
                     }
                 }
