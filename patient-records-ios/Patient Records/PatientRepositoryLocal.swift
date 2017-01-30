@@ -25,12 +25,14 @@ class PatientRespositoryLocal {
             let db = try Connection("\(path)/db.sqlite3")
             let patients = Table("patients")
             let id = Expression<Int64>("id")
+            let dateAdded = Expression<Int64>("dateAdded")
 
             do {
                 
                 try db.run(patients.create { t in
                     t.column(id, primaryKey: .autoincrement)
-
+                    t.column(dateAdded)
+                    
                     for option in options! {
                         
                         let type = option["type"] as! String
@@ -81,6 +83,7 @@ class PatientRespositoryLocal {
             let db = try Connection("\(path)/db.sqlite3")
             let patients = Table("patients")
             let id = Expression<Int64>("id")
+            let dateAdded = Expression<String>("dateAdded")
 
             
             let patientFromDb = try db.pluck(patients.filter(id == Int64(inputId)))
@@ -88,6 +91,7 @@ class PatientRespositoryLocal {
             var patient = [String: Any]()
             
             patient["id"] = Int((patientFromDb?[id])! as Int64)
+            patient["dateAdded"] = (patientFromDb?[dateAdded])!
             
             for option in options! {
                 let type = option["type"] as! String
@@ -261,6 +265,10 @@ class PatientRespositoryLocal {
                 
                 
             }
+        
+            let column = Expression<String?>("dateAdded")
+            setters.append(column <- getDateTime())
+
             
             let insert = patients.insert(setters)
             
@@ -274,6 +282,29 @@ class PatientRespositoryLocal {
         } catch {}
         
 
+        
+    }
+    
+    static func getDateTime() -> String {
+        
+        let date = Date()
+        let calendar = NSCalendar.current
+
+        var components = DateComponents()
+        
+//        components.hour = calendar.component(.hour, from: date as Date)
+//        components.minute = calendar.component(.minute, from: date as Date)
+//        components.second = calendar.component(.second, from: date as Date)
+//        components.year = calendar.component(.year, from: date as Date)
+//        components.month = calendar.component(.month, from: date as Date)
+//        components.day = calendar.component(.day, from: date as Date)
+
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
+        
+        let dateString = dayTimePeriodFormatter.string(from: date)
+        print(dateString)
+        return dateString;
         
     }
     

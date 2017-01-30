@@ -24,6 +24,7 @@ class PatientRespository {
                         do {
                             let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
                             
+                            
                             let returnedPatient = Patient.newFromJSON(json: json)
             
                             completion(json)

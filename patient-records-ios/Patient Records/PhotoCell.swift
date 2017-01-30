@@ -17,6 +17,7 @@ class PhotoCell: UITableViewCell {
         super.awakeFromNib()
     }
     
+    @IBOutlet weak var dateAdded: UILabel!
     @IBOutlet weak var patientPhoto: UIImageView!
     
     override func setSelected(_ selected: Bool, animated: Bool) {

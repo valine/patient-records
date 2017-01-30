@@ -146,7 +146,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photoHeight: CGFloat = 120
+        let photoHeight: CGFloat = 135
         if indexPath.item == 0 {
             return photoHeight
         } else {
@@ -186,10 +186,30 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                
                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
+                cell.dateAdded.text = ""
+
+                
                 if mode == .new {
                 cell.titleLabel.text = "New Patient Photo"
                 } else {
                     cell.titleLabel.text = "Update Patient Photo";
+                    
+                    
+                    if let value = patientDictionary["dateAdded"] as? String {
+                        // cell.datePicker.date = value
+                        
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
+                        
+                        if let date = formatter.date(from: value) {
+                            let formatterToString = DateFormatter()
+                            formatterToString.dateStyle = DateFormatter.Style.short
+                            cell.dateAdded.text = "Created " + formatterToString.string(from: date)
+                        } else {
+                            cell.dateAdded.text = "Unknown"
+                        }
+                        
+                    }
                 }
                 
                 if mode == .update {
@@ -334,6 +354,23 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
                 
                 cell.titleLabel.text = "Patient Photo"
+                
+                
+                if let value = patientDictionary["dateAdded"] as? String {
+                    // cell.datePicker.date = value
+                    
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
+                    
+                    if let date = formatter.date(from: value) {
+                        let formatterToString = DateFormatter()
+                        formatterToString.dateStyle = DateFormatter.Style.short
+                        cell.dateAdded.text = "Created " + formatterToString.string(from: date)
+                    } else {
+                        cell.dateAdded.text = "Unknown"
+                    }
+                    
+                }
                 
                 if let value = patientDictionary["id"] as? Int {
                     PatientRespository.getPatientPhoto(id: String(value), completion: {image in
@@ -627,7 +664,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 
             } else {
                 
-                
+                // TODO patient alreay delete alert
             }
            
         }

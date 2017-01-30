@@ -275,6 +275,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 //controller.patientDictionary = Patient.defaultPatientDictionary()
                 
                 PatientRespository.getPatientById(id: id, completion: {(patient) in
+                    
                     controller.patientDictionary = patient
                     controller.obscure = false
                     controller.tableView.reloadData();
