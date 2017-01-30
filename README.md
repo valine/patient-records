@@ -29,9 +29,10 @@ checklist for submision
 		fix dates - DONE
 		patient photo - DONE
 		qr code - DONE
+		offline mode - DONE
 		
 		notes table -  !!
-		offline mode !!
+	
 		doctor name - 
 		auto detect server
 		
