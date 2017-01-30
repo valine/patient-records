@@ -457,21 +457,16 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                 
                 if let imageLocal = self.imageHold {
                     PatientRespository.getRecentPatients(completion: { patients in
-                        print(patients[0].id)
                         
                         let resizeSmall = PatientRespository.resizeImage(image: imageLocal, targetSize: CGSize(width: 75, height: 75))
                         PatientRespository.postImageSmall(id: String(describing: patients[0].id), image: resizeSmall, completion: {})
                         
                         let resize = PatientRespository.resizeImage(image: imageLocal, targetSize: CGSize(width: 200, height: 200))
                         PatientRespository.postImage(id: String(describing: patients[0].id), image: resize, completion: {
-                            print("imageSaved")
                             self.tableView.reloadData()
                             
                         })
-                        
-                        
-                        print("   id   id")
-                        
+
                     }, debug: {_ in })
                     
                 }
@@ -587,7 +582,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if mode == .update {
 
             PatientRespository.postImage(id: String(patientDictionaryToSave["id"] as! Int), image: uiimage!, completion: {
-                print("imageSaved") 
+
                 self.tableView.reloadData()
             })
             

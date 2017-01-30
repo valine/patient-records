@@ -12,27 +12,268 @@ import UIKit
 
 class PatientRespositoryLocal {
     
-    static func getPatientById(id: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
+    static func createDatabase() {
+        
+        let options = PatientAttributeSettings.getAttributeSettings()
+        
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        
+        do {
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            let id = Expression<Int64>("id")
+
+            do {
+                
+                try db.run(patients.create { t in
+                    t.column(id, primaryKey: .autoincrement)
+
+                    for option in options! {
+                        
+                        let type = option["type"] as! String
+                        let columnName = option["columnName"] as! String
+                        
+                        if  type == "textFieldCell" {
+                            //print(columnName)
+                            let column = Expression<String?>(columnName)
+                            t.column(column)
+                        }
+                        
+                        else if  type == "textViewCell" {
+                           // print(columnName)
+                            let column = Expression<String?>(columnName)
+                            t.column(column)
+                        }
+                        
+                        else if  type == "integerCell" {
+                            //print(columnName)
+                            let column = Expression<Int64?>(columnName)
+                            t.column(column)
+                        }
+                        
+                        else if  type == "dateCell" {
+                           // print(columnName)
+                            let column = Expression<String?>(columnName)
+                            t.column(column)
+                        }
+                    }
+                    
+                })} catch { print("error creating table")}
+
+            
+        } catch {print("error create database")}
+
         
     }
     
-    static func deletePatientById(id: Int, completion: @escaping (_:Void)->Void) {
+    static func getPatientById(inputId: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
+        
+        let options = PatientAttributeSettings.getAttributeSettings()
+    
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            let id = Expression<Int64>("id")
 
+            
+            let patientFromDb = try db.pluck(patients.filter(id == Int64(inputId)))
+                
+            var patient = [String: Any]()
+            
+            patient["id"] = Int((patientFromDb?[id])! as Int64)
+            
+            for option in options! {
+                let type = option["type"] as! String
+
+                    if type == "integerCell" {
+                        let columnName = option["columnName"] as! String
+                        let column = Expression<Int64?>(columnName)
+                        
+                        patient[columnName] = Int((patientFromDb?[column])! as Int64)
+
+                    } else {
+                    
+                        let columnName = option["columnName"] as! String
+                        let column = Expression<String?>(columnName)
+                        
+                        patient[columnName] = patientFromDb?[column]
+                    }
+            }
+            
+            completion(patient)  
+            
+        } catch {}
     }
     
-    static func getPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
-    
+    static func deletePatientById(inputId: Int, completion: @escaping (_:Void)->Void) {
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            let id = Expression<Int64>("id")
+            
+            
+            try db.run(patients.filter(id == Int64(inputId)).delete())
+            
+            completion()
+            
+        } catch {}
     }
-    
+
     static func getRecentPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+        let db = try Connection("\(path)/db.sqlite3")
+        let patients = Table("patients")
+        let id = Expression<Int64>("id")
+        let firstName = Expression<String?>("firstName")
+        let lastName = Expression<String?>("lastName")
+        let dateAdded = Expression<String?>("dateAdded")
+        
+        
+        let query = patients.select(id, dateAdded, firstName, lastName)           // SELECT "email" FROM "users"
+            .order(id.desc) // ORDER BY "email" DESC, "name"
+            .limit(15, offset: 0)
+            
+            
+            var patientObjects = [Patient]()
+            for patient in try db.prepare(query) {
+                
+                var patientDictionary = [String: Any]()
+                patientDictionary["firstName"] = patient[firstName]
+                patientDictionary["lastName"] = patient[lastName]
+                patientDictionary["id"] = Int(patient[id])
+                print("id" + String(patient[id]))
+                patientDictionary["dateAdded"] = patient[dateAdded]
+                
+                let patientObject = Patient.newFromJSON(json: patientDictionary)
+                
+                patientObjects.append(patientObject)
+            }
+            
+
+            completion(patientObjects)
+          
+            
+        } catch {}
     
     }
 
     static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            let id = Expression<Int64>("id")
+            let firstName = Expression<String?>("firstName")
+            let lastName = Expression<String?>("lastName")
+            let dateAdded = Expression<String?>("dateAdded")
+            
+            
+            let query = patients
+                .select(id, dateAdded, firstName, lastName)
+                .filter(firstName.like("%" + input + "%") || lastName.like("%" + input + "%"))
+                .order(id.desc) // ORDER BY "email" DESC, "name"
+            
+            
+            var patientObjects = [Patient]()
+            for patient in try db.prepare(query) {
+                
+                var patientDictionary = [String: Any]()
+                patientDictionary["firstName"] = patient[firstName]
+                patientDictionary["lastName"] = patient[lastName]
+                patientDictionary["id"] = Int(patient[id])
+                print("id" + String(patient[id]))
+                patientDictionary["dateAdded"] = patient[dateAdded]
+                
+                let patientObject = Patient.newFromJSON(json: patientDictionary)
+                
+                patientObjects.append(patientObject)
+            }
+            
+            
+            completion(patientObjects)
+            
+            
+        } catch {}
     
     }
     
     static func addPatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
+        
+        let options = PatientAttributeSettings.getAttributeSettings()
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            
+            
+            // insert
+            var setters = [Setter]()
+            
+            for option in options! {
+                
+                let type = option["type"] as! String
+                let columnName = option["columnName"] as! String
+                
+                if  type == "textFieldCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                    
+                else if  type == "textViewCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                    
+                else if  type == "integerCell" {
+                    let column = Expression<Int64?>(columnName)
+                    setters.append(column <- Int64(json[columnName] as! Int))
+                }
+                    
+                else if  type == "dateCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                
+                
+            }
+            
+            let insert = patients.insert(setters)
+            
+            
+            
+            //let insert = patients.insert(firstName <- "Alice", lastName <- "alice@mac.com")
+            try db.run(insert)
+            
+            completion()
+            
+        } catch {}
+        
+
         
     }
     

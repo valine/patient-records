@@ -140,7 +140,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print(searchBar.text!)
+
         PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
@@ -152,7 +152,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        print(searchBar.text!)
+
         PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()
@@ -164,7 +164,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print(searchBar.text!)
+
         PatientRespository.searchPatients(input: searchBar.text!, completion: { (returnedPatients) in
             self.patients = returnedPatients
             self.tableView.reloadData()

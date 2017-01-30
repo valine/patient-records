@@ -12,59 +12,76 @@ import MobileCoreServices
 
 class PatientRespository {
 
+    
     static func getPatientById(id: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
-        
-        let listPatientsRequest = "patient/id/" + String(id)
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        if !UserDefaults().bool(forKey: "standalone") {
+            let listPatientsRequest = "patient/id/" + String(id)
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
 
-        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-            if let unwrappedData = data {
-                DispatchQueue.main.async {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
-                        
-                        let returnedPatient = Patient.newFromJSON(json: json)
-        
-                        completion(json)
-                        debug("sent patient with name: " + String(returnedPatient.firstName))
-                    } catch {
-                        print("error serializing JSON: \(error)")
-                    } 
-                }
-            } else {
-                DispatchQueue.main.async {
-                    debug("Error")
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: unwrappedData, options: .allowFragments) as! [String: Any]
+                            
+                            let returnedPatient = Patient.newFromJSON(json: json)
+            
+                            completion(json)
+                            debug("sent patient with name: " + String(returnedPatient.firstName))
+                        } catch {
+                            print("error serializing JSON: \(error)")
+                        } 
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        debug("Error")
+                    }
                 }
             }
+            task.resume()
+        } else {
+            PatientRespositoryLocal.getPatientById(inputId: id, completion: { patient in
+            
+                completion(patient)
+            
+            
+            }, debug: {_ in })
+            
+            
         }
-        task.resume()
 
     }
     
     static func deletePatientById(id: Int, completion: @escaping (_:Void)->Void) {
-        
-        do {
+        if !UserDefaults().bool(forKey: "standalone") {
+            do {
 
-            // create post request
-            let listPatientsRequest = "patient/id/" + String(id)
-            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-            
-            let request = NSMutableURLRequest(url: url as URL)
-            request.httpMethod = "DELETE"
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
-                if error != nil{
-                    print("Error -> \(error)")
-                    return
+                // create post request
+                let listPatientsRequest = "patient/id/" + String(id)
+                let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+                
+                let request = NSMutableURLRequest(url: url as URL)
+                request.httpMethod = "DELETE"
+                
+                let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                    if error != nil{
+                        print("Error -> \(error)")
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completion()
+                    }
                 }
                 
-                DispatchQueue.main.async {
-                    completion()
-                }
+                task.resume()
+                
             }
-            
-            task.resume()
-            
+        } else {
+            PatientRespositoryLocal.deletePatientById(inputId: id, completion: {
+                
+                completion()
+            })
         }
         
     }
@@ -91,22 +108,31 @@ class PatientRespository {
     }
     
     static func getRecentPatients(completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
-        let listPatientsRequest = "patient/recent"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
         
-            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                if let unwrappedData = data {
-                    DispatchQueue.main.async {
-                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
-                        completion(returnedPatients)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        debug("Error")
+        if !UserDefaults().bool(forKey: "standalone") {
+            let listPatientsRequest = "patient/recent"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                    if let unwrappedData = data {
+                        DispatchQueue.main.async {
+                            let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                            completion(returnedPatients)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            debug("Error")
+                        }
                     }
                 }
-            }
-            task.resume()
+                task.resume()
+        } else {
+            
+            PatientRespositoryLocal.getRecentPatients(completion: {patients in
+                completion(patients)
+            }, debug: {_ in })
+            
+        }
     }
     
     
@@ -139,66 +165,86 @@ class PatientRespository {
     }
     
     static func searchPatients(input: String, completion: @escaping (_: [Patient])->Void, debug: @escaping (_: String)->Void) {
-        let listPatientsRequest = "search/" + input
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
         
-        print(url.absoluteString)
-            
-        let urlWithPort = NSURLComponents(string: url.absoluteString)
-        urlWithPort?.port = ServerSettings.port;
-    
-            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-                if let unwrappedData = data {
-                    DispatchQueue.main.async {
-                        let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
-                        completion(returnedPatients)
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        debug("Error")
+        if !UserDefaults().bool(forKey: "standalone") {
+
+            let listPatientsRequest = "search/" + input
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+            let urlWithPort = NSURLComponents(string: url.absoluteString)
+            urlWithPort?.port = ServerSettings.port;
+        
+                let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                    if let unwrappedData = data {
+                        DispatchQueue.main.async {
+                            let returnedPatients = Patient.newArrayFromJSON(data: unwrappedData)
+                            completion(returnedPatients)
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            debug("Error")
+                        }
                     }
                 }
-            }
-            task.resume()
+                task.resume()
+        } else {
+            
+            PatientRespositoryLocal.searchPatients(input: input, completion: { patients in
+                completion(patients)
+                
+                
+            }, debug: {_ in })
+            
+        }
     }
+        
     
     static func addPatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
 
-        do {
-            
-            let jsonData = try JSONSerialization.data(withJSONObject: json)
-            
-            print(jsonData)
-            // create post request
-            let listPatientsRequest = "patient/add"
-            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        if !UserDefaults().bool(forKey: "standalone") {
 
-            let request = NSMutableURLRequest(url: url as URL)
-            request.httpMethod = "POST"
-
-            // insert json data to the request
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-            let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
-            
-            print(theJSONText!)
-            request.httpBody = jsonData
-
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
-                if error != nil{
-                    print("Error -> \(error)")
-                    return
-                }
+            do {
                 
-                DispatchQueue.main.async {
-                    completion()
+                let jsonData = try JSONSerialization.data(withJSONObject: json)
+                
+                // create post request
+                let listPatientsRequest = "patient/add"
+                let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+
+                let request = NSMutableURLRequest(url: url as URL)
+                request.httpMethod = "POST"
+
+                // insert json data to the request
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+                let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
+
+                request.httpBody = jsonData
+
+                let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                    if error != nil{
+                        print("Error -> \(error)")
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completion()
+                    }
                 }
+
+                task.resume()
+
+            } catch {
+                print(error)
             }
-
-            task.resume()
-
-        } catch {
-            print(error)
+        } else {
+            
+            PatientRespositoryLocal.addPatient(json: json, completion: {
+                
+                completion()
+                
+            })
+            
         }
     
     }
@@ -208,8 +254,7 @@ class PatientRespository {
         do {
             
             let jsonData = try JSONSerialization.data(withJSONObject: json)
-            
-            print(jsonData)
+
             // create post request
             let listPatientsRequest = "patient/update"
             let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -222,7 +267,6 @@ class PatientRespository {
             
             let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
             
-            print(theJSONText!)
             request.httpBody = jsonData
             
             let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
@@ -329,7 +373,6 @@ class PatientRespository {
             if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             {
                 
-                print(dataString)
             }
             
         })
@@ -371,7 +414,7 @@ class PatientRespository {
             if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
             {
                 
-                print(dataString)
+
             }
             
         })
@@ -520,7 +563,6 @@ struct Patient {
  
         if let firstname = json["firstName"] as? String {
             patient.firstName = firstname
-            print(firstname)
         }
         
         if let lastname = json["lastName"] as? String {
@@ -550,8 +592,6 @@ struct Patient {
                     let patient = Patient.newFromJSON(json: jsonPatient)
                     patientObjects.append(patient)
                 }
-                
-                 print("hello" + String(jsonPatients.count))
             }
             
         } catch {

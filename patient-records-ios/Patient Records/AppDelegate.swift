@@ -28,9 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
             window.backgroundColor = .white
         }
 
-//        let splitViewController = self.window!.rootViewController as! UISplitViewController
-//        splitViewController.delegate = self
-//        splitViewController.preferredDisplayMode = .allVisible
+        PatientRespositoryLocal.createDatabase()
         return true
     }
     
