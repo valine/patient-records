@@ -75,7 +75,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             
-            navigationItem.rightBarButtonItem = nil
+           
+            self.navigationController?.navigationController?.setToolbarHidden(true, animated: false)
         }
         
         else if mode == .new {
@@ -83,6 +84,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             navigationItem.rightBarButtonItem = refreshButton
             UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            self.navigationController?.setToolbarHidden(true, animated: false)
 
         }
         
@@ -102,6 +104,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
+            self.navigationController?.setToolbarHidden(true, animated: true)
             
 
         }
@@ -118,6 +121,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
+            self.navigationController?.setToolbarHidden(false, animated: false)
             
 
         }

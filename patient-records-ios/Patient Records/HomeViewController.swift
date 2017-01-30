@@ -263,7 +263,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         if segue.identifier == "showDetail" {
             if let indexPath = self.tableView.indexPathForSelectedRow {
             
-                let cell = tableView.cellForRow(at: indexPath) as! HomeTableViewCell
                 let id = patients[indexPath.item].id
                 
                 let controller = (segue.destination as! UINavigationController).topViewController as! CreatePatientViewController
