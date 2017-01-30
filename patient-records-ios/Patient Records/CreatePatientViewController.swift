@@ -616,12 +616,20 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         let okAction = UIAlertAction(title: "Delete Patient", style: UIAlertActionStyle.default) {
             UIAlertAction in
             self.mode = .empty
-            PatientRespository.deletePatientById(id: self.patientDictionary["id"] as! Int, completion: {
+            
+            if let id = self.patientDictionary["id"] {
                 
-                _ = self.navigationController?.navigationController?.popToRootViewController(animated: true)
-                self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
-            })
-
+                PatientRespository.deletePatientById(id: id as! Int, completion: {
+                    
+                    _ = self.navigationController?.navigationController?.popToRootViewController(animated: true)
+                    self.delegate?.didFinishTask(sender: self.delegate!, selectId: 0)
+                })
+                
+            } else {
+                
+                
+            }
+           
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) {
             UIAlertAction in
