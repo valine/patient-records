@@ -250,65 +250,87 @@ class PatientRespository {
     }
     
     static func updatePatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
+        if !UserDefaults().bool(forKey: "standalone") {
         
-        do {
-            
-            let jsonData = try JSONSerialization.data(withJSONObject: json)
+            do {
+                
+                let jsonData = try JSONSerialization.data(withJSONObject: json)
 
-            // create post request
-            let listPatientsRequest = "patient/update"
-            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-            
-            let request = NSMutableURLRequest(url: url as URL)
-            request.httpMethod = "POST"
-            
-            // insert json data to the request
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            
-            let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
-            
-            request.httpBody = jsonData
-            
-            let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
-                if error != nil{
-                    print("Error -> \(error)")
-                    return
+                // create post request
+                let listPatientsRequest = "patient/update"
+                let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+                
+                let request = NSMutableURLRequest(url: url as URL)
+                request.httpMethod = "POST"
+                
+                // insert json data to the request
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+                let theJSONText = String(data: jsonData, encoding: String.Encoding.utf8)
+                
+                request.httpBody = jsonData
+                
+                let task = URLSession.shared.dataTask(with: request as URLRequest){ data, response, error in
+                    if error != nil{
+                        print("Error -> \(error)")
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        completion()
+                    }
                 }
                 
-                DispatchQueue.main.async {
-                    completion()
-                }
+                task.resume()
+                
+            } catch {
+                print(error)
             }
+        } else {
+            PatientRespositoryLocal.updatePatient(json: json, completion: {
+                
+                completion()
+                
+            })
             
-            task.resume()
             
-        } catch {
-            print(error)
         }
         
     }
     
     static func getPatientPhoto(id: String, completion: @escaping (_:UIImage)->Void) {
         
-        let listPatientsRequest = "patient/photo/\(id)"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+        if !UserDefaults().bool(forKey: "standalone") {
         
-        
-        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-            if data != nil {
-                DispatchQueue.main.async {
-                    if let image = UIImage(data: data!) {
-                        completion(image)
+            let listPatientsRequest = "patient/photo/\(id)"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+            
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                if data != nil {
+                    DispatchQueue.main.async {
+                        if let image = UIImage(data: data!) {
+                            completion(image)
+                        }
+                        
                     }
-                    
                 }
             }
+            task.resume()
+            
+        } else {
+            PatientRespositoryLocal.getPatientPhoto(id: id, completion: { image in
+
+                completion(image)
+            })
+            
+            
         }
-        task.resume()
     }
     
     static func getPatientPhotoSmall(id: String, completion: @escaping (_:UIImage)->Void, noImage: @escaping (_:Void)->Void) {
         
+        if !UserDefaults().bool(forKey: "standalone") {
         let listPatientsRequest = "patient/photosmall/\(id)"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
         
@@ -327,6 +349,21 @@ class PatientRespository {
             }
         }
         task.resume()
+        } else {
+            
+            PatientRespositoryLocal.getPatientPhotoSmall(id: id, completion: {
+                
+                image in
+                
+                completion(image)
+            
+            }, noImage: {
+                
+                noImage()
+            
+            })
+            
+        }
     }
     
 
@@ -339,87 +376,110 @@ class PatientRespository {
     /// - returns:            The NSURLRequest that was created
     
     static func postImage(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
-        let parameters = [
-            "id"  : id]  // build your dictionary however appropriate
-        
-        let boundary = generateBoundaryString()
-        
-        let listPatientsRequest = "photo/"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-        
-        let request = NSMutableURLRequest(url: url)
-        request.httpMethod = "POST"
-
-        let resize = resizeImage(image: image, targetSize: CGSize(width: 200, height: 200))
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
-        
-        
-
-        let session = URLSession.shared
-
-
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {
-            ( data, response, error) in
+        if !UserDefaults().bool(forKey: "standalone") {
+            let parameters = [
+                "id"  : id]  // build your dictionary however appropriate
             
-            completion()
+            let boundary = generateBoundaryString()
+            
+            let listPatientsRequest = "photo/"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
 
-            guard ((data) != nil), let _:URLResponse = response, error == nil else {
-                print("error")
-                return
-            }
+            let resize = resizeImage(image: image, targetSize: CGSize(width: 200, height: 200))
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
+            
+            
 
-            if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            {
+            let session = URLSession.shared
+
+
+            let task = session.dataTask(with: request as URLRequest, completionHandler: {
+                ( data, response, error) in
                 
-            }
+                completion()
+
+                guard ((data) != nil), let _:URLResponse = response, error == nil else {
+                    print("error")
+                    return
+                }
+
+                if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                {
+                    
+                }
+                
+            })
             
-        })
-        
-        task.resume()
+            task.resume()
+        } else {
+            
+            PatientRespositoryLocal.postImage(id: id, image: image, completion: {
+                
+                completion()
+                
+                
+            })
+            
+        }
     }
     
     
     static func postImageSmall(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
-        let parameters = [
-            "id"  : id]  // build your dictionary however appropriate
         
-        let boundary = generateBoundaryString()
-        
-        let listPatientsRequest = "photosmall/"
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
-        
-        let request = NSMutableURLRequest(url: url)
-        request.httpMethod = "POST"
-        
-        let resize = resizeImage(image: image, targetSize: CGSize(width: 75, height: 75))
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        
-        request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
-    
-        let session = URLSession.shared
-        
-        
-        let task = session.dataTask(with: request as URLRequest, completionHandler: {
-            ( data, response, error) in
+        if !UserDefaults().bool(forKey: "standalone") {
+            let parameters = [
+                "id"  : id]  // build your dictionary however appropriate
             
-            completion()
+            let boundary = generateBoundaryString()
             
-            guard ((data) != nil), let _:URLResponse = response, error == nil else {
-                print("error")
-                return
-            }
+            let listPatientsRequest = "photosmall/"
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
             
-            if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
-            {
+            let request = NSMutableURLRequest(url: url)
+            request.httpMethod = "POST"
+            
+            let resize = resizeImage(image: image, targetSize: CGSize(width: 75, height: 75))
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            
+            request.httpBody = createBody(with: parameters, filePathKey: "file", images: [resize], boundary: boundary)
+        
+            let session = URLSession.shared
+            
+            
+            let task = session.dataTask(with: request as URLRequest, completionHandler: {
+                ( data, response, error) in
                 
+                completion()
+                
+                guard ((data) != nil), let _:URLResponse = response, error == nil else {
+                    print("error")
+                    return
+                }
+                
+                if let dataString = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)
+                {
+                    
 
-            }
+                }
+                
+            })
             
-        })
-        
-        task.resume()
+            task.resume()
+        } else {
+            
+            PatientRespositoryLocal.postImageSmall(id: id, image: image, completion: {
+                
+                
+                completion()
+            })
+            
+            
+        }
     }
     
     /// Create body of the multipart/form-data request

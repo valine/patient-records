@@ -279,22 +279,137 @@ class PatientRespositoryLocal {
     
     static func updatePatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
         
+        let inputId = json["id"] as! Int
+        
+        let options = PatientAttributeSettings.getAttributeSettings()
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        do {
+            
+            
+            let db = try Connection("\(path)/db.sqlite3")
+            let patients = Table("patients")
+            let id = Expression<Int64>("id")
+            
+            
+            // insert
+            var setters = [Setter]()
+            
+            for option in options! {
+                
+                let type = option["type"] as! String
+                let columnName = option["columnName"] as! String
+                
+                if  type == "textFieldCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                    
+                else if  type == "textViewCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                    
+                else if  type == "integerCell" {
+                    let column = Expression<Int64?>(columnName)
+                    setters.append(column <- Int64(json[columnName] as! Int))
+                }
+                    
+                else if  type == "dateCell" {
+                    let column = Expression<String?>(columnName)
+                    setters.append(column <- json[columnName] as! String?)
+                }
+                
+                
+            }
+            
+            let patient = patients.filter(id == Int64(inputId))
+            let update = patient.update(setters)
+
+
+            try db.run(update)
+            
+            completion()
+            
+        } catch {}
     }
     
     static func getPatientPhoto(id: String, completion: @escaping (_:UIImage)->Void) {
         
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("\(id).png")
+            let image    = UIImage(contentsOfFile: imageURL.path)
+            
+            if let uImage = image {
+
+            completion(uImage)
+                
+            }
+            // Do whatever you want with the image
+        }
+        
     }
     
     static func getPatientPhotoSmall(id: String, completion: @escaping (_:UIImage)->Void, noImage: @escaping (_:Void)->Void) {
+        
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent("\(id)-small.png")
+            let image    = UIImage(contentsOfFile: imageURL.path)
+            
+            if let uImage = image {
+                completion(uImage)
+                
+                
+            } else {
+                
+                
+                noImage()
+            }
+            
+            // Do whatever you want with the image
+        }
+        
     
+    }
+    
+    static func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
     
     static func postImage(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
 
+        let resize = resizeImage(image: image, targetSize: CGSize(width: 200, height: 200))
+
+        if let data = UIImagePNGRepresentation(resize) {
+            let filename = getDocumentsDirectory().appendingPathComponent("\(id).png")
+            try? data.write(to: filename)
+        }
+        
+        completion()
     }
     
     
     static func postImageSmall(id: String, image: UIImage, completion: @escaping (_:Void)->Void) {
+        let resize = resizeImage(image: image, targetSize: CGSize(width: 75, height: 75))
+        
+        if let data = UIImagePNGRepresentation(resize) {
+            let filename = getDocumentsDirectory().appendingPathComponent("\(id)-small.png")
+            try? data.write(to: filename)
+        }
+        
+        completion()
     
     }
     
