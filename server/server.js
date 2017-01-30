@@ -161,6 +161,15 @@ app.get('/patient', function (req, res) {
 
 })
 
+
+
+// This responds a GET request for the /list_user page.
+app.get('/config', function (req, res) {
+
+        res.send(config)
+        
+        })
+
 app.get('/patient/photo/:id', function (req, res) {
         res.sendFile('uploads/' + req.params.id + '.png', { root: __dirname });
 });
