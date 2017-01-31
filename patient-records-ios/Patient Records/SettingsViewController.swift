@@ -14,11 +14,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     @IBOutlet weak var serverAddressField: UITextField!
     @IBOutlet weak var standAloneSwitch: UISwitch!
     @IBOutlet weak var dismissButton: UIBarButtonItem!
+    @IBOutlet weak var cloudAddressLabel: UILabel!
     
     let emailAddress = "records@valine.io"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+
+        
         let userDefaults = UserDefaults()
         
         let isStandlone = userDefaults.bool(forKey: "standalone")
@@ -26,6 +30,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         
         serverAddressField.delegate = self
         serverAddressField.text = userDefaults.string(forKey: "serveraddress")
+        
+        disableFields()
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,8 +70,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         
         PatientAttributeSettings.updateRemoteRecords()
         
-    
-    
+        disableFields()
     
         let listPatientsRequest = "patientrecords"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
@@ -76,7 +81,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
                 if let unwrappedData = data {
                     DispatchQueue.main.async {
                         let s1 = String(data: unwrappedData, encoding: String.Encoding.ascii)!
-                        
                     }
                 } else {
                     
@@ -84,6 +88,23 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
                 }
             }
             task.resume()
+        }
+        
+    }
+    
+    func disableFields() {
+        
+        
+        if standAloneSwitch.isOn {
+            serverAddressField.isEnabled = false
+            serverAddressField.alpha = 0.5
+            cloudAddressLabel.alpha = 0.5
+            
+        } else {
+            
+            serverAddressField.isEnabled = true
+            serverAddressField.alpha = 1
+            cloudAddressLabel.alpha = 1
         }
         
     }

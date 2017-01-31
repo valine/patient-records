@@ -291,6 +291,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cloudAddressLabel" destination="ZdL-fU-PY8" id="AHO-BA-j6U"/>
                         <outlet property="dismissButton" destination="27Q-xo-xCN" id="qgh-Qi-SLD"/>
                         <outlet property="serverAddressField" destination="xk6-cu-WLO" id="9ab-SM-kyR"/>
                         <outlet property="standAloneSwitch" destination="44v-AO-Fgq" id="n9c-Qs-ZT0"/>
