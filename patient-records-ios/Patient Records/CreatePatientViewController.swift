@@ -38,13 +38,22 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             if obscure {
                 self.obscureView?.alpha = 1
                 
+                self.navigationItem.setHidesBackButton(true, animated:false);
+                
+                self.tableView.isScrollEnabled = false
             } else {
                 
+               
+                self.tableView.isScrollEnabled = true
                 UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
                     
                     self.obscureView?.alpha = 0
                     
-                }, completion: nil)
+                }, completion: { _ in
+                    
+                     self.navigationItem.setHidesBackButton(false, animated:true);
+                    
+                })
                 
             }
         }
@@ -704,50 +713,55 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
 
     @IBAction func wristbandPressed(_ sender: Any) {
         
-        let idValue = self.patientDictionary["id"] as! Int;
+        if let idAny = self.patientDictionary["id"] {
+        
+            let idValue = idAny as! Int
+        
+            if let firstNameString = self.patientDictionary["firstName"], let lastNameString =  self.patientDictionary["lastName"]  {
+            let firstName = firstNameString as! String;
+            let lastName = lastNameString as! String;
+            let fullName = "\(firstName) \(lastName)"
 
-        let firstName = self.patientDictionary["firstName"] as! String;
-        let lastName = self.patientDictionary["lastName"] as! String;
-        let fullName = "\(firstName) \(lastName)"
-
-        
-        let listPatientsRequest = "patient/id/" + String(idValue)
-        let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
+            
+            let listPatientsRequest = "patient/id/" + String(idValue)
+            let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
 
 
-        let data = url.absoluteString.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
-        
-        let filter = CIFilter(name: "CIQRCodeGenerator")
-        
-        filter?.setValue(data, forKey: "inputMessage")
-        filter?.setValue("Q", forKey: "inputCorrectionLevel")
-        
-       
-        let holderView = UIView(frame: CGRect(x: 0, y:0, width: 200, height: 10000))
-        let wristBandView = WristbandView(frame: CGRect(x:30, y:30, width: 100, height: 1000))
-        holderView.addSubview(wristBandView)
-        
-        let qrcode = filter?.outputImage
-        
-        let scaleX = wristBandView.imageView.frame.size.width / (qrcode?.extent.size.width)!
-        let scaleY = wristBandView.imageView.frame.size.height / (qrcode?.extent.size.height)!
-        
-        let transformedImage = qrcode?.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
-        
-        wristBandView.imageView.image = UIImage(ciImage: transformedImage!)
-        wristBandView.nameView.text = fullName
-        wristBandView.idView.text = "#" + String(idValue)
-        
-        
-        let printController = UIPrintInteractionController.shared
-        let printInfo = UIPrintInfo(dictionary:nil)
-        
-        printInfo.outputType = UIPrintInfoOutputType.general
-        printInfo.jobName = "print Job"
-        printController.printInfo = printInfo
-        printController.printingItem = toPDF(views: [holderView])
-        
-        printController.present(animated: true, completionHandler: nil)
+            let data = url.absoluteString.data(using: String.Encoding.isoLatin1, allowLossyConversion: false)
+            
+            let filter = CIFilter(name: "CIQRCodeGenerator")
+            
+            filter?.setValue(data, forKey: "inputMessage")
+            filter?.setValue("Q", forKey: "inputCorrectionLevel")
+            \
+           
+            let holderView = UIView(frame: CGRect(x: 0, y:0, width: 200, height: 10000))
+            let wristBandView = WristbandView(frame: CGRect(x:30, y:30, width: 100, height: 1000))
+            holderView.addSubview(wristBandView)
+            
+            let qrcode = filter?.outputImage
+            
+            let scaleX = wristBandView.imageView.frame.size.width / (qrcode?.extent.size.width)!
+            let scaleY = wristBandView.imageView.frame.size.height / (qrcode?.extent.size.height)!
+            
+            let transformedImage = qrcode?.applying(CGAffineTransform(scaleX: scaleX, y: scaleY))
+            
+            wristBandView.imageView.image = UIImage(ciImage: transformedImage!)
+            wristBandView.nameView.text = fullName
+            wristBandView.idView.text = "#" + String(idValue)
+            
+            
+            let printController = UIPrintInteractionController.shared
+            let printInfo = UIPrintInfo(dictionary:nil)
+            
+            printInfo.outputType = UIPrintInfoOutputType.general
+            printInfo.jobName = "print Job"
+            printController.printInfo = printInfo
+            printController.printingItem = toPDF(views: [holderView])
+            
+            printController.present(animated: true, completionHandler: nil)
+            }
+        }
     }
     
     private func toPDF(views: [UIView]) -> NSData? {
