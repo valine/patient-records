@@ -733,8 +733,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             
             filter?.setValue(data, forKey: "inputMessage")
             filter?.setValue("Q", forKey: "inputCorrectionLevel")
-            \
-           
+            
             let holderView = UIView(frame: CGRect(x: 0, y:0, width: 200, height: 10000))
             let wristBandView = WristbandView(frame: CGRect(x:30, y:30, width: 100, height: 1000))
             holderView.addSubview(wristBandView)
