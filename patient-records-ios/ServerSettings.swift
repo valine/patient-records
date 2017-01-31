@@ -12,7 +12,7 @@ class ServerSettings {
     var serverAddress: URL?
     static let port: NSNumber = 8081
     
-    let defaultUrl = URL(string: "http://1uk45.com")
+    let defaultUrl = URL(string: "")
     //MARK: Shared Instance
     static let sharedInstance : ServerSettings = {
         let instance = ServerSettings()
@@ -25,8 +25,8 @@ class ServerSettings {
         if let theAddress = userDefaults.string(forKey: "serveraddress") {
             serverAddress = URL(string: theAddress)
         } else {
-            userDefaults.set("http://1uk45.com", forKey: "serveraddress")
-            serverAddress = URL(string: "http://1uk45.com:8081")
+            userDefaults.set("http://", forKey: "serveraddress")
+            serverAddress = URL(string: "http://")
         }
     }
     
