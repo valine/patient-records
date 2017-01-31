@@ -9,10 +9,10 @@
 import Foundation
 
 class ServerSettings {
-    var serverAddress: NSURL?
+    var serverAddress: URL?
     static let port: NSNumber = 8081
     
-    let defaultUrl = URL(fileURLWithPath: "http://1uk45.com")
+    let defaultUrl = URL(string: "http://1uk45.com")
     //MARK: Shared Instance
     static let sharedInstance : ServerSettings = {
         let instance = ServerSettings()
@@ -23,10 +23,10 @@ class ServerSettings {
         let userDefaults = UserDefaults()
         
         if let theAddress = userDefaults.string(forKey: "serveraddress") {
-            serverAddress = NSURL(string: theAddress)
+            serverAddress = URL(string: theAddress)
         } else {
-            userDefaults.set("http://localhost:8081", forKey: "serveraddress")
-            serverAddress = NSURL(string: "http://localhost:8081")
+            userDefaults.set("http://1uk45.com", forKey: "serveraddress")
+            serverAddress = URL(string: "http://1uk45.com:8081")
         }
     }
     
@@ -38,11 +38,11 @@ class ServerSettings {
             if let url = address.url {
                 return url
             } else {
-                return defaultUrl
+                return defaultUrl!
             }
             
         } else {
-            return defaultUrl
+            return defaultUrl!
         }
     }
 }

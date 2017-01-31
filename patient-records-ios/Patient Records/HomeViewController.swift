@@ -16,6 +16,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var welcomeMessage: UILabel!
     @IBOutlet weak var logoContainerView: UIView!
     
     @IBOutlet weak var headerView: UIView!
@@ -93,22 +94,48 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                 self.tableView.reloadData()
                 
                 self.tableView.selectRow(at: ipath, animated: false, scrollPosition: .none)
+                
+                if self.welcomeLabel.text == "Cloud Unavailable" {
+                    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                        
+                        self.headerView.center.y  +=  self.headerView.bounds.height
+                        
+                        
+                    }, completion: { _ in
+                        
+                        self.welcomeLabel.text = "Patient Records"
+                        self.welcomeMessage.text = "Here are your most recent patients"
+                        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                            self.headerView.center.y  -=  self.headerView.bounds.height
+                        }, completion: { _ in
+                        })
+                    })
+                }
+
+                
+                
             }, debug: {(value) in
                 self.patients = [Patient]()
                 
                 self.tableView.reloadData()
                 
-                let alertController = UIAlertController(title: "Unable To Connect", message: "Could not connect remote server", preferredStyle: .alert)
-                
-                // Create the actions
-                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
-                
-                // Add the actions
-                alertController.addAction(okAction)
-                
-                // Present the controller
-                self.present(alertController, animated: true, completion: nil)
-                
+                if self.welcomeLabel.text == "Patient Records" {
+                    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                        
+                        self.headerView.center.y  +=  self.headerView.bounds.height
+
+                        
+                    }, completion: { _ in
+                        
+                        self.welcomeLabel.text = "Cloud Unavailable"
+                        self.welcomeMessage.text = "Check your connection"
+                        
+                        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                            self.headerView.center.y  -=  self.headerView.bounds.height
+                        }, completion: { _ in
+                        })
+                    })
+                }
             })
         }
     }

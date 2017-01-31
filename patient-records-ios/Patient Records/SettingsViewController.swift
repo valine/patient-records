@@ -25,10 +25,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         standAloneSwitch.isOn = isStandlone
         
         serverAddressField.delegate = self
-        serverAddressField.text = ServerSettings
-                                        .sharedInstance
-                                        .getServerAddress()
-                                        .absoluteString
+        serverAddressField.text = userDefaults.string(forKey: "serveraddress")
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,9 +44,16 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         textField.resignFirstResponder()
         
         let userDefaults = UserDefaults()
-        userDefaults.set(serverAddressField.text, forKey: "serveraddress")
-        ServerSettings.sharedInstance.serverAddress = NSURL(string: serverAddressField.text!)
+
         
+        if serverAddressField.text?.lowercased().range(of:"http://") != nil || serverAddressField.text?.lowercased().range(of:"https://") != nil {
+            ServerSettings.sharedInstance.serverAddress = URL(string: serverAddressField.text!)
+            userDefaults.set(serverAddressField.text, forKey: "serveraddress")
+        } else {
+            ServerSettings.sharedInstance.serverAddress = URL(string: "http://" + serverAddressField.text!)
+            userDefaults.set("http://" + serverAddressField.text!, forKey: "serveraddress")
+        }
+
         return true
     }
     
@@ -66,36 +70,38 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
         let listPatientsRequest = "patientrecords"
         let url = ServerSettings.sharedInstance.getServerAddress().appendingPathComponent(listPatientsRequest)
 
-        let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
-            if let unwrappedData = data {
-                DispatchQueue.main.async {
-                    let s1 = String(data: unwrappedData, encoding: String.Encoding.ascii)!
+        
+        if !standAloneSwitch.isOn {
+            let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+                if let unwrappedData = data {
+                    DispatchQueue.main.async {
+                        let s1 = String(data: unwrappedData, encoding: String.Encoding.ascii)!
+                        
+                    }
+                } else {
+                    
                     
                 }
-            } else {
-                
-                let alertController = UIAlertController(title: "Unable To Connect", message: "Could not connect to \(url.absoluteString), reverting to standalone mode", preferredStyle: .alert)
-                
-                // Create the actions
-                let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default)
-                
-                // Add the actions
-                alertController.addAction(okAction)
-                
-                // Present the controller
-                self.present(alertController, animated: true, completion: nil)
-                
             }
+            task.resume()
         }
-        task.resume()
         
     }
     
     @IBAction func textEntered(_ sender: AnyObject) {
     
         let userDefaults = UserDefaults()
-        userDefaults.set(serverAddressField.text, forKey: "serveraddress")
-        ServerSettings.sharedInstance.serverAddress = NSURL(string: serverAddressField.text!)
+        
+        
+        if serverAddressField.text?.lowercased().range(of:"http://") != nil || serverAddressField.text?.lowercased().range(of:"https://") != nil {
+            ServerSettings.sharedInstance.serverAddress = URL(string: serverAddressField.text!)
+            userDefaults.set(serverAddressField.text, forKey: "serveraddress")
+        } else {
+            ServerSettings.sharedInstance.serverAddress = URL(string: "http://" + serverAddressField.text!)
+            userDefaults.set("http://" + serverAddressField.text!, forKey: "serveraddress")
+        }
+        
+        
     }
     
     @IBAction func helpButtonPressed(_ sender: AnyObject) {
