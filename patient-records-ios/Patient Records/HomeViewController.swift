@@ -11,6 +11,7 @@ import SpriteKit
 
 
 class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate, UISearchBarDelegate {
+    @IBOutlet weak var helpMessage: UILabel!
 
     @IBOutlet weak var welcomeLabel: UILabel!
     
@@ -45,9 +46,13 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchBarView.alpha  = 0
+    
 
+
+        helpMessage.isHidden = true
         searchBar.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive(notification:)), name: Notification.Name("didBecomeActive"), object: nil)
+        
         
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(HomeViewController.updateTable), userInfo: nil, repeats: true)
         
@@ -88,8 +93,61 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         let ipath = tableView.indexPathForSelectedRow;
   
         
+        if UserDefaults().bool(forKey: "standalone") {
+            
+            if  self.welcomeMessage.text != "Offline Mode Enabled" {
+
+                UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                    
+                    self.headerView.center.y  +=  self.headerView.bounds.height
+                    
+                    
+                }, completion: { _ in
+                    
+                    self.welcomeMessage.text = "Offline Mode Enabled"
+
+                    UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                        self.headerView.center.y  -=  self.headerView.bounds.height
+                    }, completion: { _ in
+                    })
+                })
+            }
+
+        }
+        
         if !searching {
             PatientRespository.getRecentPatients(completion: {(returnedPatients) in
+                
+                if returnedPatients.count == 0 {
+                    
+                    self.helpMessage.isHidden = false
+                } else {
+                     self.helpMessage.isHidden = true
+                    
+                }
+                
+                if !UserDefaults().bool(forKey: "standalone") {
+                    if  self.welcomeMessage.text != "Connected to Patient Cloud Server" {
+                        
+                        UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                            
+                            self.headerView.center.y  +=  self.headerView.bounds.height
+                            
+                            
+                        }, completion: { _ in
+                            
+                            self.welcomeMessage.text = "Connected to Patient Cloud Server"
+                            
+                            UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
+                                self.headerView.center.y  -=  self.headerView.bounds.height
+                            }, completion: { _ in
+                            })
+                        })
+                    }
+                    
+
+                }
+
                 self.patients = returnedPatients
                 self.tableView.reloadData()
                 
@@ -104,7 +162,15 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     }, completion: { _ in
                         
                         self.welcomeLabel.text = "Patient Records"
-                        self.welcomeMessage.text = "Here are your most recent patients"
+                        
+                        if !UserDefaults().bool(forKey: "standalone") {
+
+                            self.welcomeMessage.text = "Connected to Patient Cloud Server"
+                            
+                        } else {
+                            self.welcomeMessage.text = "Offline Mode Enabled"
+                            
+                        }
                         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
                             self.headerView.center.y  -=  self.headerView.bounds.height
                         }, completion: { _ in

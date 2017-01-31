@@ -262,7 +262,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.textField.isHidden = false
                         cell.viewLabel.isHidden = true
                         cell.titleLabel.text = title
-                        
+                        cell.textField.delegate = self
                         let columnName = option?["columnName"] as! String
                         let value = patientDictionary[columnName]
 
@@ -595,6 +595,19 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         patientDictionary = patientDictionaryToSave
         
     }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Unknown" || textView.text == "None" {
+            textView.text = ""
+        } 
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField.text == "Unknown" || textField.text == "None" {
+            textField.text = ""
+        }
+    }
+    
     
     func textViewDidChange(_ textView: UITextView) {
 
