@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 
-class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate, UISearchBarDelegate {
+class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate, UISearchBarDelegate, SettingsViewControllerDelegate {
     @IBOutlet weak var helpMessage: UILabel!
 
     @IBOutlet weak var welcomeLabel: UILabel!
@@ -22,6 +22,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var headerView: UIView!
     
+    
+
     var searching: Bool = false {
         
         didSet {
@@ -281,6 +283,29 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
             
         })
     }
+    
+    @IBOutlet weak var settingsButton: UIBarButtonItem!
+    @IBAction func settingsTapped(_ sender: Any) {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "settings-nav") as! UINavigationController
+        controller.modalPresentationStyle = .popover
+
+        let svc = storyboard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
+        svc.delegate = self
+        present(controller, animated: true, completion: {
+            
+            self.updateTable()
+        
+        
+        })
+    }
+    
+    func finished() {
+        updateTable()
+    }
+    
+    
     @IBOutlet weak var searchBarView: UIView!
     
     func endSearch() {
@@ -418,4 +443,8 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+}
+
+protocol SettingsViewControllerDelegate: class {
+    func finished()
 }

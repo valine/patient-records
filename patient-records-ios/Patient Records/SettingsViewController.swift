@@ -18,6 +18,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     
     let emailAddress = "records@valine.io"
     
+    var delegate: SettingsViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,11 +41,21 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
     }
     
     /// MARK: UI interaction
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.delegate?.finished()
+    }
 
     @IBAction func dismissTapped(_ sender: AnyObject) {
         serverAddressField.resignFirstResponder()
+    
+        self.delegate?.finished()
         
-        self.dismiss(animated: true, completion: nil)
+        
+        self.dismiss(animated: true, completion: {
+            NotificationCenter.default.post(name: Notification.Name("didBecomeActive"), object: nil)
+
+        })
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -80,7 +92,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, MFMailCompo
             let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
                 if let unwrappedData = data {
                     DispatchQueue.main.async {
-                        let s1 = String(data: unwrappedData, encoding: String.Encoding.ascii)!
                     }
                 } else {
                     

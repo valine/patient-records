@@ -14,7 +14,7 @@
         <!--Home View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="9pv-A4-QxB" customClass="HomeViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="home" extendedLayoutIncludesOpaqueBars="YES" id="9pv-A4-QxB" customClass="HomeViewController" customModule="Patient_Records" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Ia1-K6-d13"/>
                         <viewControllerLayoutGuide type="bottom" id="4ug-Mw-9AY"/>
@@ -166,6 +166,7 @@
                     <navigationItem key="navigationItem" id="IHB-1Z-2X4">
                         <barButtonItem key="leftBarButtonItem" image="settings" id="GdE-SZ-IjV">
                             <connections>
+                                <action selector="settingsTapped:" destination="9pv-A4-QxB" id="Jdx-D2-uUd"/>
                                 <segue destination="DAy-B4-7W2" kind="popoverPresentation" popoverAnchorBarButtonItem="GdE-SZ-IjV" id="aQp-Ut-SWh">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
@@ -199,6 +200,7 @@
                         <outlet property="logoContainerView" destination="JSx-sB-2At" id="yT1-8V-wTO"/>
                         <outlet property="searchBar" destination="P6e-Gv-8gL" id="8AG-Tu-g3h"/>
                         <outlet property="searchBarView" destination="Rto-hf-bPm" id="OE1-8Z-7G1"/>
+                        <outlet property="settingsButton" destination="GdE-SZ-IjV" id="mXv-iB-XlY"/>
                         <outlet property="tableView" destination="Hjq-sX-Jfn" id="jU2-KH-G6h"/>
                         <outlet property="welcomeLabel" destination="KQZ-1w-vlD" id="PQK-RY-99v"/>
                         <outlet property="welcomeMessage" destination="Tlz-KO-EGq" id="zTF-8g-St9"/>
