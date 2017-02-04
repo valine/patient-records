@@ -97,7 +97,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
         
         if UserDefaults().bool(forKey: "standalone") {
             
-            if  self.welcomeMessage.text != "Offline Mode Enabled" {
+            if  self.welcomeMessage.text != "Welcome" {
 
                 UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
                     
@@ -106,7 +106,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                     
                 }, completion: { _ in
                     
-                    self.welcomeMessage.text = "Offline Mode Enabled"
+                    self.welcomeMessage.text = "Welcome"
 
                     UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
                         self.headerView.center.y  -=  self.headerView.bounds.height
@@ -170,7 +170,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                             self.welcomeMessage.text = "Connected to Patient Cloud Server"
                             
                         } else {
-                            self.welcomeMessage.text = "Offline Mode Enabled"
+                            self.welcomeMessage.text = "Welcome"
                             
                         }
                         UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
@@ -285,21 +285,21 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     @IBOutlet weak var settingsButton: UIBarButtonItem!
-    @IBAction func settingsTapped(_ sender: Any) {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "settings-nav") as! UINavigationController
-        controller.modalPresentationStyle = .popover
-
-        let svc = storyboard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
-        svc.delegate = self
-        present(controller, animated: true, completion: {
-            
-            self.updateTable()
-        
-        
-        })
-    }
+//    @IBAction func settingsTapped(_ sender: Any) {
+//        
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let controller = storyboard.instantiateViewController(withIdentifier: "settings-nav") as! UINavigationController
+//        controller.modalPresentationStyle = .popover
+//
+//        let svc = storyboard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
+//        svc.delegate = self
+//        present(controller, animated: true, completion: {
+//            
+//            self.updateTable()
+//        
+//        
+//        })
+//    }
     
     func finished() {
         updateTable()
