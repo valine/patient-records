@@ -248,7 +248,7 @@ class PatientRespositoryLocal {
             ).first!
         do {
             
-            let db = try Connection("\(path)/db.sqlite3")
+            let db = try Connection("\(path)/db2.sqlite3")
             let patients = Table("patients")
             let id = Expression<Int64>("id")
             
