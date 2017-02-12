@@ -76,15 +76,9 @@ class PatientRespositoryLocal {
         if UserDefaults.standard.bool(forKey: "launchedBefore") == false { // If first run
             
             let patients = Table("patients")
-            let singleLineAttribute = Table("singleLineAttribute")
-            let singleLineAttributeValues = Table("singleLineAttributeValues")
-            let multiLineAttribute = Table("multiLineAttribute")
-            let multiLineAttributeValues = Table("multiLineAttributeValues")
-            let dateAttribute = Table("dateAttribute")
-            let dateAttributeValues = Table("dateAttributeValues")
-            let integerAttribute = Table("integerAttribute")
-            let integerAttributeValues = Table("integerAttributeValues")
-            let integerAttributeDefaults = Table("integerAttributeDefaults")
+            let attributes = Table("attributes")
+            let values = Table("values")
+            let integerDefaults = Table("integerDefaults")
             
             do {
                 
@@ -100,84 +94,31 @@ class PatientRespositoryLocal {
                         t.column(Expression<String?>("lastName"))
                         
                 })} catch {}
-                
-                
-                // MARK: single line tables
-                
-                do {
-                    try db.run(singleLineAttribute.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<String>("name"))
-                })} catch {}
-                
 
-                do {
-                    try db.run(singleLineAttributeValues.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<Int64>("patientId"))
-                        t.column(Expression<Int64>("attributeId"))
-                        t.column(Expression<String>("value"))
-                })} catch {}
-
-                
-                // MARK: multiline tables
-                
-                do {
-                    try db.run(multiLineAttribute.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<String>("name"))
-                        
-                    })} catch {}
-                
-                
-                do {
-                    try db.run(multiLineAttributeValues.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<Int64>("patientId"))
-                        t.column(Expression<Int64>("attributeId"))
-                        t.column(Expression<String>("value"))
-                    })} catch {}
-                
-                // MARK: date tables
-                
-                do {
-                    try db.run(dateAttribute.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<String>("name"))
-                    })} catch {}
-                
-                
-                do {
-                    try db.run(dateAttributeValues.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<Int64>("patientId"))
-                        t.column(Expression<Int64>("attributeId"))
-                        t.column(Expression<String>("value"))
-                    })} catch {}
-                
                 // MARK: integer tables
                 
-                do {
-                    try db.run(integerAttribute.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<String>("name"))
-                    })} catch {}
-                
-                
-                do {
-                    try db.run(integerAttributeValues.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<Int64>("patientId"))
-                        t.column(Expression<Int64>("attributeId"))
-                        t.column(Expression<String>("value"))
-                    })} catch {}
-                
-                do {
-                    try db.run(integerAttributeDefaults.create { t in
-                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
-                        t.column(Expression<Int64>("attributeId"))
-                        t.column(Expression<String>("default"))
-                    })} catch {}
+
+                try db.run(attributes.create { t in
+                    t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                    t.column(Expression<String>("name"))
+                    t.column(Expression<String>("type"))
+                })
+
+                try db.run(values.create { t in
+                    t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                    t.column(Expression<Int64>("patientId"))
+                    t.column(Expression<Int64>("attributeId"))
+                    t.column(Expression<String>("valueString"))
+                    t.column(Expression<Int64>("valueInt"))
+                    t.column(Expression<String>("dateAdded"))
+                })
+
+
+                try db.run(integerDefaults.create { t in
+                    t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                    t.column(Expression<Int64>("attributeId"))
+                    t.column(Expression<String>("default"))
+                })
 
                 
                 // insert
@@ -188,29 +129,34 @@ class PatientRespositoryLocal {
                     let columnName = option["columnName"] as! String
                     
                     if  type == "textFieldCell" { // single line
-                        let insert = singleLineAttribute.insert(
-                            Expression<String>("name")  <- columnName)
+                        let insert = attributes.insert(
+                            Expression<String>("name") <- columnName,
+                            Expression<String>("type") <- "textField")
                         try db.run(insert)
+                        
+                        print("textField")
                         
                     }
                     else if  type == "textViewCell" { // multiline
-                        let insert = multiLineAttribute.insert(
-                            Expression<String>("name")  <- columnName)
+                        let insert = attributes.insert(
+                            Expression<String>("name")  <- columnName,
+                            Expression<String>("type") <- "textView")
                         try db.run(insert)
                     }
-                        
+
                     else if  type == "integerCell" {
-                        let insert = integerAttribute.insert(
-                            Expression<String>("name")  <- columnName)
+                        let insert = attributes.insert(
+                        Expression<String>("name")  <- columnName,
+                        Expression<String>("type") <- "integer")
                         try db.run(insert)
 
                         
                         for key in option["valueKeys"] as! [String] {
                             
                             let id = Expression<Int64>("id")
-                            let lastAttribute = try db.pluck(integerAttribute.select(id).order(id.desc).limit(1))
+                            let lastAttribute = try db.pluck(attributes.select(id).order(id.desc).limit(1))
                             
-                            let insertDefaults = integerAttributeDefaults.insert(
+                            let insertDefaults = integerDefaults.insert(
                                 Expression<Int64>("attributeId")  <- (lastAttribute?[id])!,
                                 Expression<String>("default")  <- key)
                             try db.run(insertDefaults)
@@ -218,21 +164,20 @@ class PatientRespositoryLocal {
                     }
                         
                     else if  type == "dateCell" {
-                        let insert = dateAttribute.insert(
-                            Expression<String>("name")  <- columnName)
+                        let insert = attributes.insert(
+                            Expression<String>("name")  <- columnName,
+                            Expression<String>("type") <- "integer")
                         try db.run(insert)
                     }
-                }
+               }
                 
-            } catch {print("error create database")}
+            } catch {print("error create database 2")}
             
         }
     }
     
     static func getPatientById(inputId: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
         
-        let options = PatientAttributeSettings.getAttributeSettings()
-    
         let path = NSSearchPathForDirectoriesInDomains(
             .documentDirectory, .userDomainMask, true
             ).first!
@@ -244,34 +189,53 @@ class PatientRespositoryLocal {
             let dateAdded = Expression<String>("dateAdded")
 
             
-            let patientFromDb = try db.pluck(patients.filter(id == Int64(inputId)))
+
+            let patientFromDb = try db.pluck(patients.where(id == Int64(inputId)))
                 
             var patient = [String: Any]()
             
-            patient["id"] = Int((patientFromDb?[id])! as Int64)
-            patient["dateAdded"] = (patientFromDb?[dateAdded])!
+            patient["id"] = patientFromDb?[patients[id]]
+            patient["dateAdded"] = patientFromDb?[Expression<String>("dateAdded")]
             
-            for option in options! {
-                let type = option["type"] as! String
+            print(patientFromDb.)
+            
 
-                    if type == "integerCell" {
-                        let columnName = option["columnName"] as! String
-                        let column = Expression<Int64?>(columnName)
-                        
-                        patient[columnName] = Int((patientFromDb?[column])! as Int64)
 
-                    } else {
+            
+            let attributes = Table("attributes")
+            
+            do {
+                for attribute in try db.prepare(attributes) {
+                    let name = attribute[Expression<String>("name")]
+                    let type = attribute[Expression<String>("type")]
+                    let id = attribute[Expression<Int64>("id")]
                     
-                        let columnName = option["columnName"] as! String
-                        let column = Expression<String?>(columnName)
+                    do {
+                        let values = Table("values")
+                        let attributeId = Expression<Int64>("attributeId")
                         
-                        patient[columnName] = patientFromDb?[column]
+                        for (i, value) in try db.prepare(values.filter(attributeId == id)).enumerated() {
+                            if i == 0 {
+                                patient[name] = value[Expression<String>("valueString")]
+                            }
+                        }
+                    } catch {
+                        
+                        
                     }
+                }
+            
+            } catch {
+                   print("hello there")
+                    
             }
+                
             
             completion(patient)  
             
-        } catch {}
+        } catch {
+            
+        }
     }
     
     static func deletePatientById(inputId: Int, completion: @escaping (_:Void)->Void) {
