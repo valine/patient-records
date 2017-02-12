@@ -14,6 +14,8 @@
          {"columnName": "allergies", "columnHeight": 170, "title": "Allergies", "type" : "textViewCell", "defaultValue":"Unknown"},
               
          {"columnName": "phoneNumber", "columnHeight": 95, "title": "Phone Number", "type" : "textFieldCell", "defaultValue":"Unknown"},
+              
+         {"columnName": "interger", "columnHeight": 95, "title": "Gender", "type" : "integerCell", "defaultValue":2, "valueKeys": ["Stuff", "Galsdkfj1", "bbllee3"]},
          {"columnName": "email", "columnHeight": 95, "title": "Email", "type" : "textFieldCell", "defaultValue":"Unknown"},
               
        

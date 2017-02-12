@@ -67,8 +67,166 @@ class PatientRespositoryLocal {
 
             
         } catch {print("error create database")}
-
         
+
+        // Create version 2 of the database
+        
+        // lots of tables, guess that's one of the problems with EAV
+        
+        if UserDefaults.standard.bool(forKey: "launchedBefore") == false { // If first run
+            
+            let patients = Table("patients")
+            let singleLineAttribute = Table("singleLineAttribute")
+            let singleLineAttributeValues = Table("singleLineAttributeValues")
+            let multiLineAttribute = Table("multiLineAttribute")
+            let multiLineAttributeValues = Table("multiLineAttributeValues")
+            let dateAttribute = Table("dateAttribute")
+            let dateAttributeValues = Table("dateAttributeValues")
+            let integerAttribute = Table("integerAttribute")
+            let integerAttributeValues = Table("integerAttributeValues")
+            let integerAttributeDefaults = Table("integerAttributeDefaults")
+            
+            do {
+                
+                // Connect to database
+                let db = try Connection("\(path)/db2.sqlite3")
+                
+                // MARK: Patients table
+                do {
+                    try db.run(patients.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("dateAdded"))
+                        t.column(Expression<String?>("firstName"))
+                        t.column(Expression<String?>("lastName"))
+                        
+                })} catch {}
+                
+                
+                // MARK: single line tables
+                
+                do {
+                    try db.run(singleLineAttribute.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<String>("name"))
+                })} catch {}
+                
+
+                do {
+                    try db.run(singleLineAttributeValues.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("patientId"))
+                        t.column(Expression<Int64>("attributeId"))
+                        t.column(Expression<String>("value"))
+                })} catch {}
+
+                
+                // MARK: multiline tables
+                
+                do {
+                    try db.run(multiLineAttribute.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<String>("name"))
+                        
+                    })} catch {}
+                
+                
+                do {
+                    try db.run(multiLineAttributeValues.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("patientId"))
+                        t.column(Expression<Int64>("attributeId"))
+                        t.column(Expression<String>("value"))
+                    })} catch {}
+                
+                // MARK: date tables
+                
+                do {
+                    try db.run(dateAttribute.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<String>("name"))
+                    })} catch {}
+                
+                
+                do {
+                    try db.run(dateAttributeValues.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("patientId"))
+                        t.column(Expression<Int64>("attributeId"))
+                        t.column(Expression<String>("value"))
+                    })} catch {}
+                
+                // MARK: integer tables
+                
+                do {
+                    try db.run(integerAttribute.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<String>("name"))
+                    })} catch {}
+                
+                
+                do {
+                    try db.run(integerAttributeValues.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("patientId"))
+                        t.column(Expression<Int64>("attributeId"))
+                        t.column(Expression<String>("value"))
+                    })} catch {}
+                
+                do {
+                    try db.run(integerAttributeDefaults.create { t in
+                        t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
+                        t.column(Expression<Int64>("attributeId"))
+                        t.column(Expression<String>("default"))
+                    })} catch {}
+
+                
+                // insert
+
+                for option in options! {
+                    
+                    let type = option["type"] as! String
+                    let columnName = option["columnName"] as! String
+                    
+                    if  type == "textFieldCell" { // single line
+                        let insert = singleLineAttribute.insert(
+                            Expression<String>("name")  <- columnName)
+                        try db.run(insert)
+                        
+                    }
+                    else if  type == "textViewCell" { // multiline
+                        let insert = multiLineAttribute.insert(
+                            Expression<String>("name")  <- columnName)
+                        try db.run(insert)
+                    }
+                        
+                    else if  type == "integerCell" {
+                        let insert = integerAttribute.insert(
+                            Expression<String>("name")  <- columnName)
+                        try db.run(insert)
+
+                        
+                        for key in option["valueKeys"] as! [String] {
+                            
+                            let id = Expression<Int64>("id")
+                            let lastAttribute = try db.pluck(integerAttribute.select(id).order(id.desc).limit(1))
+                            
+                            let insertDefaults = integerAttributeDefaults.insert(
+                                Expression<Int64>("attributeId")  <- (lastAttribute?[id])!,
+                                Expression<String>("default")  <- key)
+                            try db.run(insertDefaults)
+                        }
+                    }
+                        
+                    else if  type == "dateCell" {
+                        let insert = dateAttribute.insert(
+                            Expression<String>("name")  <- columnName)
+                        try db.run(insert)
+                    }
+                }
+                
+            } catch {print("error create database")}
+            
+        }
     }
     
     static func getPatientById(inputId: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
@@ -142,7 +300,7 @@ class PatientRespositoryLocal {
             ).first!
         do {
             
-        let db = try Connection("\(path)/db.sqlite3")
+        let db = try Connection("\(path)/db2.sqlite3")
         let patients = Table("patients")
         let id = Expression<Int64>("id")
         let firstName = Expression<String?>("firstName")
@@ -184,7 +342,7 @@ class PatientRespositoryLocal {
             ).first!
         do {
             
-            let db = try Connection("\(path)/db.sqlite3")
+            let db = try Connection("\(path)/db2.sqlite3")
             let patients = Table("patients")
             let id = Expression<Int64>("id")
             let firstName = Expression<String?>("firstName")
@@ -231,52 +389,16 @@ class PatientRespositoryLocal {
         do {
             
 
-            let db = try Connection("\(path)/db.sqlite3")
+            let db = try Connection("\(path)/db2.sqlite3")
             let patients = Table("patients")
             
-            
-            // insert
-            var setters = [Setter]()
-            
-            for option in options! {
-                
-                let type = option["type"] as! String
-                let columnName = option["columnName"] as! String
-                
-                if  type == "textFieldCell" {
-                    let column = Expression<String?>(columnName)
-                    setters.append(column <- json[columnName] as! String?)
-                }
-                    
-                else if  type == "textViewCell" {
-                    let column = Expression<String?>(columnName)
-                    setters.append(column <- json[columnName] as! String?)
-                }
-                    
-                else if  type == "integerCell" {
-                    let column = Expression<Int64?>(columnName)
-                    setters.append(column <- Int64(json[columnName] as! Int))
-                }
-                    
-                else if  type == "dateCell" {
-                    let column = Expression<String?>(columnName)
-                    setters.append(column <- json[columnName] as! String?)
-                }
-                
-                
-            }
-        
-            let column = Expression<String?>("dateAdded")
-            setters.append(column <- getDateTime())
-
-            
-            let insert = patients.insert(setters)
-            
-            
-            
-            //let insert = patients.insert(firstName <- "Alice", lastName <- "alice@mac.com")
+            let insert = patients.insert(
+                Expression<String>("firstName")  <- json["firstName"] as! String,
+                Expression<String>("lastName")  <- json["lastName"] as! String,
+                Expression<String>("dateAdded")  <- getDateTime())
             try db.run(insert)
-            
+
+        
             completion()
             
         } catch {}
@@ -288,16 +410,6 @@ class PatientRespositoryLocal {
     static func getDateTime() -> String {
         
         let date = Date()
-        let calendar = NSCalendar.current
-
-        var components = DateComponents()
-        
-//        components.hour = calendar.component(.hour, from: date as Date)
-//        components.minute = calendar.component(.minute, from: date as Date)
-//        components.second = calendar.component(.second, from: date as Date)
-//        components.year = calendar.component(.year, from: date as Date)
-//        components.month = calendar.component(.month, from: date as Date)
-//        components.day = calendar.component(.day, from: date as Date)
 
         let dayTimePeriodFormatter = DateFormatter()
         dayTimePeriodFormatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
