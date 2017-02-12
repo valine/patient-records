@@ -320,7 +320,11 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
                         cell.titlelabel.text = title
                         
                         let columnName = option?["columnName"] as! String
-                        let value = patientDictionary[columnName] as! String
+                        
+                        let value = "2005-12-12 12:12:12"
+                        if patientDictionary[columnName] is String {
+                            let value = patientDictionary[columnName] as! String
+                        }
                        
                         let formatter = DateFormatter()
                         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
