@@ -452,8 +452,7 @@ class PatientRespositoryLocal {
                     patientSetters.append(Expression<String>("firstName") <- (json["firstName"] as! String?)!)
                     patientSetters.append(Expression<String>("lastName") <- (json["lastName"] as! String?)!)
                     patientSetters.append(Expression<String>("dateAdded") <- getDateTime())
-                    print("hello")
-                    
+                    print(inputId)
                     let patient = patients.filter(Expression<Int64>("id") == Int64(inputId))
                     let update = patient.update(patientSetters)
                     try db.run(update)
@@ -462,7 +461,7 @@ class PatientRespositoryLocal {
                         .order(Expression<Int64>("id").desc)
                     
                     for attribute in try db.prepare(query) {
-                        print("hello")
+
                         var setters = [Setter]()
                         let name = attribute[Expression<String>("name")]
                         let type = attribute[Expression<String>("type")]
@@ -483,7 +482,7 @@ class PatientRespositoryLocal {
                         
                         let attributeValues = Table("attributeValues")
                         
-                        setters.append(Expression<Int64>("patientId") <- (lastPatient?[idExp])!)
+                        setters.append(Expression<Int64>("patientId") <- (Int64(inputId)))
                         setters.append(Expression<Int64>("attributeId") <- attribute[idExp])
                         setters.append(Expression<String>("dateAdded") <- getDateTime())
                         
