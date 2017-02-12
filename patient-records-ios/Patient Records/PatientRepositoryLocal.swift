@@ -501,60 +501,7 @@ class PatientRespositoryLocal {
         } catch{}
         
         completion()
-        
-//        let options = PatientAttributeSettings.getAttributeSettings()
-//        
-//        let path = NSSearchPathForDirectoriesInDomains(
-//            .documentDirectory, .userDomainMask, true
-//            ).first!
-//        do {
-//            
-//            
-//            let db = try Connection("\(path)/db.sqlite3")
-//            let patients = Table("patients")
-//            let id = Expression<Int64>("id")
-//            
-//            
-//            // insert
-//            var setters = [Setter]()
-//            
-//            for option in options! {
-//                
-//                let type = option["type"] as! String
-//                let columnName = option["columnName"] as! String
-//                
-//                if  type == "textFieldCell" {
-//                    let column = Expression<String?>(columnName)
-//                    setters.append(column <- json[columnName] as! String?)
-//                }
-//                    
-//                else if  type == "textViewCell" {
-//                    let column = Expression<String?>(columnName)
-//                    setters.append(column <- json[columnName] as! String?)
-//                }
-//                    
-//                else if  type == "integerCell" {
-//                    let column = Expression<Int64?>(columnName)
-//                    setters.append(column <- Int64(json[columnName] as! Int))
-//                }
-//                    
-//                else if  type == "dateCell" {
-//                    let column = Expression<String?>(columnName)
-//                    setters.append(column <- json[columnName] as! String?)
-//                }
-//                
-//                
-//            }
-//            
-//            let patient = patients.filter(id == Int64(inputId))
-//            let update = patient.update(setters)
-//
-//
-//            try db.run(update)
-//            
-//            completion()
-//            
-//        } catch {}
+
     }
     
     static func getPatientPhoto(id: String, completion: @escaping (_:UIImage)->Void) {
