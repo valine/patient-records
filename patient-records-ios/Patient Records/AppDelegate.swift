@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         PatientRespositoryLocal.createDatabase()
         PatientAttributeSettings.updateRemoteRecords()
         
+        //PatientRespositoryLocal.stressTest(stress: 10000)
+        
         return true
     }
     

@@ -12,30 +12,21 @@ import SpriteKit
 
 class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDataSource, CreatePatientViewContrllerDelegate, UISearchBarDelegate, SettingsViewControllerDelegate {
     @IBOutlet weak var helpMessage: UILabel!
-
     @IBOutlet weak var welcomeLabel: UILabel!
-    
     @IBOutlet weak var tableView: UITableView!
-
     @IBOutlet weak var welcomeMessage: UILabel!
     @IBOutlet weak var logoContainerView: UIView!
     
     @IBOutlet weak var headerView: UIView!
     
-    
-
     var searching: Bool = false {
-        
         didSet {
-            
             if searching {
                 beginSearch()
                 
             } else {
-                
                 endSearch()
             }
-            
         }
     }
     
@@ -48,14 +39,11 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchBarView.alpha  = 0
-    
-
 
         helpMessage.isHidden = true
         searchBar.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(self.didBecomeActive(notification:)), name: Notification.Name("didBecomeActive"), object: nil)
-        
-        
+
         Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(HomeViewController.updateTable), userInfo: nil, repeats: true)
         
         let userDefaults = UserDefaults()
@@ -146,8 +134,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                             })
                         })
                     }
-                    
-
                 }
 
                 self.patients = returnedPatients
@@ -179,8 +165,6 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
                         })
                     })
                 }
-
-                
                 
             }, debug: {(value) in
                 self.patients = [Patient]()

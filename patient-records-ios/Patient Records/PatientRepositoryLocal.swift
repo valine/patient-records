@@ -245,6 +245,35 @@ class PatientRespositoryLocal {
         }
     }
     
+    static func stressTest(stress: Int) {
+        
+        var patient = [String : Any]()
+        
+        getAttributeSettings(completion: { options in
+            for option in options {
+                
+                if option["type"] as! String == "integerCell" {
+                    patient[option["columnName"] as! String] = 0
+
+                    
+                } else {
+                    patient[option["columnName"] as! String] = option["type"] as! String
+
+                    
+                }
+                
+            }
+        
+        })
+  
+        
+        for i in 0...stress {
+            
+            addPatient(json: patient, completion: {})
+        }
+        
+    }
+    
     static func getPatientById(inputId: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
         
         let path = NSSearchPathForDirectoriesInDomains(
