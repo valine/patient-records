@@ -23,7 +23,7 @@ class PatientAttributeSettings {
                     DispatchQueue.main.async {
                         do {
                             
-                            let dictionary = try JSONSerialization.jsonObject(with: data! as Data, options: .allowFragments) as? NSDictionary
+                            let dictionary = try JSONSerialization.jsonObject(with: unwrappedData as Data, options: .allowFragments) as? NSDictionary
                             if let options : Array = dictionary?["options"] as? Array<[String: Any]> {
                                 
                                 remoteRecords = options
@@ -36,7 +36,6 @@ class PatientAttributeSettings {
             }
             task.resume()
 
-    
     }
 
     static func getAttributeSettings() -> Array<[String: Any]>?{
@@ -49,8 +48,7 @@ class PatientAttributeSettings {
                     do {
                         let dictionary = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? NSDictionary
                         if let options : Array = dictionary?["options"] as? Array<[String: Any]> {
-                                for option in options {
-                                }
+
                                 return options
                         }
                     } catch {

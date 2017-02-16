@@ -157,9 +157,7 @@ AVCaptureMetadataOutputObjectsDelegate {
     func presentPatient(idString: String ) {
         
 
-            let id = Int(idString)
-                
-        
+        let id = Int(idString)
         
         print(id!)
             PatientRespository.getPatientById(id: id!, completion: {(patient) in

@@ -12,6 +12,60 @@ import UIKit
 
 class PatientRespositoryLocal {
     
+    // MARK: Patient Forms
+    
+    static func getAttributeSettings(completion: @escaping (_: Array<[String: Any]>)->Void){
+
+        completion(PatientAttributeSettings.getAttributeSettings()!)
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+
+        
+        let attributes = Table("attributes")
+        let integerDefaults = Table("integerDefaults")
+        do {
+            let db = try Connection("\(path)/db2.sqlite3")
+
+            var options = [[String: Any]]()
+            do {
+                for attribute in try db.prepare(attributes) {
+                    
+                    var option = [String: Any]()
+                    
+                    let id = attribute[Expression<Int64>("id")]
+                    option["columnName"] = attribute[Expression<String>("name")]
+                    option["type"] = attribute[Expression<String>("type")]
+                    option["title"] = attribute[Expression<String>("title")]
+                    option["shouldPage"] = attribute[Expression<Bool>("shouldPage")]
+                    option["columnHeight"] = Int(attribute[Expression<Int64>("columnHeight")])
+                    
+                    let attributeId = Expression<Int64>("attributeId")
+                    
+                    if attribute[Expression<String>("type")] == "integerCell" {
+                        var valueKeys = [String]()
+                        for value in try db.prepare(integerDefaults.filter(attributeId == id)) {
+                            valueKeys.append(value[Expression<String>("default")])
+                        }
+                        
+                        option["valueKeys"] = valueKeys
+                    }
+                    
+                    options.append(option)
+                    
+                }
+                
+                print(options)
+                completion(options)
+                
+            } catch {}
+        } catch {}
+        
+
+
+    }
+
+    // MARK: Patient CRUD functions
     static func createDatabase() {
         
         let options = PatientAttributeSettings.getAttributeSettings()
@@ -102,7 +156,9 @@ class PatientRespositoryLocal {
                     t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
                     t.column(Expression<String>("name"))
                     t.column(Expression<String>("type"))
+                    t.column(Expression<String>("title"))
                     t.column(Expression<Bool>("shouldPage"))
+                    t.column(Expression<Int64>("columnHeight"))
                 })
 
                 try db.run(attributeValues.create { t in
@@ -127,11 +183,15 @@ class PatientRespositoryLocal {
                     
                     let type = option["type"] as! String
                     let columnName = option["columnName"] as! String
+                    let title = option["title"] as! String
+                    let columnHeight = option["columnHeight"] as! Int
                     
                     if  type == "textFieldCell" { // single line
                         let insert = attributes.insert(
                             Expression<String>("name") <- columnName,
-                            Expression<String>("type") <- "textField",
+                            Expression<String>("type") <- "textFieldCell",
+                            Expression<String>("title") <- title,
+                            Expression<Int64>("columnHeight") <- Int64(columnHeight),
                             Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                         
@@ -140,7 +200,9 @@ class PatientRespositoryLocal {
                     else if  type == "textViewCell" { // multiline
                         let insert = attributes.insert(
                             Expression<String>("name")  <- columnName,
-                            Expression<String>("type") <- "textView",
+                            Expression<String>("type") <- "textViewCell",
+                            Expression<String>("title") <- title,
+                            Expression<Int64>("columnHeight") <- Int64(columnHeight),
                             Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                     }
@@ -148,7 +210,9 @@ class PatientRespositoryLocal {
                     else if  type == "integerCell" {
                         let insert = attributes.insert(
                         Expression<String>("name")  <- columnName,
-                        Expression<String>("type") <- "integer",
+                        Expression<String>("type") <- "integerCell",
+                        Expression<String>("title") <- title,
+                        Expression<Int64>("columnHeight") <- Int64(columnHeight),
                         Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
 
@@ -168,7 +232,9 @@ class PatientRespositoryLocal {
                     else if  type == "dateCell" {
                         let insert = attributes.insert(
                             Expression<String>("name")  <- columnName,
-                            Expression<String>("type") <- "date",
+                            Expression<String>("type") <- "dateCell",
+                            Expression<String>("title") <- title,
+                            Expression<Int64>("columnHeight") <- Int64(columnHeight),
                             Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                     }

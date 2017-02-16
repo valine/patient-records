@@ -12,7 +12,22 @@ import MobileCoreServices
 
 class PatientRespository {
 
+    // MARK: Patient Forms
     
+    static func getAttributeSettings(completion: @escaping (_: Array<[String: Any]>)->Void){
+        if !UserDefaults().bool(forKey: "standalone") {
+            completion(PatientAttributeSettings.getAttributeSettings()!)
+            
+        } else {
+            PatientRespositoryLocal.getAttributeSettings(completion: {attributes in
+                completion(attributes)
+            })
+        }
+    }
+    
+    
+    
+    // MARK: Patient CRUD functions
     static func getPatientById(id: Int, completion: @escaping (_: [String: Any])->Void, debug: @escaping (_: String)->Void) {
         if !UserDefaults().bool(forKey: "standalone") {
             let listPatientsRequest = "patient/id/" + String(id)
@@ -592,26 +607,6 @@ struct Patient {
         )
     }
     
-    static func defaultPatientDictionary() -> [String: Any] {
-        let options = PatientAttributeSettings.getAttributeSettings()
-        var patient: [String : Any] = [:]
-        for option in options! {
-        
-            let columnName = option["columnName"] as! String
-            let type = option["type"] as! String
-            
-            if type == "integerCell" {
-                let defaultValue = option["defaultValue"] as! Int
-                patient[columnName] = defaultValue
-            } else {
-                let defaultValue = option["defaultValue"] as! String
-                patient[columnName] = defaultValue
-            
-            }
-        }
-        
-        return patient
-    }
 
     
     static func newFromJSON(json: [String: Any]) -> Patient {

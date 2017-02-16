@@ -12,10 +12,10 @@ import CoreImage
 class CreatePatientViewController: UITableViewController, UISplitViewControllerDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var delegate: CreatePatientViewContrllerDelegate?
-    let options = PatientAttributeSettings.getAttributeSettings()
-    var patientDictionary: [String: Any] = Patient.defaultPatientDictionary()
+    var options: Array<[String: Any]> = [[String: Any]]()
+    var patientDictionary: [String: Any] = [String: Any]()
     
-    var patientDictionaryToSave: [String: Any] = Patient.defaultPatientDictionary()
+    var patientDictionaryToSave: [String: Any] = [String: Any]()
 
     @IBOutlet var textFields: [UITextField]!
     @IBOutlet var segmentedControls: [UISegmentedControl]!
@@ -69,41 +69,54 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         obscureView?.alpha = 0
         self.tableView.addSubview(obscureView!)
         self.hidesBottomBarWhenPushed = false;
+
+        PatientRespository.getAttributeSettings(completion: { attributes in
+        
+            self.options = attributes
+
+        })
     }
     
     // MARK: TableView
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if mode == .empty {
+        if mode == .empty || options.count == 0 {
             return createEmptyCell()
         }
             
-        if indexPath.item == 0 {
+        else if indexPath.item == 0 {
             
             return createPhotoCell()
        
-        } else if indexPath.item < (options?.count)! + 1 {
+        } else if indexPath.item < (options.count) + 1 {
             
-            let option = options?[indexPath.item - 1]
+            let option = options[indexPath.item - 1]
             
-            let type = option?["type"] as! String
-            let title = option?["title"] as! String
-            let columnName = option?["columnName"] as! String
+            let type = option["type"] as! String
+            let title = option["title"] as! String
+            let columnName = option["columnName"] as! String
+            let doesPage = false
             //let valueKeys = option?["valueKeys"] as! Array<String>
             
-            if type == "textFieldCell" {
+            if type == "textFieldCell" && doesPage {
                 return createTextFieldCell(type: type, columnName: columnName, title: title)
                 
-            } else if type == "integerCell" {
-                let valueKeys = option?["valueKeys"] as! Array<String>
-                return createIntegerCell(type: type, columnName: columnName, title: title, valueKeys: valueKeys)
-                
-            } else if type == "textViewCell" {
+            } else if type == "textViewCell" && doesPage {
                 return createTextViewCell(type: type, columnName: columnName, title: title)
                 
-            } else if type == "dateCell" {
+            } else if type == "textFieldCell" && !doesPage {
+                return createTextFieldCell(type: type, columnName: columnName, title: title)
+                
+            } else if type == "textViewCell" && !doesPage {
+                return createTextViewCell(type: type, columnName: columnName, title: title)
+                
+            } else if type == "dateCell"{
                 return createDateCell(type: type, columnName: columnName, title: title)
+                
+            } else if type == "integerCell"{
+                let valueKeys = option["valueKeys"] as! Array<String>
+                return createIntegerCell(type: type, columnName: columnName, title: title, valueKeys: valueKeys)
                 
             } else {
                 return UITableViewCell()
@@ -122,14 +135,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        let count = options?.count
+        let count = options.count
         
         if mode == .update {
             
-            return count! + 2 // extra one for the delete cell
+            return count + 2 // extra one for the delete cell
         } else {
             
-            return count! + 1 // + 1 for the patient photo cell
+            return count + 1 // + 1 for the patient photo cell
         }
     }
     
@@ -138,14 +151,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         if indexPath.item == 0 {
             return photoHeight
         } else {
-            if indexPath.item < (options?.count)! + 1{
+            if indexPath.item < (options.count) + 1{
                 
-                let option = options?[indexPath.item - 1]
-                var height = option?["columnHeight"] as! Int
+                let option = options[indexPath.item - 1]
+                var height = option["columnHeight"] as! Int
                 
                 let textFieldHeight = 95
                 
-                if mode == .view && option?["type"] as! String == "dateCell" {
+                if mode == .view && option["type"] as! String == "dateCell" {
                     
                     height = textFieldHeight;
                 }
@@ -271,8 +284,12 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             cell.viewLabel.isHidden = true
             cell.titleLabel.text = title
             cell.textField.delegate = self
-            let value = patientDictionary[columnName]
             
+            if mode == .new {
+                patientDictionaryToSave[columnName] = "Unknown"
+            }
+            
+            let value = patientDictionaryToSave[columnName]
             cell.textField.text = value as! String?
             cell.viewLabel.text = title
             
@@ -294,6 +311,8 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     }
     
     func createIntegerCell(type: String, columnName: String, title: String, valueKeys: Array<String>) -> IntegerCell{
+        
+        
         if mode == .new || mode == .update {
 
             let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
@@ -306,8 +325,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             }
             
             cell.titleLabel.text = title
-            let value = patientDictionary[columnName]
-            cell.control.selectedSegmentIndex = (value as! Int?)!
+            
+            if mode == .new {
+                patientDictionaryToSave[columnName] = cell.control.numberOfSegments - 1
+                cell.control.selectedSegmentIndex =  cell.control.numberOfSegments - 1
+            } else {
+                
+                cell.control.selectedSegmentIndex = Int(patientDictionaryToSave[columnName] as! String)!
+            }
             
             
             return cell
@@ -321,11 +346,15 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             
             cell.control.isHidden = true
             cell.viewLabel.isHidden = false
-            
-            if let value = patientDictionary[columnName] as? Int {
+            print(patientDictionary[columnName] as! String + "int debug")
+            print(valueKeys)
+            if let value = Int((patientDictionary[columnName] as! String)) {
+                
+                print(valueKeys[value])
                 let text = valueKeys[value]
                 cell.titleLabel.text = title
                 cell.viewLabel.text = text
+                //cell.control.selectedSegmentIndex = cell.control.numberOfSegments - 1
             }
             
             cell.titleLabel.text = title
@@ -347,10 +376,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             cell.textView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
             cell.textView.isEditable = true
             
-
-            let value = patientDictionary[columnName]
+           
+            if mode == .new {
+                
+                patientDictionaryToSave[columnName] = "Unknown"
+            }
             
-            cell.textView.text = value as! String
+            cell.textView.text = patientDictionaryToSave[columnName] as! String!
             
             return cell
 
@@ -382,7 +414,12 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             cell.titlelabel.text = title
 
             let value = "2005-12-12 12:12:12"
-
+            if mode == .new {
+                patientDictionaryToSave[columnName] = "Unknown"
+            } else {
+                let value = patientDictionaryToSave[columnName]
+            }
+            
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
             
@@ -565,11 +602,11 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     @IBAction func integerCellChanged(_ sender: Any) {
     let toggle = sender as! UISegmentedControl
-
+        
         
         let cell = toggle.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
-        let columnName = options?[index! - 1]["columnName"] as! String
+        let columnName = options[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = toggle.selectedSegmentIndex
         patientDictionary = patientDictionaryToSave
@@ -580,14 +617,13 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     @IBAction func textFieldEditingChanged(_ sender: Any) {
         
         let textField = sender as! UITextField
-
+        
         let cell = textField.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
-        let columnName = options?[index! - 1]["columnName"] as! String
+        let columnName = options[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = textField.text
         patientDictionary = patientDictionaryToSave
-
     }
     
 
@@ -596,9 +632,19 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
         let cell = dateView.superview?.superview
         let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
-        let columnName = options?[index! - 1]["columnName"] as! String
+        let columnName = options[index! - 1]["columnName"] as! String
         
         patientDictionaryToSave[columnName] = String(describing: dateView.date)
+        patientDictionary = patientDictionaryToSave
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let cell = textView.superview?.superview
+        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
+        let columnName = options[index! - 1]["columnName"] as! String
+        
+        patientDictionaryToSave[columnName] = textView.text
         patientDictionary = patientDictionaryToSave
         
     }
@@ -615,17 +661,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         }
     }
     
-    
-    func textViewDidChange(_ textView: UITextView) {
 
-        let cell = textView.superview?.superview
-        let index = self.tableView.indexPath(for: cell as! UITableViewCell)?.item
-        let columnName = options?[index! - 1]["columnName"] as! String
-        
-        patientDictionaryToSave[columnName] = textView.text
-        patientDictionary = patientDictionaryToSave
-        
-    }
     
     func selectPicture(_ sender: AnyObject) {
         
