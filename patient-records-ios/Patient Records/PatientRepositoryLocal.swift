@@ -102,6 +102,7 @@ class PatientRespositoryLocal {
                     t.column(Expression<Int64>("id"), primaryKey: .autoincrement)
                     t.column(Expression<String>("name"))
                     t.column(Expression<String>("type"))
+                    t.column(Expression<Bool>("shouldPage"))
                 })
 
                 try db.run(attributeValues.create { t in
@@ -130,7 +131,8 @@ class PatientRespositoryLocal {
                     if  type == "textFieldCell" { // single line
                         let insert = attributes.insert(
                             Expression<String>("name") <- columnName,
-                            Expression<String>("type") <- "textField")
+                            Expression<String>("type") <- "textField",
+                            Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                         
                         
@@ -138,14 +140,16 @@ class PatientRespositoryLocal {
                     else if  type == "textViewCell" { // multiline
                         let insert = attributes.insert(
                             Expression<String>("name")  <- columnName,
-                            Expression<String>("type") <- "textView")
+                            Expression<String>("type") <- "textView",
+                            Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                     }
 
                     else if  type == "integerCell" {
                         let insert = attributes.insert(
                         Expression<String>("name")  <- columnName,
-                        Expression<String>("type") <- "integer")
+                        Expression<String>("type") <- "integer",
+                        Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
 
                         
@@ -164,7 +168,8 @@ class PatientRespositoryLocal {
                     else if  type == "dateCell" {
                         let insert = attributes.insert(
                             Expression<String>("name")  <- columnName,
-                            Expression<String>("type") <- "date")
+                            Expression<String>("type") <- "date",
+                            Expression<Bool>("shouldPage") <- false)
                         try db.run(insert)
                     }
                }
@@ -212,19 +217,49 @@ class PatientRespositoryLocal {
                         let attributeValues = Table("attributeValues")
                         let attributeId = Expression<Int64>("attributeId")
                         let patientId = Expression<Int64>("patientId")
+                        
+                        var patientAttibuteArrays = [[String: Any]]()
+                        
                         for (i, value) in try db.prepare(attributeValues.filter(attributeId == id
                             && patientId == (patientFromDb?[Expression<Int64>("id")])! as Int64)).enumerated() {
                                 
                             if i == 0 {
-                                
                                 if type == "integer" {
-                                
                                     patient[name] = Int(value[Expression<String>("attributeValue")])
                                 } else {
                                      patient[name] = value[Expression<String>("attributeValue")]
                                 }
                             }
+                            
+                            if type == "integer" {
+                                 patientAttibuteArrays.append([name: Int(value[Expression<String>("attributeValue")])!])
+
+                            } else {
+                                 patientAttibuteArrays.append([name: value[Expression<String>("attributeValue")]])
+
+                            }
+                                
+                            /* patient ditionary structure
+                                 
+                                 patient 
+                                    id: int
+                                    dateAdded: string
+                                    firstName: string
+                                    lastName: string
+                                    attr1[0]: string
+                                    attr2[0]: string
+                                    attr3[0]: string
+                                    attr1Array
+                                        attr1[0]: sting
+                                        attr1[1]: string
+                                    attr2Array
+                                        attr2[0]: string
+                                 
+                                 and so on
+                            */
                         }
+                        
+                        patient["\(name)array"] = patientAttibuteArrays
                     } catch {
                         
                         
@@ -232,14 +267,146 @@ class PatientRespositoryLocal {
                 }
             
             } catch {}
-                
             
+            print(patient)
             completion(patient)  
             
         } catch {
             
         }
     }
+    static func addPatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        
+        do {
+            
+            let db = try Connection("\(path)/db2.sqlite3")
+            let attributes = Table("attributes")
+            
+            do {
+                var patientSetters = [Setter]()
+                let patients = Table("patients")
+                
+                patientSetters.append(Expression<String>("firstName") <- (json["firstName"] as! String?)!)
+                patientSetters.append(Expression<String>("lastName") <- (json["lastName"] as! String?)!)
+                patientSetters.append(Expression<String>("dateAdded") <- getDateTime())
+                print("hello")
+                
+                try db.run(patients.insert(patientSetters))
+                let query = attributes.select(Expression<Int64>("id"), Expression<String?>("name"), Expression<String?>("type"))
+                    .order(Expression<Int64>("id").desc)
+                
+                for attribute in try db.prepare(query) {
+                    print("hello")
+                    var setters = [Setter]()
+                    let name = attribute[Expression<String>("name")]
+                    let type = attribute[Expression<String>("type")]
+                    
+                    if type == "date" {
+                        
+                        
+                    }
+                    
+                    if json[name] is Int {
+                        
+                        let theString = String(describing: json[name]!)
+                        setters.append(Expression<String>("attributeValue") <- theString)
+                    } else {
+                        
+                        setters.append(Expression<String>("attributeValue") <- json[name] as! String)
+                    }
+                    
+                    let idExp = Expression<Int64>("id")
+                    
+                    let lastPatient = try db.pluck(patients.select(idExp).order(idExp.desc).limit(1))
+                    
+                    let attributeValues = Table("attributeValues")
+                    
+                    setters.append(Expression<Int64>("patientId") <- (lastPatient?[idExp])!)
+                    setters.append(Expression<Int64>("attributeId") <- attribute[idExp])
+                    setters.append(Expression<String>("dateAdded") <- getDateTime())
+                    
+                    try db.run(attributeValues.insert(setters));
+                    
+                }
+                
+            } catch {}
+            
+        } catch{}
+        
+        completion()
+        
+    }
+    
+    static func updatePatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
+        
+        let inputId = json["id"] as! Int
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+            ).first!
+        
+        do {
+            
+            let db = try Connection("\(path)/db2.sqlite3")
+            let attributes = Table("attributes")
+            
+            
+            do {
+                var patientSetters = [Setter]()
+                let patients = Table("patients")
+                
+                patientSetters.append(Expression<String>("firstName") <- (json["firstName"] as! String?)!)
+                patientSetters.append(Expression<String>("lastName") <- (json["lastName"] as! String?)!)
+                patientSetters.append(Expression<String>("dateAdded") <- getDateTime())
+                print(inputId)
+                let patient = patients.filter(Expression<Int64>("id") == Int64(inputId))
+                let update = patient.update(patientSetters)
+                try db.run(update)
+                
+                let query = attributes.select(Expression<Int64>("id"), Expression<String?>("name"), Expression<String?>("type"))
+                    .order(Expression<Int64>("id").desc)
+                
+                for attribute in try db.prepare(query) {
+                    
+                    var setters = [Setter]()
+                    let name = attribute[Expression<String>("name")]
+                    
+                    if json[name] is Int {
+                        
+                        let theString = String(describing: json[name]!)
+                        setters.append(Expression<String>("attributeValue") <- theString)
+                    } else {
+                        
+                        setters.append(Expression<String>("attributeValue") <- json[name] as! String)
+                    }
+                    
+                    let idExp = Expression<Int64>("id")
+                    
+                    let attributeValues = Table("attributeValues")
+                    
+                    setters.append(Expression<Int64>("patientId") <- (Int64(inputId)))
+                    setters.append(Expression<Int64>("attributeId") <- attribute[idExp])
+                    setters.append(Expression<String>("dateAdded") <- getDateTime())
+                    
+                    let attribute = attributeValues.filter(Expression<Int64>("patientId") == Int64(inputId) && Expression<Int64>("attributeId") == attribute[idExp])
+                    let update = attribute.update(setters)
+                    try db.run(update);
+                    
+                    
+                }
+                
+            } catch {}
+            
+            
+        } catch{}
+        
+        completion()
+        
+    }
+
     
     static func deletePatientById(inputId: Int, completion: @escaping (_:Void)->Void) {
         
@@ -273,7 +440,6 @@ class PatientRespositoryLocal {
         let firstName = Expression<String?>("firstName")
         let lastName = Expression<String?>("lastName")
         let dateAdded = Expression<String?>("dateAdded")
-        
         
         let query = patients.select(id, dateAdded, firstName, lastName)           // SELECT "email" FROM "users"
             .order(id.desc) // ORDER BY "email" DESC, "name"
@@ -345,77 +511,7 @@ class PatientRespositoryLocal {
     
     }
     
-    static func addPatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
-        let path = NSSearchPathForDirectoriesInDomains(
-            .documentDirectory, .userDomainMask, true
-            ).first!
-        
-        
-        
-        do {
-            
-            let db = try Connection("\(path)/db2.sqlite3")
-            let attributes = Table("attributes")
 
-            do {
-                do {
-                    var patientSetters = [Setter]()
-                    let patients = Table("patients")
-                    
-                    patientSetters.append(Expression<String>("firstName") <- (json["firstName"] as! String?)!)
-                    patientSetters.append(Expression<String>("lastName") <- (json["lastName"] as! String?)!)
-                    patientSetters.append(Expression<String>("dateAdded") <- getDateTime())
-                    print("hello")
-
-                    try db.run(patients.insert(patientSetters))
-                    let query = attributes.select(Expression<Int64>("id"), Expression<String?>("name"), Expression<String?>("type"))
-                     .order(Expression<Int64>("id").desc)
-
-                    for attribute in try db.prepare(query) {
-                        print("hello")
-                        var setters = [Setter]()
-                        let name = attribute[Expression<String>("name")]
-                        let type = attribute[Expression<String>("type")]
-                        let id = attribute[Expression<Int64>("id")]
-                        
-                        if type == "date" {
-                            
-                            
-                        }
-                        
-                        if json[name] is Int {
-                            
-                            let theString = String(describing: json[name]!)
-                            setters.append(Expression<String>("attributeValue") <- theString)
-                        } else {
-                            
-                            setters.append(Expression<String>("attributeValue") <- json[name] as! String)
-                        }
-                        
-                        let idExp = Expression<Int64>("id")
-                        
-                        let lastPatient = try db.pluck(patients.select(idExp).order(idExp.desc).limit(1))
-                        
-                        let attributeValues = Table("attributeValues")
-                        
-                        setters.append(Expression<Int64>("patientId") <- (lastPatient?[idExp])!)
-                        setters.append(Expression<Int64>("attributeId") <- attribute[idExp])
-                        setters.append(Expression<String>("dateAdded") <- getDateTime())
-
-                        try db.run(attributeValues.insert(setters));
-                        
-
-                    }
-                    
-                } catch {}
-  
-            } catch {}
-        
-        } catch{}
-        
-        completion()
-        
-    }
     
     static func getDateTime() -> String {
         
@@ -429,79 +525,6 @@ class PatientRespositoryLocal {
         
     }
     
-    static func updatePatient(json: [String: Any], completion: @escaping (_:Void)->Void) {
-        
-        let inputId = json["id"] as! Int
-        
-        let path = NSSearchPathForDirectoriesInDomains(
-            .documentDirectory, .userDomainMask, true
-            ).first!
-        
-        
-        
-        do {
-            
-            let db = try Connection("\(path)/db2.sqlite3")
-            let attributes = Table("attributes")
-            
-            do {
-                do {
-                    var patientSetters = [Setter]()
-                    let patients = Table("patients")
-                    
-                    patientSetters.append(Expression<String>("firstName") <- (json["firstName"] as! String?)!)
-                    patientSetters.append(Expression<String>("lastName") <- (json["lastName"] as! String?)!)
-                    patientSetters.append(Expression<String>("dateAdded") <- getDateTime())
-                    print(inputId)
-                    let patient = patients.filter(Expression<Int64>("id") == Int64(inputId))
-                    let update = patient.update(patientSetters)
-                    try db.run(update)
-                    
-                    let query = attributes.select(Expression<Int64>("id"), Expression<String?>("name"), Expression<String?>("type"))
-                        .order(Expression<Int64>("id").desc)
-                    
-                    for attribute in try db.prepare(query) {
-
-                        var setters = [Setter]()
-                        let name = attribute[Expression<String>("name")]
-                        let type = attribute[Expression<String>("type")]
-                        let id = attribute[Expression<Int64>("id")]
-                        
-                        if json[name] is Int {
-                            
-                            let theString = String(describing: json[name]!)
-                            setters.append(Expression<String>("attributeValue") <- theString)
-                        } else {
-                            
-                            setters.append(Expression<String>("attributeValue") <- json[name] as! String)
-                        }
-                        
-                        let idExp = Expression<Int64>("id")
-                        
-                        let lastPatient = try db.pluck(patients.select(idExp).order(idExp.desc).limit(1))
-                        
-                        let attributeValues = Table("attributeValues")
-                        
-                        setters.append(Expression<Int64>("patientId") <- (Int64(inputId)))
-                        setters.append(Expression<Int64>("attributeId") <- attribute[idExp])
-                        setters.append(Expression<String>("dateAdded") <- getDateTime())
-                        
-                        let attribute = attributeValues.filter(Expression<Int64>("patientId") == Int64(inputId) && Expression<Int64>("attributeId") == attribute[idExp])
-                        let update = attribute.update(setters)
-                        try db.run(update);
-                        
-                        
-                    }
-                    
-                } catch {}
-                
-            } catch {}
-            
-        } catch{}
-        
-        completion()
-
-    }
     
     static func getPatientPhoto(id: String, completion: @escaping (_:UIImage)->Void) {
         

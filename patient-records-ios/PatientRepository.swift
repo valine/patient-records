@@ -47,10 +47,7 @@ class PatientRespository {
             
             
             }, debug: {_ in })
-            
-            
         }
-
     }
     
     static func deletePatientById(id: Int, completion: @escaping (_:Void)->Void) {

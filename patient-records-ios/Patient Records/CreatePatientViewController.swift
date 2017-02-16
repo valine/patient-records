@@ -13,13 +13,6 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
     
     var delegate: CreatePatientViewContrllerDelegate?
     let options = PatientAttributeSettings.getAttributeSettings()
-    
-    var mode: Mode? = Mode.view {
-        didSet {
-            self.configureView()
-        }
-    }
-    
     var patientDictionary: [String: Any] = Patient.defaultPatientDictionary()
     
     var patientDictionaryToSave: [String: Any] = Patient.defaultPatientDictionary()
@@ -36,26 +29,33 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
         didSet {
             if obscure {
+                
                 self.obscureView?.alpha = 1
-                
                 self.navigationItem.setHidesBackButton(true, animated:false);
-                
                 self.tableView.isScrollEnabled = false
             } else {
-                
-               
                 self.tableView.isScrollEnabled = true
                 UIView.animate(withDuration: 0.3, delay: 0, options: [.curveEaseOut], animations: {
                     
                     self.obscureView?.alpha = 0
-                    
                 }, completion: { _ in
                     
                      self.navigationItem.setHidesBackButton(false, animated:true);
-                    
                 })
-                
             }
+        }
+    }
+
+    enum Mode {
+        case new
+        case view
+        case update
+        case empty
+    }
+    
+    var mode: Mode? = Mode.view {
+        didSet {
+            self.configureView()
         }
     }
     
@@ -70,7 +70,373 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         self.tableView.addSubview(obscureView!)
         self.hidesBottomBarWhenPushed = false;
     }
+    
+    // MARK: TableView
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if mode == .empty {
+            return createEmptyCell()
+        }
+            
+        if indexPath.item == 0 {
+            
+            return createPhotoCell()
+       
+        } else if indexPath.item < (options?.count)! + 1 {
+            
+            let option = options?[indexPath.item - 1]
+            
+            let type = option?["type"] as! String
+            let title = option?["title"] as! String
+            let columnName = option?["columnName"] as! String
+            //let valueKeys = option?["valueKeys"] as! Array<String>
+            
+            if type == "textFieldCell" {
+                return createTextFieldCell(type: type, columnName: columnName, title: title)
+                
+            } else if type == "integerCell" {
+                let valueKeys = option?["valueKeys"] as! Array<String>
+                return createIntegerCell(type: type, columnName: columnName, title: title, valueKeys: valueKeys)
+                
+            } else if type == "textViewCell" {
+                return createTextViewCell(type: type, columnName: columnName, title: title)
+                
+            } else if type == "dateCell" {
+                return createDateCell(type: type, columnName: columnName, title: title)
+                
+            } else {
+                return UITableViewCell()
+            }
+            
+        } else {
+            return createDeleteCell()
+        }
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let count = options?.count
+        
+        if mode == .update {
+            
+            return count! + 2 // extra one for the delete cell
+        } else {
+            
+            return count! + 1 // + 1 for the patient photo cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let photoHeight: CGFloat = 135
+        if indexPath.item == 0 {
+            return photoHeight
+        } else {
+            if indexPath.item < (options?.count)! + 1{
+                
+                let option = options?[indexPath.item - 1]
+                var height = option?["columnHeight"] as! Int
+                
+                let textFieldHeight = 95
+                
+                if mode == .view && option?["type"] as! String == "dateCell" {
+                    
+                    height = textFieldHeight;
+                }
+                
+                return CGFloat(height)
+            } else { /// for delete button
+                return photoHeight
+            }
+        }
+    }
 
+    // MARK: Cells
+    
+    var imageHold: UIImage?
+    
+    func createPhotoCell() -> PhotoCell {
+        
+        let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
+        
+        cell.dateAdded.text = ""
+        
+        if mode == .new {
+            cell.titleLabel.text = "New Patient Photo"
+           
+            if let imageLocal = imageHold {
+                
+                cell.patientPhoto.image = imageLocal
+                cell.patientPhoto.contentScaleFactor = 2
+                cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                cell.patientPhoto.layer.borderWidth = 4
+                cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
+            }
+        } else if mode == .update  {
+            cell.titleLabel.text = "Update Patient Photo";
+            
+            // Set date added label
+            if let value = patientDictionary["dateAdded"] as? String {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
+                
+                if let date = formatter.date(from: value) {
+                    let formatterToString = DateFormatter()
+                    formatterToString.dateStyle = DateFormatter.Style.short
+                    cell.dateAdded.text = "Created " + formatterToString.string(from: date)
+                } else {
+                    cell.dateAdded.text = "Unknown"
+                }
+            }
+            
+            if let value = patientDictionary["id"] as? Int {
+                PatientRespository.getPatientPhoto(id: String(value), completion: {image in
+                    cell.patientPhoto.image = image
+                    cell.patientPhoto.contentScaleFactor = 2
+                    cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                    cell.patientPhoto.layer.borderWidth = 4
+                    cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
+                    
+                })
+            }
+
+        } else if mode == .view {
+
+            if let value = patientDictionary["dateAdded"] as? String {
+                // cell.datePicker.date = value
+                cell.titleLabel.text = "Patient Photo";
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
+                
+                if let date = formatter.date(from: value) {
+                    let formatterToString = DateFormatter()
+                    formatterToString.dateStyle = DateFormatter.Style.short
+                    cell.dateAdded.text = "Created " + formatterToString.string(from: date)
+                } else {
+                    cell.dateAdded.text = "Unknown"
+                }
+                
+            }
+            
+            if let value = patientDictionary["id"] as? Int {
+                PatientRespository.getPatientPhoto(id: String(value), completion: {image in
+                    cell.patientPhoto.image = image
+                    cell.patientPhoto.contentScaleFactor = 2
+                    cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                    cell.patientPhoto.layer.borderWidth = 4
+                    cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
+                })
+            }
+            if let imageLocal = imageHold {
+                
+                cell.patientPhoto.image = imageLocal
+                cell.patientPhoto.contentScaleFactor = 2
+                cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
+                cell.patientPhoto.layer.borderWidth = 4
+                cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
+                
+            }
+            
+            return cell
+            
+        }
+        
+        let imageView = cell.patientPhoto
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(selectPicture(_:)))
+        imageView?.isUserInteractionEnabled = true
+        imageView?.addGestureRecognizer(tapGestureRecognizer)
+
+        return cell;
+    }
+    
+    func createEmptyCell() -> TextFieldCell {
+        let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
+        cell.titleLabel.text = "";
+        cell.textField.isHidden = true
+        cell.viewLabel.isHidden = true
+        return cell
+    }
+    
+    func createTextFieldCell(type: String, columnName: String, title: String) -> TextFieldCell{
+        if mode == .new || mode == .update {
+            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
+            
+            cell.textField.isHidden = false
+            cell.viewLabel.isHidden = true
+            cell.titleLabel.text = title
+            cell.textField.delegate = self
+            let value = patientDictionary[columnName]
+            
+            cell.textField.text = value as! String?
+            cell.viewLabel.text = title
+            
+            return cell
+        } else {
+            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
+            
+            cell.textField.isHidden = true
+            cell.viewLabel.isHidden = false
+            
+            if let value = patientDictionary[columnName] as? String {
+                cell.titleLabel.text = title
+                cell.viewLabel.text = value
+            }
+
+            return cell
+        }
+
+    }
+    
+    func createIntegerCell(type: String, columnName: String, title: String, valueKeys: Array<String>) -> IntegerCell{
+        if mode == .new || mode == .update {
+
+            let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
+            cell.control.removeAllSegments()
+            
+            cell.control.isHidden = false
+            cell.viewLabel.isHidden = true
+            for key in valueKeys {
+                cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
+            }
+            
+            cell.titleLabel.text = title
+            let value = patientDictionary[columnName]
+            cell.control.selectedSegmentIndex = (value as! Int?)!
+            
+            
+            return cell
+        } else {
+            
+            let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
+            cell.control.removeAllSegments()
+            for key in valueKeys {
+                cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
+            }
+            
+            cell.control.isHidden = true
+            cell.viewLabel.isHidden = false
+            
+            if let value = patientDictionary[columnName] as? Int {
+                let text = valueKeys[value]
+                cell.titleLabel.text = title
+                cell.viewLabel.text = text
+            }
+            
+            cell.titleLabel.text = title
+            return cell
+        }
+        
+    }
+    
+    
+    func createTextViewCell(type: String, columnName: String, title: String) -> TextViewCell{
+        if mode == .new || mode == .update {
+            
+            let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
+            cell.textView.delegate = self
+            cell.titleLabel.text = title
+            cell.textView.backgroundColor = #colorLiteral(red: 0.9595803359, green: 0.9690811313, blue: 0.9690811313, alpha: 1)
+            cell.textView.layer.cornerRadius = 5
+            cell.textView.layer.borderWidth = 0.9
+            cell.textView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
+            cell.textView.isEditable = true
+            
+
+            let value = patientDictionary[columnName]
+            
+            cell.textView.text = value as! String
+            
+            return cell
+
+        } else {
+            
+            let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
+            cell.textView.delegate = self
+            cell.titleLabel.text = title
+            cell.textView.backgroundColor = .white
+            cell.textView.isEditable = false
+            
+            cell.textView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            cell.textView.layer.borderWidth = 0
+            
+            if let value = patientDictionary[columnName] as? String {
+                cell.textView.text = value
+            }
+            
+            return cell
+
+        }
+        
+    }
+    
+    func createDateCell(type: String, columnName: String, title: String) -> DateCell{
+        if mode == .new || mode == .update {
+            
+            let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
+            cell.titlelabel.text = title
+
+            let value = "2005-12-12 12:12:12"
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            
+            
+            if let date = formatter.date(from: value) {
+                cell.datePicker.setDate(date, animated: false)
+            }
+            
+            cell.viewLabel.isHidden = true;
+            cell.datePicker.isHidden = false;
+            
+            return cell
+
+            
+        } else {
+            
+            let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
+            cell.titlelabel.text = title
+            cell.viewLabel.isHidden = false;
+            cell.datePicker.isHidden = true;
+            
+            if let value = patientDictionary[columnName] as? String {
+                // cell.datePicker.date = value
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                
+                if let date = formatter.date(from: value) {
+                    let formatterToString = DateFormatter()
+                    formatterToString.dateStyle = DateFormatter.Style.full
+                    cell.viewLabel.text = formatterToString.string(from: date)
+                } else {
+                    cell.viewLabel.text = "Unknown"
+                }
+                
+            }
+            
+            return cell
+        }
+        
+    }
+    
+    func createDeleteCell() -> DeleteCell{
+        
+        let cell:DeleteCell = tableView.dequeueReusableCell(withIdentifier: "deleteCell") as! DeleteCell
+        cell.delete.addTarget(self, action: #selector(CreatePatientViewController.deletePressed(_:)), for: UIControlEvents.touchUpInside)
+        
+        return cell
+    }
+
+    @IBOutlet weak var containerView: UIView!
+    
+    // MARK: Navigation
+    
     @IBOutlet weak var rightNavButton: UIBarButtonItem!
     
     func configureView() {
@@ -84,26 +450,26 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationBar.barTintColor  = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             
-           
+            
             self.navigationController?.navigationController?.setToolbarHidden(true, animated: false)
         }
-        
+            
         else if mode == .new {
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.save, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
             UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.9450980392, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
             UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             self.navigationController?.setToolbarHidden(true, animated: false)
-
+            
         }
-        
+            
         else if mode == .update {
             self.navigationController?.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.354016006, green: 0.37027812, blue: 0.4115960598, alpha: 1)
             self.navigationController?.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
             self.navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0.354016006, green: 0.37027812, blue: 0.4115960598, alpha: 1)
-
+            
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.9163082838, green: 0.9195989966, blue: 0.9287547469, alpha: 1)
-
+            
             patientDictionaryToSave = patientDictionary;
             let cancelButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.cancel, target: self, action: #selector(CreatePatientViewController.cancelTapped(_:)))
             
@@ -115,9 +481,9 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             navigationItem.rightBarButtonItem = refreshButton
             self.navigationController?.setToolbarHidden(true, animated: true)
             
-
+            
         }
-        
+            
         else if mode == .view {
             let refreshButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.edit, target: self, action: #selector(CreatePatientViewController.rightNavButtonTapped(_:)))
             navigationItem.rightBarButtonItem = refreshButton
@@ -132,376 +498,10 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             self.navigationController?.navigationBar.tintColor = #colorLiteral(red: 0.6318992972, green: 0.1615979671, blue: 0.2013439238, alpha: 1)
             self.navigationController?.setToolbarHidden(false, animated: false)
             
-
+            
         }
         
         self.tableView.reloadData()
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
-        let count = options?.count
-        
-        if mode == .update {
-            return count! + 2 // extra one for the delete cell
-            
-            
-        } else {
-        
-            return count! + 1 // + 1 for the patient photo cell
-        }
-        
-       
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let photoHeight: CGFloat = 135
-        if indexPath.item == 0 {
-            return photoHeight
-        } else {
-            if indexPath.item < (options?.count)! + 1{
-
-                let option = options?[indexPath.item - 1]
-                var height = option?["columnHeight"] as! Int
-                
-                let textFieldHeight = 95
-                
-                if mode == .view && option?["type"] as! String == "dateCell" {
-                    
-                    height = textFieldHeight;
-                }
-                
-            return CGFloat(height)
-            } else { /// for delete button
-                return photoHeight
-            }
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
-        if mode == .empty {
-            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-            cell.titleLabel.text = "";
-            cell.textField.isHidden = true
-            cell.viewLabel.isHidden = true
-            return cell
-        }
-        
-        //// New patient
-        if mode == .new || mode == .update {
-        
-            if indexPath.item == 0 {
-               
-                let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
-                
-                cell.dateAdded.text = ""
-
-                
-                if mode == .new {
-                cell.titleLabel.text = "New Patient Photo"
-                } else {
-                    cell.titleLabel.text = "Update Patient Photo";
-                    
-                    
-                    if let value = patientDictionary["dateAdded"] as? String {
-                        // cell.datePicker.date = value
-                        
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
-                        
-                        if let date = formatter.date(from: value) {
-                            let formatterToString = DateFormatter()
-                            formatterToString.dateStyle = DateFormatter.Style.short
-                            cell.dateAdded.text = "Created " + formatterToString.string(from: date)
-                        } else {
-                            cell.dateAdded.text = "Unknown"
-                        }
-                        
-                    }
-                }
-                
-                if mode == .update {
-                    if let value = patientDictionary["id"] as? Int {
-                        PatientRespository.getPatientPhoto(id: String(value), completion: {image in
-                            cell.patientPhoto.image = image
-                            cell.patientPhoto.contentScaleFactor = 2
-                            cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
-                            cell.patientPhoto.layer.borderWidth = 4
-                            cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
-                            
-                        })
-                    }
-                } else {
-                    if let imageLocal = imageHold {
-                        
-                        cell.patientPhoto.image = imageLocal
-                        cell.patientPhoto.contentScaleFactor = 2
-                        cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
-                        cell.patientPhoto.layer.borderWidth = 4
-                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
-
-                    }
-                    
-                    
-                }
-
-                let imageView = cell.patientPhoto
-                let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(selectPicture(_:)))
-                imageView?.isUserInteractionEnabled = true
-                imageView?.addGestureRecognizer(tapGestureRecognizer)
-                
-
-                return cell
-             
-            } else {
-                
-                
-                if indexPath.item < (options?.count)! + 1 {
-                
-                    let option = options?[indexPath.item - 1]
-                
-                    let type = option?["type"] as! String
-                    let title = option?["title"] as! String
-
-                
-                    if type == "textFieldCell" {
-                        let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
-                        
-                        cell.textField.isHidden = false
-                        cell.viewLabel.isHidden = true
-                        cell.titleLabel.text = title
-                        cell.textField.delegate = self
-                        let columnName = option?["columnName"] as! String
-                        let value = patientDictionary[columnName]
-
-                        cell.textField.text = value as! String?
-                        cell.viewLabel.text = value as! String?
-                        
-                        return cell
-                    
-                    } else if type == "integerCell" {
-                        let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
-                        let valueKeys = option?["valueKeys"] as! Array<String>
-                        cell.control.removeAllSegments()
-                        
-                        cell.control.isHidden = false
-                        cell.viewLabel.isHidden = true
-                        for key in valueKeys {
-                           cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
-                        }
-                        
-                        cell.titleLabel.text = title
-                        let columnName = option?["columnName"] as! String
-                        let value = patientDictionary[columnName]
-                        cell.control.selectedSegmentIndex = (value as! Int?)!
-
-                        
-                        return cell
-                    } else if type == "textViewCell" {
-                        let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
-                        cell.textView.delegate = self
-                        cell.titleLabel.text = title
-                        cell.textView.backgroundColor = #colorLiteral(red: 0.9595803359, green: 0.9690811313, blue: 0.9690811313, alpha: 1)
-                        cell.textView.layer.cornerRadius = 5
-                        cell.textView.layer.borderWidth = 0.9
-                        cell.textView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
-                        cell.textView.isEditable = true
-                        
-
-                        let columnName = option?["columnName"] as! String
-                        let value = patientDictionary[columnName]
-                        
-                        cell.textView.text = value as! String
-
-                        return cell
-                    } else if type == "dateCell" {
-                        let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
-                        cell.titlelabel.text = title
-                        
-                        let columnName = option?["columnName"] as! String
-                        
-                        let value = "2005-12-12 12:12:12"
-                        if patientDictionary[columnName] is String {
-                            let value = patientDictionary[columnName] as! String
-                        }
-                       
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                        
-                        
-                        if let date = formatter.date(from: value) {
-                            cell.datePicker.setDate(date, animated: false)
-                        }
-                        
-                        cell.viewLabel.isHidden = true;
-                        cell.datePicker.isHidden = false;
-
-                        return cell
-                    
-                    } else {
-                        
-                            let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "none") as! TextFieldCell
-                            cell.titleLabel.text = title
-                            return cell
-                        
-                    }
-                    
-                } else {
-                    
-                        let cell:DeleteCell = tableView.dequeueReusableCell(withIdentifier: "deleteCell") as! DeleteCell
-                    cell.delete.addTarget(self, action: #selector(CreatePatientViewController.deletePressed(_:)), for: UIControlEvents.touchUpInside)
-
-                        return cell
-                }
-            }
-        }
-        
-        /// View Patient
-        else {
-        
-
-            if
-                indexPath.item == 0 {
-               
-                let cell:PhotoCell = tableView.dequeueReusableCell(withIdentifier: "photoCell") as! PhotoCell
-                
-                cell.titleLabel.text = "Patient Photo"
-                
-                
-                if let value = patientDictionary["dateAdded"] as? String {
-                    // cell.datePicker.date = value
-                    
-                    let formatter = DateFormatter()
-                    formatter.dateFormat = "yyyy:MM:dd:HH:mm:ss"
-                    
-                    if let date = formatter.date(from: value) {
-                        let formatterToString = DateFormatter()
-                        formatterToString.dateStyle = DateFormatter.Style.short
-                        cell.dateAdded.text = "Created " + formatterToString.string(from: date)
-                    } else {
-                        cell.dateAdded.text = "Unknown"
-                    }
-                    
-                }
-                
-                if let value = patientDictionary["id"] as? Int {
-                    PatientRespository.getPatientPhoto(id: String(value), completion: {image in
-                        cell.patientPhoto.image = image
-                        cell.patientPhoto.contentScaleFactor = 2
-                        cell.patientPhoto.layer.cornerRadius = cell.patientPhoto.frame.height / 2
-                        cell.patientPhoto.layer.borderWidth = 4
-                        cell.patientPhoto.layer.borderColor = #colorLiteral(red: 0.7651372084, green: 0.7957782119, blue: 0.8147243924, alpha: 1).cgColor
-                    })
-                }
-                
-                return cell
-             
-            } else {
-                
-                let option = options?[indexPath.item - 1]
-                let type = option?["type"] as! String
-                let title = option?["title"] as! String
-                let columnName = option?["columnName"] as! String
-            
-                if type == "textFieldCell" {
-                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextFieldCell
-                    
-                    cell.textField.isHidden = true
-                    cell.viewLabel.isHidden = false
-                    
-                    if let value = patientDictionary[columnName] as? String {
-                            cell.titleLabel.text = title
-                            cell.viewLabel.text = value
-                    }
-
-    
-                    return cell
-                
-                } else if type == "integerCell" {
-                    
-                    
-                    let cell:IntegerCell = tableView.dequeueReusableCell(withIdentifier: type) as! IntegerCell
-                    let valueKeys = option?["valueKeys"] as! Array<String>
-                    cell.control.removeAllSegments()
-                    for key in valueKeys {
-                       cell.control.insertSegment(withTitle: key, at: cell.control.numberOfSegments, animated: false)
-                    }
-                    
-                    cell.control.isHidden = true
-                    cell.viewLabel.isHidden = false
-                    
-                    if let value = patientDictionary[columnName] as? Int {
-                            let valueKeys = option?["valueKeys"] as! Array<String>
-                            let text = valueKeys[value]
-                            cell.titleLabel.text = title
-                            cell.viewLabel.text = text
-                    }
-                    
-                    cell.titleLabel.text = title
-                    return cell
-                    
-                } else if type == "textViewCell" {
-                    let cell:TextViewCell = tableView.dequeueReusableCell(withIdentifier: type) as! TextViewCell
-                    cell.textView.delegate = self
-                    cell.titleLabel.text = title
-                    cell.textView.backgroundColor = .white
-                    cell.textView.isEditable = false
-                    
-                    cell.textView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                    cell.textView.layer.borderWidth = 0
-
-                    
-                    if let value = patientDictionary[columnName] as? String {
-                        
-                        cell.textView.text = value
-                    }
-                    
-                    
-                    return cell
-                } else if type == "dateCell" {
-                    let cell:DateCell = tableView.dequeueReusableCell(withIdentifier: type) as! DateCell
-                    cell.titlelabel.text = title
-                    cell.viewLabel.isHidden = false;
-                    cell.datePicker.isHidden = true;
-                    
-                    if let value = patientDictionary[columnName] as? String {
-                       // cell.datePicker.date = value
-                        
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                        
-                        if let date = formatter.date(from: value) {
-                            let formatterToString = DateFormatter()
-                            formatterToString.dateStyle = DateFormatter.Style.full
-                            cell.viewLabel.text = formatterToString.string(from: date)
-                        } else {
-                            cell.viewLabel.text = "Unknown"
-                        }
-        
-                    }
-                    
-                    return cell
-                
-                } else {
-                    let cell:TextFieldCell = tableView.dequeueReusableCell(withIdentifier: "textFieldCell") as! TextFieldCell
-                    cell.titleLabel.text = title
-                    return cell
-                }
-            }
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    
-    @IBOutlet weak var containerView: UIView!
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     @IBAction func rightNavButtonTapped(_ sender: Any) {
@@ -551,24 +551,18 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
             
         }
     }
+    
     @IBAction func cancelTapped(_ sender: Any) {
-        
         if mode == .update {
             mode = .view
             
         } else if mode == .new {
             
             self.dismiss(animated: true, completion: {
-            
-            
-            
             })
-            
         }
-        
     }
-
-
+    
     @IBAction func integerCellChanged(_ sender: Any) {
     let toggle = sender as! UISegmentedControl
 
@@ -664,9 +658,7 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         // image.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         self.dismiss(animated: true, completion: nil)
     }
-    
-    var imageHold: UIImage?
-    
+
     func deletePressed(_ sender: Any) {
         let firstName = patientDictionary["firstName"] as! String
         let lastName = patientDictionary["lastName"] as! String
@@ -787,16 +779,14 @@ class CreatePatientViewController: UITableViewController, UISplitViewControllerD
         
         return pdfData
     }
-
-    enum Mode {
-        case new
-        case view
-        case update
-        case empty
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-
 }
 
 protocol CreatePatientViewContrllerDelegate: class {
     func didFinishTask(sender: CreatePatientViewContrllerDelegate, selectId: Int)
 }
+

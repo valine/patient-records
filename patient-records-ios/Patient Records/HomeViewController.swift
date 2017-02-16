@@ -285,21 +285,7 @@ class HomeViewController: UIViewController,  UITableViewDelegate, UITableViewDat
     }
     
     @IBOutlet weak var settingsButton: UIBarButtonItem!
-//    @IBAction func settingsTapped(_ sender: Any) {
-//        
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let controller = storyboard.instantiateViewController(withIdentifier: "settings-nav") as! UINavigationController
-//        controller.modalPresentationStyle = .popover
-//
-//        let svc = storyboard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
-//        svc.delegate = self
-//        present(controller, animated: true, completion: {
-//            
-//            self.updateTable()
-//        
-//        
-//        })
-//    }
+
     
     func finished() {
         updateTable()
